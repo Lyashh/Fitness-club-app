@@ -2,7 +2,7 @@ import { getRepository } from "typeorm";
 import Program from "../../db/entity/program.entity";
 
 export default class ProgramService {
-  private userRepository = getRepository(Program);
+  /*  private userRepository = getRepository(Program); */
 
   public async getProgramById(id: number) {
     const program = {
