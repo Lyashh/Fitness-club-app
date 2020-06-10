@@ -8,8 +8,8 @@
     "server:start": "node dist/app.js",
     "server:watch": "./node_modules/.bin/nodemon './dist/app.js' --watch ./dist",
     "typeorm": "./node_modules/ts-node/dist/bin.js ./node_modules/typeorm/cli.js --config ./src/db/ormconfig.ts",
-    "migration:create": "npm run typeorm -- migration:create -n",
-    "migration:generate": "npm run typeorm -- migration:generate -n aaa",
+    "migration:create": "npm run typeorm -- migration:create -n index",
+    "migration:generate": "npm run typeorm -- migration:generate -n index",
     "migration:run": "npm run typeorm -- migration:run"
   },
   "keywords": [],
