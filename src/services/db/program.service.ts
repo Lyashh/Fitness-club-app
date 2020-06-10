@@ -1,8 +1,8 @@
 import { getRepository } from "typeorm";
-import User from "../../db/entity/user.entity";
+import Program from "../../db/entity/program.entity";
 
-export default class UserService {
-  private userRepository = getRepository(User);
+export default class ProgramService {
+  private userRepository = getRepository(Program);
 
   public async getProgramById(id: number) {
     const program = {
@@ -66,11 +66,11 @@ export default class UserService {
     return newProgram;
   }
 
-  public async deleteUser(id: number) {
+  public async deleteProgram(id: number) {
     return true;
   }
 
-  public async updateUser(id: number, updateData: any) {
+  public async updateProgram(id: number, updateData: any) {
     const updateProgram = {
       id: 1,
       name: "Program 1 Edit",
