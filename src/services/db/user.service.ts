@@ -5,7 +5,7 @@ export default class UserService {
   private userRepository = getRepository(User);
 
   public async getUserById(id: number) {
-    const user = await this.userRepository.findOne(id, { relations: ["role"] });
+    const user = await this.userRepository.findOne(id, { relations: ["role", "programs"] });
     if (user) {
       return user;
     }
@@ -13,7 +13,7 @@ export default class UserService {
   }
 
   public async getAllUsers() {
-    const users = await this.userRepository.find({ relations: ["role"] });
+    const users = await this.userRepository.find({ relations: ["role", "programs"] });
     return users;
   }
 

@@ -6,6 +6,7 @@ import {
   CreateDateColumn,
   UpdateDateColumn,
   JoinTable,
+  ManyToOne,
 } from "typeorm";
 import User from "./user.entity";
 import Exercise from "./exsercise.entity";
@@ -26,6 +27,9 @@ class Program {
 
   @ManyToMany(() => User, (user: User) => user.programs)
   public users: User[];
+
+  @ManyToOne(() => User, (user: User) => user.coachPrograms)
+  public coach: User;
 
   @ManyToMany((type) => Exercise, (exercise: Exercise) => exercise.programs)
   @JoinTable()

@@ -7,6 +7,7 @@ import {
   ManyToOne,
   JoinTable,
   ManyToMany,
+  OneToMany,
 } from "typeorm";
 
 import Role from "./role.entity";
@@ -32,7 +33,10 @@ class User {
   @ManyToOne(() => Role, (role: Role) => role.users)
   public role: Role;
 
-  @ManyToMany((type) => Program, (program: Program) => program.users)
+  @OneToMany(() => Program, (program: Program) => program.coach)
+  coachPrograms: Program[];
+
+  @ManyToMany(() => Program, (program: Program) => program.users)
   @JoinTable()
   programs: Program[];
 
