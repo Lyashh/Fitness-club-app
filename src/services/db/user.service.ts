@@ -10,14 +10,10 @@ export default class UserService {
     this.roleService = new RoleService();
   }
 
-  public async getUserById(id: number) {
-    const user = await this.userRepository.findOne(id, {
+  public getUserById(id: number) {
+    return this.userRepository.findOne(id, {
       relations: ["role", "programs"],
     });
-    if (user) {
-      return user;
-    }
-    return null;
   }
 
   public async getAllUsers() {
@@ -27,7 +23,7 @@ export default class UserService {
     return users;
   }
 
-  public createUser(userReq: any) {
+  public createUser(userReq: any): Promise<User> {
     return this.roleService.getRoleById(userReq.roleId).then(async (role) => {
       let user = new User();
       user.name = userReq.name;
@@ -38,14 +34,13 @@ export default class UserService {
 
       const newUser = this.userRepository.create(user);
       await this.userRepository.save(newUser);
-
       return newUser;
     });
   }
 
   public async deleteUser(id: number) {
     const deleteResponse = await this.userRepository.delete(id);
-    if (deleteResponse.raw[1]) {
+    if (deleteResponse.affected === 1) {
       return true;
     }
     return false;

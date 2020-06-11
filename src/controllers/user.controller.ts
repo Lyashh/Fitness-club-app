@@ -17,15 +17,16 @@ export default class UserController {
   }
 
   public getUserById() {
-    return async (req: Request, res: Response) => {
+    return async (req: Request, res: Response, next: NextFunction) => {
       const user = await this.userService.getUserById(parseInt(req.params.id));
       if (user) {
         return res.json(user);
-      } else {
-        return res
-          .status(404)
-          .json({ message: `User with id: ${req.params.id} not found` });
       }
+      const error = new CustomError(
+        `User with id: ${req.params.id} not found`,
+        404
+      );
+      return next(error);
     };
   }
 
@@ -35,9 +36,25 @@ export default class UserController {
         .createUser(req.body)
         .then((newUser) => res.json({ newUser }))
         .catch((e) => {
-          let error = new CustomError(e.message, "db", e.code);
+          const error = new CustomError(e.message, null, e.code);
           return next(error);
         });
+    };
+  }
+
+  public deleteUser() {
+    return async (req: Request, res: Response, next: NextFunction) => {
+      const deleted = await this.userService.deleteUser(req.body.id);
+      if (deleted) {
+        return res.json({
+          message: `User with id: ${req.body.id} has been successfully deleted`,
+        });
+      }
+      const error = new CustomError(
+        `User with id: ${req.body.id} not found`,
+        404
+      );
+      return next(error);
     };
   }
 }

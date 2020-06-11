@@ -13,6 +13,7 @@ export default class UserRouter {
     this.router.get("/", this.userController.getAllUsers());
     this.router.get("/:id", this.userController.getUserById());
     this.router.post("/", this.userController.createUser());
+    this.router.delete("/", this.userController.deleteUser());
 
     return this.router;
   }
