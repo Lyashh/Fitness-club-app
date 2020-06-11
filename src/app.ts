@@ -3,7 +3,7 @@ import bodyParser from "body-parser";
 
 import Router from "./routes/index.router";
 
-class App {
+export default class App {
   private static app: App;
   private expressApp: express.Application;
   private router: Router;
@@ -38,6 +38,3 @@ class App {
     return app;
   }
 }
-
-const server = App.getInstance;
-server.init();
