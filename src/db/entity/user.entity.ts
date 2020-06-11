@@ -30,7 +30,7 @@ class User {
   @Column({ nullable: false })
   public password: string;
 
-  @ManyToOne(() => Role, (role: Role) => role.users)
+  @ManyToOne(() => Role, (role: Role) => role.users, { nullable: false })
   public role: Role;
 
   @OneToMany(() => Program, (program: Program) => program.coach)

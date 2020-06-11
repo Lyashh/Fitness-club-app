@@ -1,5 +1,6 @@
 import express, { Response, Request, NextFunction } from "express";
 import bodyParser from "body-parser";
+import ErrorHandler from "./services/handlers/error.handler";
 
 import Router from "./routes/index.router";
 
@@ -19,6 +20,8 @@ export default class App {
     this.expressApp.use(bodyParser.json());
     this.expressApp.use(bodyParser.urlencoded({ extended: true }));
     this.expressApp.use("/api/", this.router.routes);
+
+    this.expressApp.use(ErrorHandler.getHandler);
 
     // 404
     this.expressApp.use((req: Request, res: Response, next: NextFunction) => {
