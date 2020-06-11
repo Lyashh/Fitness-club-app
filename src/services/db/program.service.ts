@@ -2,7 +2,7 @@ import { getRepository } from "typeorm";
 import Program from "../../db/entity/program.entity";
 
 export default class ProgramService {
-  /*  private userRepository = getRepository(Program); */
+  private userRepository = getRepository(Program);
 
   public async getProgramById(id: number) {
     const program = {
@@ -13,9 +13,9 @@ export default class ProgramService {
         id: 2,
       },
       exsercises: [
-        { id: 1, name: "exsercise 1", quantity: 20 },
-        { id: 5, name: "exsercise 4", quantity: 5 },
-        { id: 11, name: "exsercise 2", quantity: 10 },
+        { id: 1, name: "exsercise 1", quantity: 20, category: "category 1" },
+        { id: 5, name: "exsercise 4", quantity: 5, category: "category 2" },
+        { id: 11, name: "exsercise 2", quantity: 10, category: "category 1" },
       ],
     };
     return program;
@@ -31,9 +31,9 @@ export default class ProgramService {
           id: 2,
         },
         exsercises: [
-          { id: 1, name: "exsercise 1", quantity: 20 },
-          { id: 5, name: "exsercise 4", quantity: 5 },
-          { id: 11, name: "exsercise 2", quantity: 10 },
+          { id: 1, name: "exsercise 1", quantity: 20, category: "category 1" },
+          { id: 5, name: "exsercise 4", quantity: 5, category: "category 2" },
+          { id: 11, name: "exsercise 2", quantity: 10, category: "category 1" },
         ],
       },
       {
@@ -44,9 +44,9 @@ export default class ProgramService {
           id: 2,
         },
         exsercises: [
-          { id: 19, name: "exsercise 29", quantity: 2 },
-          { id: 3, name: "exsercise 9", quantity: 40 },
-          { id: 11, name: "exsercise 2", quantity: 4 },
+          { id: 1, name: "exsercise 1", quantity: 20, category: "category 1" },
+          { id: 5, name: "exsercise 4", quantity: 5, category: "category 2" },
+          { id: 11, name: "exsercise 2", quantity: 10, category: "category 1" },
         ],
       },
     ];
@@ -79,9 +79,9 @@ export default class ProgramService {
         id: 2,
       },
       exsercises: [
-        { id: 1, name: "exsercise 1", quantity: 20 },
-        { id: 5, name: "exsercise 4", quantity: 5 },
-        { id: 11, name: "exsercise 2", quantity: 10 },
+        { id: 1, name: "exsercise 1", quantity: 20, category: "category 1" },
+        { id: 5, name: "exsercise 4", quantity: 5, category: "category 2" },
+        { id: 11, name: "exsercise 2", quantity: 10, category: "category 1" },
       ],
     };
     return updateProgram;
