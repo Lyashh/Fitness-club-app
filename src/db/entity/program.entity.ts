@@ -13,7 +13,7 @@ import Exercise from "./exsercise.entity";
 
 @Entity()
 class Program {
-  @PrimaryGeneratedColumn("uuid")
+  @PrimaryGeneratedColumn()
   public id: number;
 
   @Column()

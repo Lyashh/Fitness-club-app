@@ -3,7 +3,7 @@ import User from "./user.entity";
 
 @Entity()
 class Role {
-  @PrimaryGeneratedColumn("uuid")
+  @PrimaryGeneratedColumn()
   id: number;
 
   @Column({ nullable: true })

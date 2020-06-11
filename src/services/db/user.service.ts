@@ -1,4 +1,4 @@
-/* import { getRepository } from "typeorm";
+import { getRepository } from "typeorm";
 import User from "../../db/entity/user.entity";
 
 export default class UserService {
@@ -41,4 +41,3 @@ export default class UserService {
     }
   }
 }
- */
