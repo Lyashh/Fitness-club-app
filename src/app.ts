@@ -1,16 +1,27 @@
 import express, { Response, Request, NextFunction } from "express";
+import bodyParser from "body-parser";
+import ErrorHandler from "./services/handlers/error.handler";
 
-class App {
+import Router from "./routes/index.router";
+
+export default class App {
   private static app: App;
   private expressApp: express.Application;
+  private router: Router;
 
   private constructor() {
     this.expressApp = express();
+    this.router = new Router();
     this.config();
   }
 
   private config(): void {
     this.expressApp.set("port", process.env.PORT || 4000);
+    this.expressApp.use(bodyParser.json());
+    this.expressApp.use(bodyParser.urlencoded({ extended: true }));
+    this.expressApp.use("/api/", this.router.routes);
+
+    this.expressApp.use(ErrorHandler.getHandler);
 
     // 404
     this.expressApp.use((req: Request, res: Response, next: NextFunction) => {
@@ -30,6 +41,3 @@ class App {
     return app;
   }
 }
-
-const server = App.getInstance;
-server.init();

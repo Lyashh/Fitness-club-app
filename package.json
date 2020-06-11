@@ -2,11 +2,11 @@
   "name": "fitness-club-app",
   "version": "1.0.0",
   "description": "",
-  "main": "dist/app.js",
+  "main": "dist/server.js",
   "scripts": {
     "ts:watch": "./node_modules/typescript/bin/tsc -w",
-    "server:start": "node dist/app.js",
-    "server:watch": "./node_modules/.bin/nodemon './dist/app.js' --watch ./dist",
+    "server:start": "node dist/server.js",
+    "server:watch": "./node_modules/.bin/nodemon './dist/server.js' --watch ./dist",
     "typeorm": "./node_modules/ts-node/dist/bin.js ./node_modules/typeorm/cli.js --config ./src/db/ormconfig.ts",
     "migration:create": "npm run typeorm -- migration:create -n index",
     "migration:generate": "npm run typeorm -- migration:generate -n index",
@@ -22,8 +22,10 @@
     "typescript": "^3.9.5"
   },
   "dependencies": {
+    "@types/body-parser": "^1.19.0",
     "@types/express": "^4.17.6",
     "@types/pg": "^7.14.3",
+    "body-parser": "^1.19.0",
     "dotenv": "^8.2.0",
     "express": "^4.17.1",
     "pg": "^8.2.1",

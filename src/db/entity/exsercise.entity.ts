@@ -10,13 +10,13 @@ import Category from "./category.entity";
 
 @Entity()
 class Exercise {
-  @PrimaryGeneratedColumn("uuid")
+  @PrimaryGeneratedColumn()
   public id: number;
 
-  @Column({ nullable: true })
+  @Column({ nullable: false })
   public name: string;
 
-  @Column({ nullable: true, type: "int" })
+  @Column({ nullable: false, type: "int" })
   public quantity: number;
 
   @ManyToMany(() => Program, (program: Program) => program.exercises)

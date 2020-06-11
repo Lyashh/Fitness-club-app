@@ -1,8 +1,8 @@
 import { getRepository } from "typeorm";
-import User from "../../db/entity/user.entity";
+import Program from "../../db/entity/program.entity";
 
-export default class UserService {
-  private userRepository = getRepository(User);
+export default class ProgramService {
+  private userRepository = getRepository(Program);
 
   public async getProgramById(id: number) {
     const program = {
@@ -13,9 +13,9 @@ export default class UserService {
         id: 2,
       },
       exsercises: [
-        { id: 1, name: "exsercise 1", quantity: 20 },
-        { id: 5, name: "exsercise 4", quantity: 5 },
-        { id: 11, name: "exsercise 2", quantity: 10 },
+        { id: 1, name: "exsercise 1", quantity: 20, category: "category 1" },
+        { id: 5, name: "exsercise 4", quantity: 5, category: "category 2" },
+        { id: 11, name: "exsercise 2", quantity: 10, category: "category 1" },
       ],
     };
     return program;
@@ -31,9 +31,9 @@ export default class UserService {
           id: 2,
         },
         exsercises: [
-          { id: 1, name: "exsercise 1", quantity: 20 },
-          { id: 5, name: "exsercise 4", quantity: 5 },
-          { id: 11, name: "exsercise 2", quantity: 10 },
+          { id: 1, name: "exsercise 1", quantity: 20, category: "category 1" },
+          { id: 5, name: "exsercise 4", quantity: 5, category: "category 2" },
+          { id: 11, name: "exsercise 2", quantity: 10, category: "category 1" },
         ],
       },
       {
@@ -44,9 +44,9 @@ export default class UserService {
           id: 2,
         },
         exsercises: [
-          { id: 19, name: "exsercise 29", quantity: 2 },
-          { id: 3, name: "exsercise 9", quantity: 40 },
-          { id: 11, name: "exsercise 2", quantity: 4 },
+          { id: 1, name: "exsercise 1", quantity: 20, category: "category 1" },
+          { id: 5, name: "exsercise 4", quantity: 5, category: "category 2" },
+          { id: 11, name: "exsercise 2", quantity: 10, category: "category 1" },
         ],
       },
     ];
@@ -66,11 +66,11 @@ export default class UserService {
     return newProgram;
   }
 
-  public async deleteUser(id: number) {
+  public async deleteProgram(id: number) {
     return true;
   }
 
-  public async updateUser(id: number, updateData: any) {
+  public async updateProgram(id: number, updateData: any) {
     const updateProgram = {
       id: 1,
       name: "Program 1 Edit",
@@ -79,9 +79,9 @@ export default class UserService {
         id: 2,
       },
       exsercises: [
-        { id: 1, name: "exsercise 1", quantity: 20 },
-        { id: 5, name: "exsercise 4", quantity: 5 },
-        { id: 11, name: "exsercise 2", quantity: 10 },
+        { id: 1, name: "exsercise 1", quantity: 20, category: "category 1" },
+        { id: 5, name: "exsercise 4", quantity: 5, category: "category 2" },
+        { id: 11, name: "exsercise 2", quantity: 10, category: "category 1" },
       ],
     };
     return updateProgram;

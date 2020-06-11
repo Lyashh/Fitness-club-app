@@ -15,7 +15,7 @@ import Program from "./program.entity";
 
 @Entity()
 class User {
-  @PrimaryGeneratedColumn("uuid")
+  @PrimaryGeneratedColumn()
   public id: number;
 
   @Column()
@@ -24,13 +24,13 @@ class User {
   @Column("int")
   public age: number;
 
-  @Column({ unique: true, nullable: true })
+  @Column({ unique: true, nullable: false })
   public email: string;
 
-  @Column({ nullable: true })
+  @Column({ nullable: false })
   public password: string;
 
-  @ManyToOne(() => Role, (role: Role) => role.users)
+  @ManyToOne(() => Role, (role: Role) => role.users, { nullable: false })
   public role: Role;
 
   @OneToMany(() => Program, (program: Program) => program.coach)

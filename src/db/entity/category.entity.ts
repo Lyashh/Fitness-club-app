@@ -3,7 +3,7 @@ import Exercise from "./exsercise.entity";
 
 @Entity()
 class Category {
-  @PrimaryGeneratedColumn("uuid")
+  @PrimaryGeneratedColumn()
   public id: number;
 
   @Column({ nullable: true })
