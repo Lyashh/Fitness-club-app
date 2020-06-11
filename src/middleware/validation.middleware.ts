@@ -13,7 +13,26 @@ export default class ValidationMiddleware {
         );
         return next(error);
       }
-      next();
+      return next();
+    };
+  }
+
+  public paramsIsNumber(paramsKeys: Array<string>) {
+    return async (req: Request, res: Response, next: NextFunction) => {
+      const params = paramsKeys.map((el) => {
+        return req.params[el];
+      });
+      console.log(params);
+
+      const validResult = await ValidationService.paramsIsNumber(params);
+      if (validResult.error) {
+        const error = new CustomError(
+          `${validResult.error.details[0].context?.value} param ${validResult.error.details[0].message}`,
+          422
+        );
+        return next(error);
+      }
+      return next();
     };
   }
 }

@@ -11,4 +11,9 @@ export default class ValidationService {
     });
     return schema.validate(newUser);
   }
+
+  public static paramsIsNumber(params: Array<any>) {
+    const schema = joi.array().items(joi.number().integer());
+    return schema.validate(params);
+  }
 }

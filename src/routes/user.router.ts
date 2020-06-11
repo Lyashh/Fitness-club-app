@@ -15,7 +15,11 @@ export default class UserRouter {
 
   public get routes(): ExpressRouter {
     this.router.get("/", this.userController.getAllUsers());
-    this.router.get("/:id", this.userController.getUserById());
+    this.router.get(
+      "/:id",
+      this.validationMiddleware.paramsIsNumber(["id"]),
+      this.userController.getUserById()
+    );
     this.router.post(
       "/",
       this.validationMiddleware.validateNewUser(),
