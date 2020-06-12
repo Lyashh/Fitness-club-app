@@ -19,10 +19,10 @@ class Program {
   @Column()
   public name: string;
 
-  @CreateDateColumn({ type: "timestamp" })
+  @CreateDateColumn({ type: "timestamp", select: false })
   public createdAt: Date;
 
-  @UpdateDateColumn({ type: "timestamp" })
+  @UpdateDateColumn({ type: "timestamp", select: false })
   public updatedAt: Date;
 
   @ManyToMany(() => User, (user: User) => user.programs)

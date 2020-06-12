@@ -30,6 +30,13 @@ export default class ProgramService {
     const programs = await this.programRepository.find({
       relations: ["users", "coach", "exercises", "exercises.category"],
     });
+
+    /* const programs = this.programRepository
+       .createQueryBuilder("program")
+      .leftJoinAndSelect("program.coach", "user")
+      .leftJoinAndSelect("user.role", "role")
+      .select(["program.name", "user.name", "role.name"])
+      .getMany();  */
     return programs;
   }
 

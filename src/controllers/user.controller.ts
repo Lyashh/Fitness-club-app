@@ -70,8 +70,8 @@ export default class UserController {
     return async (req: Request, res: Response, next: NextFunction) => {
       return this.userService
         .updateUser(req.body.id, req.body.newFields)
-        .then((newUser) => {
-          return res.json({ newUser });
+        .then((updateUser) => {
+          return res.json(updateUser);
         })
         .catch((e) => {
           if (e.httpStatus) {

@@ -21,13 +21,13 @@ class User {
   @Column()
   public name: string;
 
-  @Column("int")
+  @Column({ type: "int", select: false })
   public age: number;
 
   @Column({ unique: true, nullable: false })
   public email: string;
 
-  @Column({ nullable: false })
+  @Column({ nullable: false, select: false })
   public password: string;
 
   @ManyToOne(() => Role, (role: Role) => role.users, { nullable: false })
@@ -40,10 +40,10 @@ class User {
   @JoinTable()
   programs: Program[];
 
-  @CreateDateColumn({ type: "timestamp" })
+  @CreateDateColumn({ type: "timestamp", select: false })
   public createdAt: Date;
 
-  @UpdateDateColumn({ type: "timestamp" })
+  @UpdateDateColumn({ type: "timestamp", select: false })
   public updatedAt: Date;
 }
 

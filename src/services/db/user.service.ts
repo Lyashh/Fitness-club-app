@@ -61,6 +61,10 @@ export default class UserService {
   }
 
   public updateUser(id: number, updateData: any) {
+    updateData.updatedAt = new Date()
+      .toISOString()
+      .slice(0, 19)
+      .replace("T", " ");
     return this.userRepository
       .update(id, updateData)
       .then(async (updateResponse) => {
