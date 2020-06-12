@@ -17,13 +17,25 @@ export default class ValidationMiddleware {
     };
   }
 
+  public validateBodyId() {
+    return async (req: Request, res: Response, next: NextFunction) => {
+      const validResult = await ValidationService.idIsNumber(req.body.id);
+      if (validResult.error) {
+        const error = new CustomError(
+          `id field ${validResult.error.details[0].message}`,
+          422
+        );
+        return next(error);
+      }
+      return next();
+    };
+  }
+
   public paramsIsNumber(paramsKeys: Array<string>) {
     return async (req: Request, res: Response, next: NextFunction) => {
       const params = paramsKeys.map((el) => {
         return req.params[el];
       });
-      console.log(params);
-
       const validResult = await ValidationService.paramsIsNumber(params);
       if (validResult.error) {
         const error = new CustomError(

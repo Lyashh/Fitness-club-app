@@ -25,7 +25,11 @@ export default class UserRouter {
       this.validationMiddleware.validateNewUser(),
       this.userController.createUser()
     );
-    this.router.delete("/", this.userController.deleteUser());
+    this.router.delete(
+      "/",
+      this.validationMiddleware.validateBodyId(),
+      this.userController.deleteUser()
+    );
 
     return this.router;
   }

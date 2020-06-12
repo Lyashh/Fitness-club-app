@@ -16,4 +16,9 @@ export default class ValidationService {
     const schema = joi.array().items(joi.number().integer());
     return schema.validate(params);
   }
+
+  public static idIsNumber(id: any) {
+    const schema = joi.number().integer().min(1).required();
+    return schema.validate(id);
+  }
 }
