@@ -9,4 +9,11 @@ export default class ProgramValidation extends MainValidation {
     });
     return schema.validate(newProgram);
   }
+
+  public static updateProgram(newField: any) {
+    const schema = joi.object({
+      name: joi.string().alphanum().min(3).max(50).required(),
+    });
+    return schema.validate(newField);
+  }
 }

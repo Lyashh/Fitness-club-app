@@ -1,6 +1,5 @@
 import { Response, Request, NextFunction } from "express";
 import UserService from "../services/db/user.service";
-import User from "../db/entity/user.entity";
 import CustomError from "../types/errors/customError.types";
 
 export default class UserController {

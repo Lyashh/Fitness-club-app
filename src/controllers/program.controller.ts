@@ -54,12 +54,20 @@ export default class ProgramController {
   }
 
   public updateProgram() {
-    return async (req: Request, res: Response) => {
-      const updatedProgram = await this.programService.updateProgram(
-        req.body.id,
-        {}
-      );
-      return res.json(updatedProgram);
+    return async (req: Request, res: Response, next: NextFunction) => {
+      return this.programService
+        .updateProgram(req.body.id, req.body.newFields)
+        .then((updatedProgram) => {
+          return res.json(updatedProgram);
+        })
+        .catch((e) => {
+          if (e.httpStatus) {
+            const error = new CustomError(e.message, e.httpStatus);
+            return next(error);
+          }
+          const error = new CustomError(e.message, null, e.code);
+          return next(error);
+        });
     };
   }
 

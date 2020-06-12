@@ -29,6 +29,7 @@ export default class ProgramRouter {
     this.router.patch(
       "/",
       this.validationMiddleware.validateBodyId(),
+      this.validationMiddleware.validateModifiedProgram(),
       this.programController.updateProgram()
     );
 

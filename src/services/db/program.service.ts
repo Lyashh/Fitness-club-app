@@ -13,6 +13,8 @@ export default class ProgramService {
   public getProgramById(id: number) {
     return this.programRepository
       .findOne({
+        where: { id },
+        select: ["id", "name", "updatedAt", "createdAt"],
         relations: ["users", "coach", "exercises", "exercises.category"],
       })
       .then((program) => {
@@ -70,19 +72,14 @@ export default class ProgramService {
   }
 
   public async updateProgram(id: number, updateData: any) {
-    const updateProgram = {
-      id: 1,
-      name: "Program 1 Edit",
-      coach: {
-        name: "Coach 1",
-        id: 2,
-      },
-      exsercises: [
-        { id: 1, name: "exsercise 1", quantity: 20, category: "category 1" },
-        { id: 5, name: "exsercise 4", quantity: 5, category: "category 2" },
-        { id: 11, name: "exsercise 2", quantity: 10, category: "category 1" },
-      ],
-    };
-    return updateProgram;
+    updateData.updatedAt = new Date()
+      .toISOString()
+      .slice(0, 19)
+      .replace("T", " ");
+    return this.programRepository
+      .update(id, updateData)
+      .then(async (updateResponse) => {
+        return this.getProgramById(id);
+      });
   }
 }

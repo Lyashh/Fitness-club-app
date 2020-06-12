@@ -76,4 +76,20 @@ export default class ValidationMiddleware {
       return next();
     };
   }
+
+  public validateModifiedProgram() {
+    return async (req: Request, res: Response, next: NextFunction) => {
+      const validResult = await ProgramValidation.updateProgram(
+        req.body.newFields
+      );
+      if (validResult.error) {
+        const error = new CustomError(
+          validResult.error.details[0].message,
+          400
+        );
+        return next(error);
+      }
+      return next();
+    };
+  }
 }
