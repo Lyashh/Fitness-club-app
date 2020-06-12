@@ -22,34 +22,9 @@ export default class ProgramService {
   }
 
   public async getAllPrograms() {
-    const programs = [
-      {
-        id: 1,
-        name: "Program 1",
-        coach: {
-          name: "Coach 1",
-          id: 2,
-        },
-        exsercises: [
-          { id: 1, name: "exsercise 1", quantity: 20, category: "category 1" },
-          { id: 5, name: "exsercise 4", quantity: 5, category: "category 2" },
-          { id: 11, name: "exsercise 2", quantity: 10, category: "category 1" },
-        ],
-      },
-      {
-        id: 2,
-        name: "Program 2",
-        coach: {
-          name: "Coach 1",
-          id: 2,
-        },
-        exsercises: [
-          { id: 1, name: "exsercise 1", quantity: 20, category: "category 1" },
-          { id: 5, name: "exsercise 4", quantity: 5, category: "category 2" },
-          { id: 11, name: "exsercise 2", quantity: 10, category: "category 1" },
-        ],
-      },
-    ];
+    const programs = await this.userRepository.find({
+      relations: ["users", "coach", "exercises", "exercises.category"],
+    });
     return programs;
   }
 

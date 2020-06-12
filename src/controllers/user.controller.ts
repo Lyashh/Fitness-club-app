@@ -67,7 +67,11 @@ export default class UserController {
         })
         .catch((e) => {
           if (e.httpStatus) {
-            return res.json(e);
+            const error = new CustomError(
+              `User with id: ${req.body.id} not found`,
+              e.httpStatus
+            );
+            return next(error);
           }
           const error = new CustomError(e.message, null, e.code);
           return next(error);
