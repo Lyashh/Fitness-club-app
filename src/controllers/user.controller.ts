@@ -17,16 +17,20 @@ export default class UserController {
   }
 
   public getUserById() {
-    return async (req: Request, res: Response, next: NextFunction) => {
-      const user = await this.userService.getUserById(parseInt(req.params.id));
-      if (user) {
-        return res.json(user);
-      }
-      const error = new CustomError(
-        `User with id: ${req.params.id} not found`,
-        404
-      );
-      return next(error);
+    return (req: Request, res: Response, next: NextFunction) => {
+      return this.userService
+        .getUserById(parseInt(req.params.id))
+        .then((user) => {
+          return res.json(user);
+        })
+        .catch((e) => {
+          if (e.httpStatus) {
+            const error = new CustomError(e.message, e.httpStatus);
+            return next(error);
+          }
+          const error = new CustomError(e.message, null, e.code);
+          return next(error);
+        });
     };
   }
 
@@ -67,10 +71,7 @@ export default class UserController {
         })
         .catch((e) => {
           if (e.httpStatus) {
-            const error = new CustomError(
-              `User with id: ${req.body.id} not found`,
-              e.httpStatus
-            );
+            const error = new CustomError(e.message, e.httpStatus);
             return next(error);
           }
           const error = new CustomError(e.message, null, e.code);

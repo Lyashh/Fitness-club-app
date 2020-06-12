@@ -1,5 +1,6 @@
-import { Response, Request } from "express";
+import { Response, Request, NextFunction } from "express";
 import ProgramService from "../services/db/program.service";
+import CustomError from "../types/errors/customError.types";
 
 export default class ProgramController {
   private programService: ProgramService;
@@ -8,9 +9,20 @@ export default class ProgramController {
   }
 
   public getProgramById() {
-    return async (req: Request, res: Response) => {
-      const program = await this.programService.getProgramById(req.body.id);
-      return res.json(program);
+    return async (req: Request, res: Response, next: NextFunction) => {
+      return this.programService
+        .getProgramById(req.body.id)
+        .then((program) => {
+          return res.json(program);
+        })
+        .catch((e) => {
+          if (e.httpStatus) {
+            const error = new CustomError(e.message, e.httpStatus);
+            return next(error);
+          }
+          const error = new CustomError(e.message, null, e.code);
+          return next(error);
+        });
     };
   }
 

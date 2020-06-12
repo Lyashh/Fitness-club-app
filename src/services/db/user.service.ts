@@ -11,9 +11,20 @@ export default class UserService {
   }
 
   public getUserById(id: number) {
-    return this.userRepository.findOne(id, {
-      relations: ["role", "programs"],
-    });
+    return this.userRepository
+      .findOne(id, {
+        relations: ["role", "programs"],
+      })
+      .then((user) => {
+        if (user) {
+          return user;
+        } else {
+          return Promise.reject({
+            httpStatus: 404,
+            message: `User with id: ${id} not found`,
+          });
+        }
+      });
   }
 
   public async getAllUsers() {
@@ -50,12 +61,7 @@ export default class UserService {
     return this.userRepository
       .update(id, updateData)
       .then(async (updateResponse) => {
-        const user = await this.getUserById(id);
-        if (user) {
-          return user;
-        } else {
-          return Promise.reject({ httpStatus: 404 });
-        }
+        return this.getUserById(id);
       });
   }
 }

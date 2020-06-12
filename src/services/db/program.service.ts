@@ -2,27 +2,26 @@ import { getRepository } from "typeorm";
 import Program from "../../db/entity/program.entity";
 
 export default class ProgramService {
-  private userRepository = getRepository(Program);
+  private programRepository = getRepository(Program);
 
-  public async getProgramById(id: number) {
-    const program = {
-      id: 1,
-      name: "Program 1",
-      coach: {
-        name: "Coach 1",
-        id: 2,
-      },
-      exsercises: [
-        { id: 1, name: "exsercise 1", quantity: 20, category: "category 1" },
-        { id: 5, name: "exsercise 4", quantity: 5, category: "category 2" },
-        { id: 11, name: "exsercise 2", quantity: 10, category: "category 1" },
-      ],
-    };
-    return program;
+  public getProgramById(id: number) {
+    return this.programRepository
+      .findOne({
+        relations: ["users", "coach", "exercises", "exercises.category"],
+      })
+      .then((program) => {
+        if (program) {
+          return program;
+        }
+        return Promise.reject({
+          httpStatus: 404,
+          message: `Program with id: ${id} not found`,
+        });
+      });
   }
 
   public async getAllPrograms() {
-    const programs = await this.userRepository.find({
+    const programs = await this.programRepository.find({
       relations: ["users", "coach", "exercises", "exercises.category"],
     });
     return programs;
