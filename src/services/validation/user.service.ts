@@ -8,7 +8,7 @@ export default class UserValidation extends MainValidation {
       age: joi.number().integer().min(1).required(),
       email: joi.string().email().min(5).max(100).required(),
       password: joi.string().alphanum().min(8).max(30).required(),
-      roleId: joi.number().integer(),
+      roleId: joi.number().integer().required(),
     });
     return schema.validate(newUser);
   }

@@ -1,6 +1,7 @@
 import { Response, Request, NextFunction } from "express";
 import CustomError from "../types/errors/customError.types";
 import UserValidation from "../services/validation/user.service";
+import ProgramValidation from "../services/validation/program.validation";
 
 export default class ValidationMiddleware {
   public validateNewUser() {
@@ -54,6 +55,20 @@ export default class ValidationMiddleware {
       if (validResult.error) {
         const error = new CustomError(
           `${validResult.error.details[0].context?.value} param ${validResult.error.details[0].message}`,
+          400
+        );
+        return next(error);
+      }
+      return next();
+    };
+  }
+
+  public validateNewProgram() {
+    return async (req: Request, res: Response, next: NextFunction) => {
+      const validResult = await ProgramValidation.newProgram(req.body);
+      if (validResult.error) {
+        const error = new CustomError(
+          validResult.error.details[0].message,
           400
         );
         return next(error);

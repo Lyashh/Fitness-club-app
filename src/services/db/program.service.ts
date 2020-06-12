@@ -1,8 +1,14 @@
 import { getRepository } from "typeorm";
 import Program from "../../db/entity/program.entity";
+import UserService from "./user.service";
 
 export default class ProgramService {
   private programRepository = getRepository(Program);
+  private userService: UserService;
+
+  constructor() {
+    this.userService = new UserService();
+  }
 
   public getProgramById(id: number) {
     return this.programRepository
@@ -27,17 +33,22 @@ export default class ProgramService {
     return programs;
   }
 
-  public async createProgram(programData: any) {
-    const newProgram = {
-      id: 3,
-      name: "Program 2",
-      coach: {
-        name: "Coach 2",
-        id: 3,
-      },
-      exsercises: [],
-    };
-    return newProgram;
+  public createProgram(coachId: number, name: string) {
+    return this.userService.getUserById(coachId).then(async (coach) => {
+      if (coach.role.name === "coach") {
+        let program = new Program();
+        program.name = name;
+        program.coach = coach;
+
+        const newProgram = this.programRepository.create(program);
+        await this.programRepository.save(newProgram);
+        return newProgram;
+      }
+      return Promise.reject({
+        httpStatus: 403,
+        message: "You don't have permission to create programs",
+      });
+    });
   }
 
   public async deleteProgram(id: number) {

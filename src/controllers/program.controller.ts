@@ -56,9 +56,20 @@ export default class ProgramController {
   }
 
   public createProgram() {
-    return async (req: Request, res: Response) => {
-      const createdProgram = await this.programService.createProgram({});
-      return res.status(201).json(createdProgram);
+    return async (req: Request, res: Response, next: NextFunction) => {
+      return this.programService
+        .createProgram(req.body.coachId, req.body.name)
+        .then((newProgram) => {
+          return res.json({ newProgram });
+        })
+        .catch((e) => {
+          if (e.httpStatus) {
+            const error = new CustomError(e.message, e.httpStatus);
+            return next(error);
+          }
+          const error = new CustomError(e.message, null, e.code);
+          return next(error);
+        });
     };
   }
 }

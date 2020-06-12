@@ -48,17 +48,21 @@ export default class UserController {
 
   public deleteUser() {
     return async (req: Request, res: Response, next: NextFunction) => {
-      const deleted = await this.userService.deleteUser(req.body.id);
-      if (deleted) {
-        return res.json({
-          message: `User with id: ${req.body.id} has been successfully deleted`,
+      return this.userService
+        .deleteUser(req.body.id)
+        .then((deleted) => {
+          return res.json({
+            message: `User with id: ${req.body.id} has been successfully deleted`,
+          });
+        })
+        .catch((e) => {
+          if (e.httpStatus) {
+            const error = new CustomError(e.message, e.httpStatus);
+            return next(error);
+          }
+          const error = new CustomError(e.message, null, e.code);
+          return next(error);
         });
-      }
-      const error = new CustomError(
-        `User with id: ${req.body.id} not found`,
-        404
-      );
-      return next(error);
     };
   }
 

@@ -13,7 +13,7 @@ export default class UserService {
   public getUserById(id: number) {
     return this.userRepository
       .findOne(id, {
-        relations: ["role", "programs"],
+        relations: ["role", "programs", "coachPrograms"],
       })
       .then((user) => {
         if (user) {
@@ -29,7 +29,7 @@ export default class UserService {
 
   public async getAllUsers() {
     const users = await this.userRepository.find({
-      relations: ["role", "programs"],
+      relations: ["role", "programs", "coachPrograms"],
     });
     return users;
   }
@@ -52,9 +52,12 @@ export default class UserService {
   public async deleteUser(id: number) {
     const deleteResponse = await this.userRepository.delete(id);
     if (deleteResponse.affected === 1) {
-      return true;
+      return deleteResponse;
     }
-    return false;
+    return Promise.reject({
+      httpStatus: 404,
+      message: `User with id: ${id} not found`,
+    });
   }
 
   public updateUser(id: number, updateData: any) {

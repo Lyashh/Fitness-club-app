@@ -28,7 +28,9 @@ class Program {
   @ManyToMany(() => User, (user: User) => user.programs)
   public users: User[];
 
-  @ManyToOne(() => User, (user: User) => user.coachPrograms)
+  @ManyToOne(() => User, (user: User) => user.coachPrograms, {
+    nullable: false,
+  })
   public coach: User;
 
   @ManyToMany((type) => Exercise, (exercise: Exercise) => exercise.programs)
