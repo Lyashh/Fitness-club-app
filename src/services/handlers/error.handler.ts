@@ -10,12 +10,10 @@ export default class ErrorHandler {
       next: NextFunction
     ) => {
       if (err.dbErrCode) {
-        if (
-          err.dbErrCode === "23502" ||
-          err.dbErrCode === "23505" ||
-          err.dbErrCode === "22P02"
-        ) {
+        if (err.dbErrCode === "23502" || err.dbErrCode === "23505") {
           return res.status(422).json({ message: err.body });
+        } else if (err.dbErrCode === "22P02") {
+          return res.status(400).json({ message: err.body });
         }
         return res.status(422).json({ message: err.body });
       } else if (err.statusCode) {

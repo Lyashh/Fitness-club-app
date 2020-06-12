@@ -66,7 +66,11 @@ export default class UserController {
           return res.json({ newUser });
         })
         .catch((e) => {
-          return res.json({ e });
+          if (e.httpStatus) {
+            return res.json(e);
+          }
+          const error = new CustomError(e.message, null, e.code);
+          return next(error);
         });
     };
   }

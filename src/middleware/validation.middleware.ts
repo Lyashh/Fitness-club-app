@@ -1,15 +1,15 @@
 import { Response, Request, NextFunction } from "express";
-import ValidationService from "../services/validation/validation.service";
 import CustomError from "../types/errors/customError.types";
+import UserValidation from "../services/validation/user.service";
 
 export default class ValidationMiddleware {
   public validateNewUser() {
     return async (req: Request, res: Response, next: NextFunction) => {
-      const validResult = await ValidationService.newUser(req.body);
+      const validResult = await UserValidation.newUser(req.body);
       if (validResult.error) {
         const error = new CustomError(
           validResult.error.details[0].message,
-          422
+          400
         );
         return next(error);
       }
@@ -19,11 +19,11 @@ export default class ValidationMiddleware {
 
   public validateBodyId() {
     return async (req: Request, res: Response, next: NextFunction) => {
-      const validResult = await ValidationService.idIsNumber(req.body.id);
+      const validResult = await UserValidation.idIsNumber(req.body.id);
       if (validResult.error) {
         const error = new CustomError(
           `id field ${validResult.error.details[0].message}`,
-          422
+          400
         );
         return next(error);
       }
@@ -33,13 +33,11 @@ export default class ValidationMiddleware {
 
   public validateModifiedUser() {
     return async (req: Request, res: Response, next: NextFunction) => {
-      const validResult = await ValidationService.updateUser(
-        req.body.newFields
-      );
+      const validResult = await UserValidation.updateUser(req.body.newFields);
       if (validResult.error) {
         const error = new CustomError(
           validResult.error.details[0].message,
-          422
+          400
         );
         return next(error);
       }
@@ -52,11 +50,11 @@ export default class ValidationMiddleware {
       const params = paramsKeys.map((el) => {
         return req.params[el];
       });
-      const validResult = await ValidationService.paramsIsNumber(params);
+      const validResult = await UserValidation.paramsIsNumber(params);
       if (validResult.error) {
         const error = new CustomError(
           `${validResult.error.details[0].context?.value} param ${validResult.error.details[0].message}`,
-          422
+          400
         );
         return next(error);
       }

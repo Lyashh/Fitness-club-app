@@ -34,7 +34,7 @@ export default class UserRouter {
     this.router.patch(
       "/",
       this.validationMiddleware.validateBodyId(),
-      this.validationMiddleware.validateModifiedUser(),
+      /* this.validationMiddleware.validateModifiedUser(), */
       this.userController.updateUser()
     );
 

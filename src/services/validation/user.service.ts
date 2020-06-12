@@ -1,6 +1,7 @@
 import joi from "@hapi/joi";
+import MainValidation from "./main.validation";
 
-export default class ValidationService {
+export default class UserValidation extends MainValidation {
   public static newUser(newUser: any) {
     const schema = joi.object({
       name: joi.string().alphanum().min(3).max(50).required(),
@@ -10,16 +11,6 @@ export default class ValidationService {
       roleId: joi.number().integer(),
     });
     return schema.validate(newUser);
-  }
-
-  public static paramsIsNumber(params: Array<any>) {
-    const schema = joi.array().items(joi.number().integer());
-    return schema.validate(params);
-  }
-
-  public static idIsNumber(id: any) {
-    const schema = joi.number().integer().min(1).required();
-    return schema.validate(id);
   }
 
   public static updateUser(modifyUSer: any) {

@@ -50,7 +50,12 @@ export default class UserService {
     return this.userRepository
       .update(id, updateData)
       .then(async (updateResponse) => {
-        return this.getUserById(id);
+        const user = await this.getUserById(id);
+        if (user) {
+          return user;
+        } else {
+          return Promise.reject({ httpStatus: 404 });
+        }
       });
   }
 }
