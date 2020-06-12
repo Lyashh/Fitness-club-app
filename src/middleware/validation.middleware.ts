@@ -31,6 +31,22 @@ export default class ValidationMiddleware {
     };
   }
 
+  public validateModifiedUser() {
+    return async (req: Request, res: Response, next: NextFunction) => {
+      const validResult = await ValidationService.updateUser(
+        req.body.newFields
+      );
+      if (validResult.error) {
+        const error = new CustomError(
+          validResult.error.details[0].message,
+          422
+        );
+        return next(error);
+      }
+      return next();
+    };
+  }
+
   public paramsIsNumber(paramsKeys: Array<string>) {
     return async (req: Request, res: Response, next: NextFunction) => {
       const params = paramsKeys.map((el) => {

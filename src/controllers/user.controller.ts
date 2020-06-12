@@ -60,7 +60,14 @@ export default class UserController {
 
   public updateUser() {
     return async (req: Request, res: Response, next: NextFunction) => {
-      return this.userService.updateUser(req.body.id, req.body.fields);
+      return this.userService
+        .updateUser(req.body.id, req.body.newFields)
+        .then((newUser) => {
+          return res.json({ newUser });
+        })
+        .catch((e) => {
+          return res.json({ e });
+        });
     };
   }
 }

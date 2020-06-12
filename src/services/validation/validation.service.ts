@@ -21,4 +21,14 @@ export default class ValidationService {
     const schema = joi.number().integer().min(1).required();
     return schema.validate(id);
   }
+
+  public static updateUser(modifyUSer: any) {
+    const schema = joi.object({
+      name: joi.string().alphanum().min(3).max(50),
+      age: joi.number().integer().min(1),
+      email: joi.string().email().min(5).max(100),
+      password: joi.string().alphanum().min(8).max(30),
+    });
+    return schema.validate(modifyUSer);
+  }
 }

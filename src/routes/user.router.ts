@@ -31,6 +31,13 @@ export default class UserRouter {
       this.userController.deleteUser()
     );
 
+    this.router.patch(
+      "/",
+      this.validationMiddleware.validateBodyId(),
+      this.validationMiddleware.validateModifiedUser(),
+      this.userController.updateUser()
+    );
+
     return this.router;
   }
 }

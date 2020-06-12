@@ -46,13 +46,11 @@ export default class UserService {
     return false;
   }
 
-  public async updateUser(id: number, updateData: any) {
-    await this.userRepository.update(id, updateData);
-    const updatedUser = await this.userRepository.findOne(id);
-    if (updatedUser) {
-      return updatedUser;
-    } else {
-      return null;
-    }
+  public updateUser(id: number, updateData: any) {
+    return this.userRepository
+      .update(id, updateData)
+      .then(async (updateResponse) => {
+        return this.getUserById(id);
+      });
   }
 }
