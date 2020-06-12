@@ -34,13 +34,21 @@ export default class ProgramController {
   }
 
   public deleteProgram() {
-    return async (req: Request, res: Response) => {
-      const deleteResponse = await this.programService.deleteProgram(
-        req.body.id
-      );
-      if (deleteResponse)
-        return res.json({
-          message: `Program with id: ${req.body.id} has been deleted`,
+    return async (req: Request, res: Response, next: NextFunction) => {
+      return this.programService
+        .deleteProgram(req.body.id)
+        .then((deleted) => {
+          return res.json({
+            message: `Program with id: ${req.body.id} has been successfully deleted`,
+          });
+        })
+        .catch((e) => {
+          if (e.httpStatus) {
+            const error = new CustomError(e.message, e.httpStatus);
+            return next(error);
+          }
+          const error = new CustomError(e.message, null, e.code);
+          return next(error);
         });
     };
   }

@@ -52,7 +52,14 @@ export default class ProgramService {
   }
 
   public async deleteProgram(id: number) {
-    return true;
+    const deleteResponse = await this.programRepository.delete(id);
+    if (deleteResponse.affected === 1) {
+      return deleteResponse;
+    }
+    return Promise.reject({
+      httpStatus: 404,
+      message: `Program with id: ${id} not found`,
+    });
   }
 
   public async updateProgram(id: number, updateData: any) {

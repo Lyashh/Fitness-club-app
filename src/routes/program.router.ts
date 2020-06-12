@@ -21,8 +21,16 @@ export default class ProgramRouter {
       this.validationMiddleware.validateNewProgram(),
       this.programController.createProgram()
     );
-    this.router.delete("/", this.programController.deleteProgram());
-    this.router.patch("/", this.programController.updateProgram());
+    this.router.delete(
+      "/",
+      this.validationMiddleware.validateBodyId(),
+      this.programController.deleteProgram()
+    );
+    this.router.patch(
+      "/",
+      this.validationMiddleware.validateBodyId(),
+      this.programController.updateProgram()
+    );
 
     return this.router;
   }
