@@ -6,7 +6,7 @@ class Category {
   @PrimaryGeneratedColumn()
   public id: number;
 
-  @Column({ nullable: true })
+  @Column({ nullable: false })
   public name: string;
 
   @OneToMany(() => Exercise, (exercise: Exercise) => exercise.category)

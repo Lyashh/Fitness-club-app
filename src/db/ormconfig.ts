@@ -15,7 +15,7 @@ const config: ConnectionOptions = {
     entitiesDir: "src/db/entity/",
     migrationsDir: "src/db/migrations/",
   },
-  synchronize: false,
+  synchronize: true,
 };
 
 export = config;

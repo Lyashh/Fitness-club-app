@@ -22,7 +22,10 @@ class Exercise {
   @ManyToMany(() => Program, (program: Program) => program.exercises)
   public programs: Program[];
 
-  @ManyToOne(() => Category, (category: Category) => category.exercises)
+  @ManyToOne(() => Category, (category: Category) => category.exercises, {
+    nullable: false,
+    onDelete: "CASCADE",
+  })
   public category: Category;
 }
 
