@@ -81,8 +81,19 @@ export default class UserController {
 
   public addProgramToUser() {
     return async (req: Request, res: Response, next: NextFunction) => {
-      /* this.userService.addProgramToUser(1, req.body.id).then(); */
-      return res.json(1);
+      return this.userService
+        .addProgramToUser(54, req.body.id)
+        .then((user) => {
+          return res.json({ user });
+        })
+        .catch((e) => {
+          if (e.httpStatus) {
+            const error = new CustomError(e.message, e.httpStatus);
+            return next(error);
+          }
+          const error = new CustomError(e.message, null, e.code);
+          return next(error);
+        });
     };
   }
 }

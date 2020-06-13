@@ -68,15 +68,17 @@ export default class UserService {
   }
 
   public addProgramToUser(userId: number, programId: number) {
-    const tempProgram: null | Program = null;
+    let tempProgram: null | Program = null;
     return ProgramService.getProgramById(programId)
-      .then((program) => {
+      .then((program: Program) => {
+        tempProgram = program;
         return UserService.getUserById(userId);
       })
-      .then((user) => {
+      .then(async (user) => {
         if (tempProgram) {
           user.programs.push(tempProgram);
-          return getRepository(User).save(user);
+          await getRepository(User).save(user);
+          return user;
         }
       });
   }
