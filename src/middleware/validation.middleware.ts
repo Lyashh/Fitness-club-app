@@ -1,6 +1,6 @@
 import { Response, Request, NextFunction } from "express";
 import CustomError from "../types/errors/customError.types";
-import UserValidation from "../services/validation/user.service";
+import UserValidation from "../services/validation/user.validation";
 import ProgramValidation from "../services/validation/program.validation";
 
 export default class ValidationMiddleware {

@@ -1,6 +1,5 @@
 import { ConnectionOptions } from "typeorm";
 import doenv from "dotenv";
-import Program from "./entity/program.entity";
 
 doenv.config();
 
@@ -16,7 +15,7 @@ const config: ConnectionOptions = {
     entitiesDir: "src/db/entity/",
     migrationsDir: "src/db/migrations/",
   },
-  synchronize: true,
+  synchronize: false,
 };
 
 export = config;

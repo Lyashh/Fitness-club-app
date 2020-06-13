@@ -1,17 +1,12 @@
 import { getRepository } from "typeorm";
 import RoleService from "./role.service";
+import ProgramService from "./program.service";
 import User from "../../db/entity/user.entity";
+import Program from "../../db/entity/program.entity";
 
 export default class UserService {
-  private userRepository = getRepository(User);
-  private roleService: RoleService;
-
-  constructor() {
-    this.roleService = new RoleService();
-  }
-
-  public getUserById(id: number) {
-    return this.userRepository
+  public static getUserById(id: number) {
+    return getRepository(User)
       .findOne(id, {
         relations: ["role", "programs", "coachPrograms"],
       })
@@ -27,15 +22,15 @@ export default class UserService {
       });
   }
 
-  public async getAllUsers() {
-    const users = await this.userRepository.find({
+  public static async getAllUsers() {
+    const users = await getRepository(User).find({
       relations: ["role", "programs", "coachPrograms"],
     });
     return users;
   }
 
-  public createUser(userReq: any): Promise<User> {
-    return this.roleService.getRoleById(userReq.roleId).then(async (role) => {
+  public static createUser(userReq: any): Promise<User> {
+    return RoleService.getRoleById(userReq.roleId).then(async (role) => {
       let user = new User();
       user.name = userReq.name;
       user.age = userReq.age;
@@ -43,14 +38,14 @@ export default class UserService {
       user.password = userReq.password;
       user.role = role;
 
-      const newUser = this.userRepository.create(user);
-      await this.userRepository.save(newUser);
+      const newUser = getRepository(User).create(user);
+      await getRepository(User).save(newUser);
       return newUser;
     });
   }
 
-  public async deleteUser(id: number) {
-    const deleteResponse = await this.userRepository.delete(id);
+  public static async deleteUser(id: number) {
+    const deleteResponse = await getRepository(User).delete(id);
     if (deleteResponse.affected === 1) {
       return deleteResponse;
     }
@@ -60,15 +55,29 @@ export default class UserService {
     });
   }
 
-  public updateUser(id: number, updateData: any) {
+  public static updateUser(id: number, updateData: any) {
     updateData.updatedAt = new Date()
       .toISOString()
       .slice(0, 19)
       .replace("T", " ");
-    return this.userRepository
+    return getRepository(User)
       .update(id, updateData)
       .then(async (updateResponse) => {
         return this.getUserById(id);
+      });
+  }
+
+  public addProgramToUser(userId: number, programId: number) {
+    const tempProgram: null | Program = null;
+    return ProgramService.getProgramById(programId)
+      .then((program) => {
+        return UserService.getUserById(userId);
+      })
+      .then((user) => {
+        if (tempProgram) {
+          user.programs.push(tempProgram);
+          return getRepository(User).save(user);
+        }
       });
   }
 }

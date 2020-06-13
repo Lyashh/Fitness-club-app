@@ -10,15 +10,14 @@ export default class UserController {
 
   public getAllUsers() {
     return async (req: Request, res: Response) => {
-      const users = await this.userService.getAllUsers();
+      const users = await UserService.getAllUsers();
       return res.json(users);
     };
   }
 
   public getUserById() {
     return (req: Request, res: Response, next: NextFunction) => {
-      return this.userService
-        .getUserById(parseInt(req.params.id))
+      return UserService.getUserById(parseInt(req.params.id))
         .then((user) => {
           return res.json(user);
         })
@@ -35,8 +34,7 @@ export default class UserController {
 
   public createUser() {
     return async (req: Request, res: Response, next: NextFunction) => {
-      this.userService
-        .createUser(req.body)
+      UserService.createUser(req.body)
         .then((newUser) => res.json({ newUser }))
         .catch((e) => {
           const error = new CustomError(e.message, null, e.code);
@@ -47,8 +45,7 @@ export default class UserController {
 
   public deleteUser() {
     return async (req: Request, res: Response, next: NextFunction) => {
-      return this.userService
-        .deleteUser(req.body.id)
+      return UserService.deleteUser(req.body.id)
         .then((deleted) => {
           return res.json({
             message: `User with id: ${req.body.id} has been successfully deleted`,
@@ -67,8 +64,7 @@ export default class UserController {
 
   public updateUser() {
     return async (req: Request, res: Response, next: NextFunction) => {
-      return this.userService
-        .updateUser(req.body.id, req.body.newFields)
+      return UserService.updateUser(req.body.id, req.body.newFields)
         .then((updateUser) => {
           return res.json(updateUser);
         })
@@ -80,6 +76,13 @@ export default class UserController {
           const error = new CustomError(e.message, null, e.code);
           return next(error);
         });
+    };
+  }
+
+  public addProgramToUser() {
+    return async (req: Request, res: Response, next: NextFunction) => {
+      /* this.userService.addProgramToUser(1, req.body.id).then(); */
+      return res.json(1);
     };
   }
 }

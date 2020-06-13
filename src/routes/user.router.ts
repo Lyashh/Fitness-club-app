@@ -38,6 +38,12 @@ export default class UserRouter {
       this.userController.updateUser()
     );
 
+    /* this.router.patch(
+      "/participateInProgram",
+      this.validationMiddleware.validateBodyId(),
+      this.userController.addProgramToUser()
+    ); */
+
     return this.router;
   }
 }
