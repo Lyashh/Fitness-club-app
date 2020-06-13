@@ -79,10 +79,28 @@ export default class UserController {
     };
   }
 
-  public addProgramToUser() {
+  public assignProgramToUser() {
     return async (req: Request, res: Response, next: NextFunction) => {
       return this.userService
-        .addProgramToUser(54, req.body.id)
+        .assignProgramToUser(54, req.body.id)
+        .then((user) => {
+          return res.json({ user });
+        })
+        .catch((e) => {
+          if (e.httpStatus) {
+            const error = new CustomError(e.message, e.httpStatus);
+            return next(error);
+          }
+          const error = new CustomError(e.message, null, e.code);
+          return next(error);
+        });
+    };
+  }
+
+  public unassignProgramToUser() {
+    return async (req: Request, res: Response, next: NextFunction) => {
+      return this.userService
+        .unassignProgramToUser(54, req.body.id)
         .then((user) => {
           return res.json({ user });
         })

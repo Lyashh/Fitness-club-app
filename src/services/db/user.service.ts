@@ -67,7 +67,7 @@ export default class UserService {
       });
   }
 
-  public addProgramToUser(userId: number, programId: number) {
+  public assignProgramToUser(userId: number, programId: number) {
     let tempProgram: null | Program = null;
     return ProgramService.getProgramById(programId)
       .then((program: Program) => {
@@ -77,6 +77,24 @@ export default class UserService {
       .then(async (user) => {
         if (tempProgram) {
           user.programs.push(tempProgram);
+          await getRepository(User).save(user);
+          return user;
+        }
+      });
+  }
+
+  public unassignProgramToUser(userId: number, programId: number) {
+    let tempProgram: null | Program = null;
+    return ProgramService.getProgramById(programId)
+      .then((program: Program) => {
+        tempProgram = program;
+        return UserService.getUserById(userId);
+      })
+      .then(async (user) => {
+        if (tempProgram) {
+          user.programs = user.programs.filter((program) => {
+            return program.id !== programId;
+          });
           await getRepository(User).save(user);
           return user;
         }

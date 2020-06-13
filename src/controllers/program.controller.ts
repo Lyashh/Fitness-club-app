@@ -3,15 +3,9 @@ import ProgramService from "../services/db/program.service";
 import CustomError from "../types/errors/customError.types";
 
 export default class ProgramController {
-  private programService: ProgramService;
-  constructor() {
-    this.programService = new ProgramService();
-  }
-
   public getProgramById() {
     return async (req: Request, res: Response, next: NextFunction) => {
-      return this.programService
-        .getProgramById(req.body.id)
+      return ProgramService.getProgramById(req.body.id)
         .then((program) => {
           return res.json(program);
         })
@@ -28,15 +22,14 @@ export default class ProgramController {
 
   public getAllPrograms() {
     return async (req: Request, res: Response) => {
-      const programs = await this.programService.getAllPrograms();
+      const programs = await ProgramService.getAllPrograms();
       return res.json(programs);
     };
   }
 
   public deleteProgram() {
     return async (req: Request, res: Response, next: NextFunction) => {
-      return this.programService
-        .deleteProgram(req.body.id)
+      return ProgramService.deleteProgram(req.body.id)
         .then((deleted) => {
           return res.json({
             message: `Program with id: ${req.body.id} has been successfully deleted`,
@@ -55,8 +48,7 @@ export default class ProgramController {
 
   public updateProgram() {
     return async (req: Request, res: Response, next: NextFunction) => {
-      return this.programService
-        .updateProgram(req.body.id, req.body.newFields)
+      return ProgramService.updateProgram(req.body.id, req.body.newFields)
         .then((updatedProgram) => {
           return res.json(updatedProgram);
         })
@@ -73,8 +65,7 @@ export default class ProgramController {
 
   public createProgram() {
     return async (req: Request, res: Response, next: NextFunction) => {
-      return this.programService
-        .createProgram(req.body.coachId, req.body.name)
+      return ProgramService.createProgram(req.body.coachId, req.body.name)
         .then((newProgram) => {
           return res.json({ newProgram });
         })

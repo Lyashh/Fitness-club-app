@@ -39,9 +39,15 @@ export default class UserRouter {
     );
 
     this.router.patch(
-      "/participateInProgram",
+      "/assignProgram",
       this.validationMiddleware.validateBodyId(),
-      this.userController.addProgramToUser()
+      this.userController.assignProgramToUser()
+    );
+
+    this.router.patch(
+      "/unassignProgram",
+      this.validationMiddleware.validateBodyId(),
+      this.userController.unassignProgramToUser()
     );
 
     return this.router;

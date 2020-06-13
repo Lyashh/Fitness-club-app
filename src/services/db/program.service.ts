@@ -37,19 +37,13 @@ export default class ProgramService {
 
   public static createProgram(coachId: number, name: string) {
     return UserService.getUserById(coachId).then(async (coach) => {
-      if (coach.role.name === "coach") {
-        let program = new Program();
-        program.name = name;
-        program.coach = coach;
+      let program = new Program();
+      program.name = name;
+      program.coach = coach;
 
-        const newProgram = getRepository(Program).create(program);
-        await getRepository(Program).save(newProgram);
-        return newProgram;
-      }
-      return Promise.reject({
-        httpStatus: 403,
-        message: "You don't have permission to create programs",
-      });
+      const newProgram = getRepository(Program).create(program);
+      await getRepository(Program).save(newProgram);
+      return newProgram;
     });
   }
 
