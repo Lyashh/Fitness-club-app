@@ -37,6 +37,10 @@ export default class UserController {
       UserService.createUser(req.body)
         .then((newUser) => res.json({ newUser }))
         .catch((e) => {
+          if (e.httpStatus) {
+            const error = new CustomError(e.message, e.httpStatus);
+            return next(error);
+          }
           const error = new CustomError(e.message, null, e.code);
           return next(error);
         });

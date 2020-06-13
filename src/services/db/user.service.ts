@@ -31,16 +31,22 @@ export default class UserService {
 
   public static createUser(userReq: any): Promise<User> {
     return RoleService.getRoleById(userReq.roleId).then(async (role) => {
-      let user = new User();
-      user.name = userReq.name;
-      user.age = userReq.age;
-      user.email = userReq.email;
-      user.password = userReq.password;
-      user.role = role;
+      if (role) {
+        let user = new User();
+        user.name = userReq.name;
+        user.age = userReq.age;
+        user.email = userReq.email;
+        user.password = userReq.password;
+        user.role = role;
 
-      const newUser = getRepository(User).create(user);
-      await getRepository(User).save(newUser);
-      return newUser;
+        const newUser = getRepository(User).create(user);
+        await getRepository(User).save(newUser);
+        return newUser;
+      }
+      return Promise.reject({
+        httpStatus: 404,
+        message: `Role with id: ${userReq.roleId} not found`,
+      });
     });
   }
 

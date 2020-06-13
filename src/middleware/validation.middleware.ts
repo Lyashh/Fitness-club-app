@@ -2,6 +2,7 @@ import { Response, Request, NextFunction } from "express";
 import CustomError from "../types/errors/customError.types";
 import UserValidation from "../services/validation/user.validation";
 import ProgramValidation from "../services/validation/program.validation";
+import ExerciseValidation from "../services/validation/exercise.validation";
 
 export default class ValidationMiddleware {
   public validateNewUser() {
@@ -82,6 +83,20 @@ export default class ValidationMiddleware {
       const validResult = await ProgramValidation.updateProgram(
         req.body.newFields
       );
+      if (validResult.error) {
+        const error = new CustomError(
+          validResult.error.details[0].message,
+          400
+        );
+        return next(error);
+      }
+      return next();
+    };
+  }
+
+  public validateNewExercise() {
+    return async (req: Request, res: Response, next: NextFunction) => {
+      const validResult = await ExerciseValidation.newExercise(req.body);
       if (validResult.error) {
         const error = new CustomError(
           validResult.error.details[0].message,

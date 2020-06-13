@@ -30,6 +30,7 @@ class Program {
 
   @ManyToOne(() => User, (user: User) => user.coachPrograms, {
     nullable: false,
+    onDelete: "CASCADE",
   })
   public coach: User;
 

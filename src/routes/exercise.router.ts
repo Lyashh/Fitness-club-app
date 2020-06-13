@@ -15,6 +15,11 @@ export default class ExerciseRouter {
 
   public get routes(): ExpressRouter {
     this.router.get("/", this.exerciseController.getAllExercises());
+    this.router.post(
+      "/",
+      this.validationMiddleware.validateNewExercise(),
+      this.exerciseController.newExercise()
+    );
     return this.router;
   }
 }

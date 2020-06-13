@@ -6,7 +6,7 @@ class Role {
   @PrimaryGeneratedColumn()
   id: number;
 
-  @Column({ nullable: true })
+  @Column({ nullable: false })
   public name: string;
 
   @OneToMany((type) => User, (user: User) => user.role)
