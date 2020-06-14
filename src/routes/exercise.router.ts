@@ -27,7 +27,6 @@ export default class ExerciseRouter {
     );
     this.router.patch(
       "/",
-      this.validationMiddleware.validateBodyId(),
       this.validationMiddleware.validateModifiedExercise(),
       this.exerciseController.updateExercise()
     );

@@ -79,4 +79,24 @@ export default class ProgramController {
         });
     };
   }
+
+  public addExerciseToProgram() {
+    return async (req: Request, res: Response, next: NextFunction) => {
+      return ProgramService.addExerciseToProgram(
+        req.body.exerciseId,
+        req.body.programId
+      )
+        .then((newProgram) => {
+          return res.json({ newProgram });
+        })
+        .catch((e) => {
+          if (e.httpStatus) {
+            const error = new CustomError(e.message, e.httpStatus);
+            return next(error);
+          }
+          const error = new CustomError(e.message, null, e.code);
+          return next(error);
+        });
+    };
+  }
 }

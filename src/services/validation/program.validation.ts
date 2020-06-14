@@ -10,10 +10,18 @@ export default class ProgramValidation extends MainValidation {
     return schema.validate(newProgram);
   }
 
-  public static updateProgram(newField: any) {
+  public static updateProgram(newFields: any) {
     const schema = joi.object({
       name: joi.string().alphanum().min(3).max(50).required(),
     });
-    return schema.validate(newField);
+    return schema.validate(newFields);
+  }
+
+  public static addExerciseToProgram(bodyWithIds: any) {
+    const schema = joi.object({
+      exerciseId: joi.number().integer().required(),
+      programId: joi.number().integer().required(),
+    });
+    return schema.validate(bodyWithIds);
   }
 }

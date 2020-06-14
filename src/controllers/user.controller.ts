@@ -103,19 +103,22 @@ export default class UserController {
 
   public unassignProgramToUser() {
     return async (req: Request, res: Response, next: NextFunction) => {
-      return this.userService
-        .unassignProgramToUser(54, req.body.id)
-        .then((user) => {
-          return res.json({ user });
-        })
-        .catch((e) => {
-          if (e.httpStatus) {
-            const error = new CustomError(e.message, e.httpStatus);
+      return (
+        this.userService
+          //user id from session
+          .unassignProgramToUser(54, req.body.id)
+          .then((user) => {
+            return res.json({ user });
+          })
+          .catch((e) => {
+            if (e.httpStatus) {
+              const error = new CustomError(e.message, e.httpStatus);
+              return next(error);
+            }
+            const error = new CustomError(e.message, null, e.code);
             return next(error);
-          }
-          const error = new CustomError(e.message, null, e.code);
-          return next(error);
-        });
+          })
+      );
     };
   }
 }

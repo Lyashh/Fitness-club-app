@@ -61,6 +61,7 @@ export default class UserService {
     });
   }
 
+  //find user by id first
   public static updateUser(id: number, updateData: any) {
     updateData.updatedAt = new Date()
       .toISOString()

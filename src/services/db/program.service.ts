@@ -1,6 +1,8 @@
 import { getRepository } from "typeorm";
 import Program from "../../db/entity/program.entity";
 import UserService from "./user.service";
+import ExerciseService from "./exercise.service";
+import Exercise from "../../db/entity/exsercise.entity";
 
 export default class ProgramService {
   public static getProgramById(id: number) {
@@ -67,6 +69,22 @@ export default class ProgramService {
       .update(id, updateData)
       .then(async (updateResponse) => {
         return ProgramService.getProgramById(id);
+      });
+  }
+
+  public static addExerciseToProgram(exerciseId: number, programId: number) {
+    let tempExercise: null | Exercise = null;
+    return ExerciseService.getExerciseById(exerciseId)
+      .then((exercise) => {
+        tempExercise = exercise;
+        return ProgramService.getProgramById(programId);
+      })
+      .then(async (program) => {
+        if (tempExercise) {
+          program.exercises.push(tempExercise);
+          await getRepository(Program).save(program);
+          return ProgramService.getProgramById(programId);
+        }
       });
   }
 }
