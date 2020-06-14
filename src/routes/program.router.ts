@@ -1,15 +1,15 @@
 import { Router as ExpressRouter } from "express";
 import ProgramController from "../controllers/program.controller";
-import ValidationMiddleware from "../middleware/validation.middleware";
+import RequestValidation from "../middleware/requestValidation.middleware";
 
 export default class ProgramRouter {
   private router: ExpressRouter;
   private programController: ProgramController;
-  private validationMiddleware: ValidationMiddleware;
+  private requestValidation: RequestValidation;
 
   constructor() {
     this.programController = new ProgramController();
-    this.validationMiddleware = new ValidationMiddleware();
+    this.requestValidation = new RequestValidation();
     this.router = ExpressRouter();
   }
 
@@ -18,28 +18,28 @@ export default class ProgramRouter {
     this.router.get("/:id", this.programController.getProgramById());
     this.router.post(
       "/",
-      this.validationMiddleware.validateNewProgram(),
+      this.requestValidation.validateNewProgram(),
       this.programController.createProgram()
     );
     this.router.delete(
       "/",
-      this.validationMiddleware.validateBodyId(),
+      this.requestValidation.validateBodyId(),
       this.programController.deleteProgram()
     );
     this.router.patch(
       "/",
-      this.validationMiddleware.validateBodyId(),
-      this.validationMiddleware.validateModifiedProgram(),
+      this.requestValidation.validateBodyId(),
+      this.requestValidation.validateModifiedProgram(),
       this.programController.updateProgram()
     );
     this.router.patch(
       "/addExercises",
-      this.validationMiddleware.validateAddOrRemoveExerciseToProgram(),
+      this.requestValidation.validateAddOrRemoveExerciseToProgram(),
       this.programController.addExercisesToProgram()
     );
     this.router.patch(
       "/removeExercises",
-      this.validationMiddleware.validateAddOrRemoveExerciseToProgram(),
+      this.requestValidation.validateAddOrRemoveExerciseToProgram(),
       this.programController.removeExercisesFromProgram()
     );
 

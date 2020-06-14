@@ -1,15 +1,15 @@
 import { Router as ExpressRouter } from "express";
-import ValidationMiddleware from "../middleware/validation.middleware";
+import RequestValidation from "../middleware/requestValidation.middleware";
 import ExerciseController from "../controllers/exercise.controller";
 
 export default class ExerciseRouter {
   private router: ExpressRouter;
   private exerciseController: ExerciseController;
-  private validationMiddleware: ValidationMiddleware;
+  private requestValidation: RequestValidation;
 
   constructor() {
     this.exerciseController = new ExerciseController();
-    this.validationMiddleware = new ValidationMiddleware();
+    this.requestValidation = new RequestValidation();
     this.router = ExpressRouter();
   }
 
@@ -17,17 +17,17 @@ export default class ExerciseRouter {
     this.router.get("/", this.exerciseController.getAllExercises());
     this.router.post(
       "/",
-      this.validationMiddleware.validateNewExercise(),
+      this.requestValidation.validateNewExercise(),
       this.exerciseController.newExercise()
     );
     this.router.delete(
       "/",
-      this.validationMiddleware.validateBodyId(),
+      this.requestValidation.validateBodyId(),
       this.exerciseController.deleteExercise()
     );
     this.router.patch(
       "/",
-      this.validationMiddleware.validateModifiedExercise(),
+      this.requestValidation.validateModifiedExercise(),
       this.exerciseController.updateExercise()
     );
     return this.router;

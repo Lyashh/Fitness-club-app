@@ -1,15 +1,15 @@
 import { Router as ExpressRouter } from "express";
 import UserController from "../controllers/user.controller";
-import ValidationMiddleware from "../middleware/validation.middleware";
+import RequestValidation from "../middleware/requestValidation.middleware";
 
 export default class UserRouter {
   private router: ExpressRouter;
   private userController: UserController;
-  private validationMiddleware: ValidationMiddleware;
+  private requestValidation: RequestValidation;
 
   constructor() {
     this.userController = new UserController();
-    this.validationMiddleware = new ValidationMiddleware();
+    this.requestValidation = new RequestValidation();
     this.router = ExpressRouter();
   }
 
@@ -17,36 +17,36 @@ export default class UserRouter {
     this.router.get("/", this.userController.getAllUsers());
     this.router.get(
       "/:id",
-      this.validationMiddleware.paramsIsNumber(["id"]),
+      this.requestValidation.paramsIsNumber(["id"]),
       this.userController.getUserById()
     );
     this.router.post(
       "/",
-      this.validationMiddleware.validateNewUser(),
+      this.requestValidation.validateNewUser(),
       this.userController.createUser()
     );
     this.router.delete(
       "/",
-      this.validationMiddleware.validateBodyId(),
+      this.requestValidation.validateBodyId(),
       this.userController.deleteUser()
     );
 
     this.router.patch(
       "/",
-      this.validationMiddleware.validateBodyId(),
-      this.validationMiddleware.validateModifiedUser(),
+      this.requestValidation.validateBodyId(),
+      this.requestValidation.validateModifiedUser(),
       this.userController.updateUser()
     );
 
     this.router.patch(
       "/assignProgram",
-      this.validationMiddleware.validateBodyId(),
+      this.requestValidation.validateBodyId(),
       this.userController.assignProgramToUser()
     );
 
     this.router.patch(
       "/unassignProgram",
-      this.validationMiddleware.validateBodyId(),
+      this.requestValidation.validateBodyId(),
       this.userController.unassignProgramToUser()
     );
 
