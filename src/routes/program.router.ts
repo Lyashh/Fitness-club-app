@@ -33,9 +33,14 @@ export default class ProgramRouter {
       this.programController.updateProgram()
     );
     this.router.patch(
-      "/addExercise",
-      this.validationMiddleware.validateAddExerciseToProgram(),
-      this.programController.addExerciseToProgram()
+      "/addExercises",
+      this.validationMiddleware.validateAddOrRemoveExerciseToProgram(),
+      this.programController.addExercisesToProgram()
+    );
+    this.router.patch(
+      "/removeExercises",
+      this.validationMiddleware.validateAddOrRemoveExerciseToProgram(),
+      this.programController.removeExercisesFromProgram()
     );
 
     return this.router;

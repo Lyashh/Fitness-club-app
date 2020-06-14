@@ -17,9 +17,9 @@ export default class ProgramValidation extends MainValidation {
     return schema.validate(newFields);
   }
 
-  public static addExerciseToProgram(bodyWithIds: any) {
+  public static addOrRemoveExerciseToProgram(bodyWithIds: any) {
     const schema = joi.object({
-      exerciseId: joi.number().integer().required(),
+      exercisesIds: joi.array().items(joi.number().integer()).min(1).required(),
       programId: joi.number().integer().required(),
     });
     return schema.validate(bodyWithIds);

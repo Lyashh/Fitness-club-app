@@ -72,19 +72,70 @@ export default class ProgramService {
       });
   }
 
-  public static addExerciseToProgram(exerciseId: number, programId: number) {
-    let tempExercise: null | Exercise = null;
-    return ExerciseService.getExerciseById(exerciseId)
-      .then((exercise) => {
-        tempExercise = exercise;
-        return ProgramService.getProgramById(programId);
+  public static addExercisesToProgram(
+    exerciseIds: Array<number>,
+    programId: number
+  ) {
+    let tempExercises: null | Array<Exercise> = null;
+    return ExerciseService.getExercisesByIdsArray(exerciseIds)
+      .then((exercises) => {
+        //check if req exercise ids exist in db
+        const notExistExercises = exerciseIds.filter((reqId) => {
+          const exerciseExist = exercises.some((exercise) => {
+            return exercise.id === reqId;
+          });
+          return !exerciseExist;
+        });
+        if (notExistExercises.length === 0) {
+          tempExercises = exercises;
+          return ProgramService.getProgramById(programId);
+        }
+        return Promise.reject({
+          httpStatus: 404,
+          message: `Exercises with id: ${notExistExercises.join(
+            ", "
+          )} not found`,
+        });
       })
       .then(async (program) => {
-        if (tempExercise) {
-          program.exercises.push(tempExercise);
+        if (tempExercises) {
+          program.exercises = [...program.exercises, ...tempExercises];
           await getRepository(Program).save(program);
           return ProgramService.getProgramById(programId);
         }
       });
+  }
+
+  public static removeExerciseFromProgram(
+    exerciseIds: Array<number>,
+    programId: number
+  ) {
+    return ProgramService.getProgramById(programId).then(async (program) => {
+      //check ids that not exist in program
+      const IdsNotExistInProgram = exerciseIds?.filter((reqExerciseID) => {
+        const haveExercise = program.exercises.some((exercise) => {
+          return reqExerciseID === exercise.id;
+        });
+        return !haveExercise;
+      });
+
+      //delete from Program
+      if (IdsNotExistInProgram.length === 0) {
+        program.exercises = program.exercises.filter((exercise) => {
+          const inProgram = exerciseIds.some((reqId) => {
+            return exercise.id === reqId;
+          });
+          return !inProgram;
+        });
+        await getRepository(Program).save(program);
+        return ProgramService.getProgramById(programId);
+      }
+      return Promise.reject({
+        httpStatus: 404,
+        message: `Exercises with id: ${IdsNotExistInProgram.join(
+          ", "
+        )} not found in Program id: ${programId}`,
+      });
+    });
   }
 }

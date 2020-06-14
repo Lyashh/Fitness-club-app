@@ -80,14 +80,34 @@ export default class ProgramController {
     };
   }
 
-  public addExerciseToProgram() {
+  public addExercisesToProgram() {
     return async (req: Request, res: Response, next: NextFunction) => {
-      return ProgramService.addExerciseToProgram(
-        req.body.exerciseId,
+      return ProgramService.addExercisesToProgram(
+        req.body.exercisesIds,
         req.body.programId
       )
-        .then((newProgram) => {
-          return res.json({ newProgram });
+        .then((updatedProgram) => {
+          return res.json(updatedProgram);
+        })
+        .catch((e) => {
+          if (e.httpStatus) {
+            const error = new CustomError(e.message, e.httpStatus);
+            return next(error);
+          }
+          const error = new CustomError(e.message, null, e.code);
+          return next(error);
+        });
+    };
+  }
+
+  public removeExercisesFromProgram() {
+    return async (req: Request, res: Response, next: NextFunction) => {
+      return ProgramService.removeExerciseFromProgram(
+        req.body.exercisesIds,
+        req.body.programId
+      )
+        .then((updatedProgram) => {
+          return res.json(updatedProgram);
         })
         .catch((e) => {
           if (e.httpStatus) {

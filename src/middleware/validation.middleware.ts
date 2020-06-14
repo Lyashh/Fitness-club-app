@@ -122,9 +122,9 @@ export default class ValidationMiddleware {
     };
   }
 
-  public validateAddExerciseToProgram() {
+  public validateAddOrRemoveExerciseToProgram() {
     return async (req: Request, res: Response, next: NextFunction) => {
-      const validResult = await ProgramValidation.addExerciseToProgram(req.body);
+      const validResult = await ProgramValidation.addOrRemoveExerciseToProgram(req.body);
       if (validResult.error) {
         const error = new CustomError(
           validResult.error.details[0].message,

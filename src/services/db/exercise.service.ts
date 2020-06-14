@@ -1,4 +1,4 @@
-import { getRepository } from "typeorm";
+import { getRepository, createQueryBuilder } from "typeorm";
 import Exercise from "../../db/entity/exsercise.entity";
 import CategoryService from "./category.service";
 export default class ExerciseService {
@@ -42,6 +42,13 @@ export default class ExerciseService {
           });
         }
       });
+  }
+
+  public static async getExercisesByIdsArray(ids: Array<number>) {
+    const formatIds = ids.map((id) => {
+      return { id };
+    });
+    return getRepository(Exercise).find({ where: formatIds });
   }
 
   public static async deleteExercise(id: number) {
