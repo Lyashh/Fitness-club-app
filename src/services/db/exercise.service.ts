@@ -26,4 +26,15 @@ export default class ExerciseService {
       }
     );
   }
+
+  public static async deleteExercise(id: number) {
+    const deleteResponse = await getRepository(Exercise).delete(id);
+    if (deleteResponse.affected === 1) {
+      return deleteResponse;
+    }
+    return Promise.reject({
+      httpStatus: 404,
+      message: `Exercise with id: ${id} not found`,
+    });
+  }
 }

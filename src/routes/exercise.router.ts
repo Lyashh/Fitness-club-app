@@ -20,6 +20,11 @@ export default class ExerciseRouter {
       this.validationMiddleware.validateNewExercise(),
       this.exerciseController.newExercise()
     );
+    this.router.delete(
+      "/",
+      this.validationMiddleware.validateBodyId(),
+      this.exerciseController.deleteExercise()
+    );
     return this.router;
   }
 }

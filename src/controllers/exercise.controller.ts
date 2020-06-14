@@ -26,4 +26,23 @@ export default class ExerciseController {
         });
     };
   }
+
+  public deleteExercise() {
+    return async (req: Request, res: Response, next: NextFunction) => {
+      return ExerciseService.deleteExercise(req.body.id)
+        .then((deleted) => {
+          return res.json({
+            message: `Exercise with id: ${req.body.id} has been successfully deleted`,
+          });
+        })
+        .catch((e) => {
+          if (e.httpStatus) {
+            const error = new CustomError(e.message, e.httpStatus);
+            return next(error);
+          }
+          const error = new CustomError(e.message, null, e.code);
+          return next(error);
+        });
+    };
+  }
 }
