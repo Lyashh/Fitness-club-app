@@ -45,4 +45,21 @@ export default class ExerciseController {
         });
     };
   }
+
+  public updateExercise() {
+    return async (req: Request, res: Response, next: NextFunction) => {
+      return ExerciseService.updateExercise(req.body.id, req.body.newFields)
+        .then((updatedExercise) => {
+          return res.json(updatedExercise);
+        })
+        .catch((e) => {
+          if (e.httpStatus) {
+            const error = new CustomError(e.message, e.httpStatus);
+            return next(error);
+          }
+          const error = new CustomError(e.message, null, e.code);
+          return next(error);
+        });
+    };
+  }
 }

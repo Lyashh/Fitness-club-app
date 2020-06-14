@@ -107,4 +107,18 @@ export default class ValidationMiddleware {
       return next();
     };
   }
+
+  public validateModifiedExercise() {
+    return async (req: Request, res: Response, next: NextFunction) => {
+      const validResult = await ExerciseValidation.updateExercise(req.body);
+      if (validResult.error) {
+        const error = new CustomError(
+          validResult.error.details[0].message,
+          400
+        );
+        return next(error);
+      }
+      return next();
+    };
+  }
 }

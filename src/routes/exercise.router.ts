@@ -25,6 +25,12 @@ export default class ExerciseRouter {
       this.validationMiddleware.validateBodyId(),
       this.exerciseController.deleteExercise()
     );
+    this.router.patch(
+      "/",
+      this.validationMiddleware.validateBodyId(),
+      this.validationMiddleware.validateModifiedExercise(),
+      this.exerciseController.updateExercise()
+    );
     return this.router;
   }
 }

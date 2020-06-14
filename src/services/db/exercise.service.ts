@@ -27,6 +27,23 @@ export default class ExerciseService {
     );
   }
 
+  public static getExerciseById(id: number) {
+    return getRepository(Exercise)
+      .findOne(id, {
+        relations: ["category"],
+      })
+      .then((exercise) => {
+        if (exercise) {
+          return exercise;
+        } else {
+          return Promise.reject({
+            httpStatus: 404,
+            message: `Exercise with id: ${id} not found`,
+          });
+        }
+      });
+  }
+
   public static async deleteExercise(id: number) {
     const deleteResponse = await getRepository(Exercise).delete(id);
     if (deleteResponse.affected === 1) {
@@ -36,5 +53,13 @@ export default class ExerciseService {
       httpStatus: 404,
       message: `Exercise with id: ${id} not found`,
     });
+  }
+
+  public static updateExercise(id: number, updateData: any) {
+    return getRepository(Exercise)
+      .update(id, updateData)
+      .then(async (updateResponse) => {
+        return ExerciseService.getExerciseById(id);
+      });
   }
 }
