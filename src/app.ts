@@ -1,8 +1,12 @@
 import express, { Response, Request, NextFunction } from "express";
 import bodyParser from "body-parser";
-import ErrorHandler from "./services/handlers/error.handler";
+import session from "express-session";
+import doenv from "dotenv";
 
+import ErrorHandler from "./services/handlers/error.handler";
 import Router from "./routes/index.router";
+
+doenv.config();
 
 export default class App {
   private static app: App;
@@ -16,6 +20,14 @@ export default class App {
   }
 
   private config(): void {
+    this.expressApp.use(
+      session({
+        secret: process.env.SESSION_SECRET || "secret",
+        name: "fitnes-app-session",
+        resave: false,
+        saveUninitialized: true,
+      })
+    );
     this.expressApp.set("port", process.env.PORT || 4000);
     this.expressApp.use(bodyParser.json());
     this.expressApp.use(bodyParser.urlencoded({ extended: true }));
