@@ -5,6 +5,7 @@ import doenv from "dotenv";
 
 import ErrorHandler from "./services/handlers/error.handler";
 import Router from "./routes/index.router";
+import AuthService from "./services/auth/passport.service";
 
 doenv.config();
 
@@ -12,9 +13,11 @@ export default class App {
   private static app: App;
   private expressApp: express.Application;
   private router: Router;
+  private authService: AuthService;
 
   private constructor() {
     this.expressApp = express();
+    this.authService = new AuthService();
     this.router = new Router();
     this.config();
   }
@@ -31,6 +34,10 @@ export default class App {
     this.expressApp.set("port", process.env.PORT || 4000);
     this.expressApp.use(bodyParser.json());
     this.expressApp.use(bodyParser.urlencoded({ extended: true }));
+
+    this.expressApp.use(this.authService.passport.initialize());
+    this.expressApp.use(this.authService.passport.session());
+
     this.expressApp.use("/api/", this.router.routes);
 
     this.expressApp.use(ErrorHandler.getHandler);
@@ -38,7 +45,9 @@ export default class App {
     // 404
     this.expressApp.use((req: Request, res: Response, next: NextFunction) => {
       res.status(404);
-      return res.json({ error: `Not found${req.originalUrl}` });
+      return res.json({
+        error: `Not found${req.originalUrl}`,
+      });
     });
   }
 
