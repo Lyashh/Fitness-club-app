@@ -19,16 +19,19 @@ class Program {
   @Column()
   public name: string;
 
-  @CreateDateColumn({ type: "timestamp" })
+  @CreateDateColumn({ type: "timestamp", select: false })
   public createdAt: Date;
 
-  @UpdateDateColumn({ type: "timestamp" })
+  @UpdateDateColumn({ type: "timestamp", select: false })
   public updatedAt: Date;
 
   @ManyToMany(() => User, (user: User) => user.programs)
   public users: User[];
 
-  @ManyToOne(() => User, (user: User) => user.coachPrograms)
+  @ManyToOne(() => User, (user: User) => user.coachPrograms, {
+    nullable: false,
+    onDelete: "CASCADE",
+  })
   public coach: User;
 
   @ManyToMany((type) => Exercise, (exercise: Exercise) => exercise.programs)

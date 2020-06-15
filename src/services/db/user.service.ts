@@ -1,63 +1,114 @@
 import { getRepository } from "typeorm";
+import bcrypt from "bcrypt";
+
 import RoleService from "./role.service";
+import ProgramService from "./program.service";
 import User from "../../db/entity/user.entity";
+import Program from "../../db/entity/program.entity";
 
 export default class UserService {
-  private userRepository = getRepository(User);
-  private roleService: RoleService;
-
-  constructor() {
-    this.roleService = new RoleService();
+  public static getUserById(id: number) {
+    return getRepository(User)
+      .findOne(id, {
+        relations: ["role", "programs", "coachPrograms"],
+      })
+      .then((user) => {
+        if (user) {
+          return user;
+        } else {
+          return Promise.reject({
+            httpStatus: 404,
+            message: `User with id: ${id} not found`,
+          });
+        }
+      });
   }
 
-  public async getUserById(id: number) {
-    const user = await this.userRepository.findOne(id, {
-      relations: ["role", "programs"],
-    });
-    if (user) {
-      return user;
-    }
-    return null;
-  }
-
-  public async getAllUsers() {
-    const users = await this.userRepository.find({
-      relations: ["role", "programs"],
+  public static async getAllUsers() {
+    const users = await getRepository(User).find({
+      relations: ["role", "programs", "coachPrograms"],
     });
     return users;
   }
 
-  public createUser(userReq: any) {
-    return this.roleService.getRoleById(userReq.roleId).then(async (role) => {
-      let user = new User();
-      user.name = userReq.name;
-      user.age = userReq.age;
-      user.email = userReq.email;
-      user.password = userReq.password;
-      user.role = role;
+  public static createUser(userReq: any): Promise<User> {
+    return RoleService.getRoleById(userReq.roleId).then(async (role) => {
+      if (role) {
+        const hash = await bcrypt.hash(userReq.password, 10);
 
-      const newUser = this.userRepository.create(user);
-      await this.userRepository.save(newUser);
+        let user = new User();
+        user.name = userReq.name;
+        user.age = userReq.age;
+        user.email = userReq.email;
+        user.password = hash;
+        user.role = role;
 
-      return newUser;
+        const newUser = getRepository(User).create(user);
+        await getRepository(User).save(newUser);
+        return newUser;
+      }
+      return Promise.reject({
+        httpStatus: 404,
+        message: `Role with id: ${userReq.roleId} not found`,
+      });
     });
   }
 
-  public async deleteUser(id: number) {
-    const deleteResponse = await this.userRepository.delete(id);
-    if (deleteResponse.raw[1]) {
-      return true;
+  public static async deleteUser(id: number) {
+    const deleteResponse = await getRepository(User).delete(id);
+    if (deleteResponse.affected === 1) {
+      return deleteResponse;
     }
-    return false;
+    return Promise.reject({
+      httpStatus: 404,
+      message: `User with id: ${id} not found`,
+    });
   }
 
-  public async updateUser(id: number, updateData: any) {
-    await this.userRepository.update(id, updateData);
-    const updatedUser = await this.userRepository.findOne(id);
-    if (updatedUser) {
-      return updatedUser;
-    } else {
-      return null;
-    }
+  //find user by id first
+  public static updateUser(id: number, updateData: any) {
+    updateData.updatedAt = new Date()
+      .toISOString()
+      .slice(0, 19)
+      .replace("T", " ");
+    return getRepository(User)
+      .update(id, updateData)
+      .then(async (updateResponse) => {
+        return this.getUserById(id);
+      });
+  }
+
+  public assignProgramToUser(userId: number, programId: number) {
+    let tempProgram: null | Program = null;
+    return ProgramService.getProgramById(programId)
+      .then((program: Program) => {
+        tempProgram = program;
+        return UserService.getUserById(userId);
+      })
+      .then(async (user) => {
+        if (tempProgram) {
+          user.programs.push(tempProgram);
+          await getRepository(User).save(user);
+          return user;
+        }
+      });
+  }
+
+  public unassignProgramToUser(userId: number, programId: number) {
+    let tempProgram: null | Program = null;
+    return ProgramService.getProgramById(programId)
+      .then((program: Program) => {
+        tempProgram = program;
+        return UserService.getUserById(userId);
+      })
+      .then(async (user) => {
+        if (tempProgram) {
+          user.programs = user.programs.filter((program) => {
+            return program.id !== programId;
+          });
+          await getRepository(User).save(user);
+          return user;
+        }
+      });
   }
 }

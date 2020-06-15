@@ -1,6 +1,5 @@
 import { Response, Request, NextFunction } from "express";
 import UserService from "../services/db/user.service";
-import User from "../db/entity/user.entity";
 import CustomError from "../types/errors/customError.types";
 
 export default class UserController {
@@ -11,33 +10,115 @@ export default class UserController {
 
   public getAllUsers() {
     return async (req: Request, res: Response) => {
-      const users = await this.userService.getAllUsers();
+      const users = await UserService.getAllUsers();
       return res.json(users);
     };
   }
 
   public getUserById() {
-    return async (req: Request, res: Response) => {
-      const user = await this.userService.getUserById(parseInt(req.params.id));
-      if (user) {
-        return res.json(user);
-      } else {
-        return res
-          .status(404)
-          .json({ message: `User with id: ${req.params.id} not found` });
-      }
+    return (req: Request, res: Response, next: NextFunction) => {
+      return UserService.getUserById(parseInt(req.params.id))
+        .then((user) => {
+          return res.json(user);
+        })
+        .catch((e) => {
+          if (e.httpStatus) {
+            const error = new CustomError(e.message, e.httpStatus);
+            return next(error);
+          }
+          const error = new CustomError(e.message, null, e.code);
+          return next(error);
+        });
     };
   }
 
   public createUser() {
     return async (req: Request, res: Response, next: NextFunction) => {
-      this.userService
-        .createUser(req.body)
+      UserService.createUser(req.body)
         .then((newUser) => res.json({ newUser }))
         .catch((e) => {
-          let error = new CustomError(e.message, "db", e.code);
+          if (e.httpStatus) {
+            const error = new CustomError(e.message, e.httpStatus);
+            return next(error);
+          }
+          const error = new CustomError(e.message, null, e.code);
           return next(error);
         });
+    };
+  }
+
+  public deleteUser() {
+    return async (req: Request, res: Response, next: NextFunction) => {
+      return UserService.deleteUser(req.body.id)
+        .then((deleted) => {
+          return res.json({
+            message: `User with id: ${req.body.id} has been successfully deleted`,
+          });
+        })
+        .catch((e) => {
+          if (e.httpStatus) {
+            const error = new CustomError(e.message, e.httpStatus);
+            return next(error);
+          }
+          const error = new CustomError(e.message, null, e.code);
+          return next(error);
+        });
+    };
+  }
+
+  public updateUser() {
+    return async (req: Request, res: Response, next: NextFunction) => {
+      return UserService.updateUser(req.body.id, req.body.newFields)
+        .then((updateUser) => {
+          return res.json(updateUser);
+        })
+        .catch((e) => {
+          if (e.httpStatus) {
+            const error = new CustomError(e.message, e.httpStatus);
+            return next(error);
+          }
+          const error = new CustomError(e.message, null, e.code);
+          return next(error);
+        });
+    };
+  }
+
+  public assignProgramToUser() {
+    return async (req: Request, res: Response, next: NextFunction) => {
+      return this.userService
+        .assignProgramToUser(54, req.body.id)
+        .then((user) => {
+          return res.json({ user });
+        })
+        .catch((e) => {
+          if (e.httpStatus) {
+            const error = new CustomError(e.message, e.httpStatus);
+            return next(error);
+          }
+          const error = new CustomError(e.message, null, e.code);
+          return next(error);
+        });
+    };
+  }
+
+  public unassignProgramToUser() {
+    return async (req: Request, res: Response, next: NextFunction) => {
+      return (
+        this.userService
+          //user id from session
+          .unassignProgramToUser(54, req.body.id)
+          .then((user) => {
+            return res.json({ user });
+          })
+          .catch((e) => {
+            if (e.httpStatus) {
+              const error = new CustomError(e.message, e.httpStatus);
+              return next(error);
+            }
+            const error = new CustomError(e.message, null, e.code);
+            return next(error);
+          })
+      );
     };
   }
 }

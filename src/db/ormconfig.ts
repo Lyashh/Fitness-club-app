@@ -1,6 +1,5 @@
 import { ConnectionOptions } from "typeorm";
 import doenv from "dotenv";
-import Program from "./entity/program.entity";
 
 doenv.config();
 

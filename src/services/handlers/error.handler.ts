@@ -9,12 +9,17 @@ export default class ErrorHandler {
       res: Response,
       next: NextFunction
     ) => {
-      if (err.type === "db") {
+      if (err.dbErrCode) {
         if (err.dbErrCode === "23502" || err.dbErrCode === "23505") {
           return res.status(422).json({ message: err.body });
+        } else if (err.dbErrCode === "22P02") {
+          return res.status(400).json({ message: err.body });
         }
+        return res.status(422).json({ message: err.body });
+      } else if (err.statusCode) {
+        return res.status(err.statusCode).json({ message: err.body });
       }
-      return res.status(422).json({ message: err.body });
+      return res.status(500).json({ message: err.body });
     };
   }
 }
