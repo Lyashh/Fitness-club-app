@@ -1,15 +1,18 @@
 import { Router as ExpressRouter } from "express";
 import ProgramController from "../controllers/program.controller";
 import RequestValidation from "../middleware/requestValidation.middleware";
+import DBValidationMiddleware from "../middleware/dbValidation.middleware";
 
 export default class ProgramRouter {
   private router: ExpressRouter;
   private programController: ProgramController;
   private requestValidation: RequestValidation;
+  private dbValidation: DBValidationMiddleware;
 
   constructor() {
     this.programController = new ProgramController();
     this.requestValidation = new RequestValidation();
+    this.dbValidation = new DBValidationMiddleware();
     this.router = ExpressRouter();
   }
 
@@ -35,11 +38,13 @@ export default class ProgramRouter {
     this.router.patch(
       "/addExercises",
       this.requestValidation.validateAddOrRemoveExerciseToProgram(),
+      this.dbValidation.validateExercisesExist(),
       this.programController.addExercisesToProgram()
     );
     this.router.patch(
       "/removeExercises",
       this.requestValidation.validateAddOrRemoveExerciseToProgram(),
+      this.dbValidation.validatePrgramHaveErxercises(),
       this.programController.removeExercisesFromProgram()
     );
 

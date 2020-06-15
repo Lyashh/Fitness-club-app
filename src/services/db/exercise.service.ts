@@ -69,4 +69,27 @@ export default class ExerciseService {
         return ExerciseService.getExerciseById(id);
       });
   }
+
+  public static exercisesExist(exerciseIds: Array<number>) {
+    return ExerciseService.getExercisesByIdsArray(exerciseIds).then(
+      (exercises) => {
+        //check if req exercise ids exist in db
+        const notExistExercises = exerciseIds.filter((reqId) => {
+          const exerciseExist = exercises.some((exercise) => {
+            return exercise.id === reqId;
+          });
+          return !exerciseExist;
+        });
+        if (notExistExercises.length === 0) {
+          return true;
+        }
+        return Promise.reject({
+          httpStatus: 404,
+          message: `Exercises with id: ${notExistExercises.join(
+            ", "
+          )} not found`,
+        });
+      }
+    );
+  }
 }

@@ -79,23 +79,8 @@ export default class ProgramService {
     let tempExercises: null | Array<Exercise> = null;
     return ExerciseService.getExercisesByIdsArray(exerciseIds)
       .then((exercises) => {
-        //check if req exercise ids exist in db
-        const notExistExercises = exerciseIds.filter((reqId) => {
-          const exerciseExist = exercises.some((exercise) => {
-            return exercise.id === reqId;
-          });
-          return !exerciseExist;
-        });
-        if (notExistExercises.length === 0) {
-          tempExercises = exercises;
-          return ProgramService.getProgramById(programId);
-        }
-        return Promise.reject({
-          httpStatus: 404,
-          message: `Exercises with id: ${notExistExercises.join(
-            ", "
-          )} not found`,
-        });
+        tempExercises = exercises;
+        return ProgramService.getProgramById(programId);
       })
       .then(async (program) => {
         if (tempExercises) {
@@ -111,6 +96,22 @@ export default class ProgramService {
     programId: number
   ) {
     return ProgramService.getProgramById(programId).then(async (program) => {
+      program.exercises = program.exercises.filter((exercise) => {
+        const inProgram = exerciseIds.some((reqId) => {
+          return exercise.id === reqId;
+        });
+        return !inProgram;
+      });
+      await getRepository(Program).save(program);
+      return ProgramService.getProgramById(programId);
+    });
+  }
+
+  public static programHaveErxercises(
+    exerciseIds: Array<number>,
+    programId: number
+  ) {
+    return ProgramService.getProgramById(programId).then((program) => {
       //check ids that not exist in program
       const IdsNotExistInProgram = exerciseIds?.filter((reqExerciseID) => {
         const haveExercise = program.exercises.some((exercise) => {
@@ -119,17 +120,10 @@ export default class ProgramService {
         return !haveExercise;
       });
 
-      //delete from Program
       if (IdsNotExistInProgram.length === 0) {
-        program.exercises = program.exercises.filter((exercise) => {
-          const inProgram = exerciseIds.some((reqId) => {
-            return exercise.id === reqId;
-          });
-          return !inProgram;
-        });
-        await getRepository(Program).save(program);
-        return ProgramService.getProgramById(programId);
+        return true;
       }
+
       return Promise.reject({
         httpStatus: 404,
         message: `Exercises with id: ${IdsNotExistInProgram.join(
