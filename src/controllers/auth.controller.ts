@@ -11,7 +11,8 @@ export default class AuthController {
 
   public localCallback() {
     return (req: Request, res: Response) => {
-      res.status(401).json({
+      console.log(req.session!.passport);
+      return res.status(401).json({
         message: req.session!.messages,
       });
     };
@@ -34,7 +35,7 @@ export default class AuthController {
 
   public profile() {
     return (req: Request, res: Response) => {
-      return res.json(req.session!.passport);
+      return res.json(req.session!.passport.user);
     };
   }
 }

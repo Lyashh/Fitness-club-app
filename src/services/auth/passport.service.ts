@@ -1,6 +1,7 @@
 import { Response, Request, NextFunction } from "express";
 import passportjs from "passport";
 import { Strategy as LocalStrategy } from "passport-local";
+import CustomError from "../../types/errors/customError.types";
 
 export default class Auth {
   private static instance: Auth;
@@ -33,13 +34,20 @@ export default class Auth {
     password: any,
     done: any
   ) => {
-    done(null, { id: 20, name: "name", email });
+    return done(null, false, "error 1");
+    return done(null, { id: 20, name: "name", email });
   };
 
   public get localMiddleware() {
-    return this.passport.authenticate("local", {
-      failureRedirect: "login/callback",
-    });
+    return (req: Request, res: Response, next: NextFunction) => {
+      this.passport.authenticate("local", (err: any, user: any, info: any) => {
+        if (user) {
+          return next();
+        }
+        const error = new CustomError(info, 401);
+        return next(error);
+      })(req, res, next);
+    };
   }
 
   public static get getInstance(): Auth {

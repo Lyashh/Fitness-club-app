@@ -26,9 +26,7 @@ export default class AuthRouter {
 
     this.router.get("/login/callback", this.authController.localCallback());
     this.router.get("/profile", this.authController.profile());
-
     this.router.post("/registration", this.authController.registration());
-
     this.router.post("/logout", this.authController.logout());
     return this.router;
   }
