@@ -31,6 +31,14 @@ export default class UserService {
     return users;
   }
 
+  public static getUserByEmail(email: string) {
+    return getRepository(User).findOne({
+      where: { email },
+      select: ["id", "name", "email", "password"],
+      relations: ["role", "programs", "coachPrograms"],
+    });
+  }
+
   public static createUser(userReq: any): Promise<User> {
     return RoleService.getRoleById(userReq.roleId).then(async (role) => {
       if (role) {

@@ -1,7 +1,9 @@
-import { Response, Request, NextFunction } from "express";
+import bcrypt from "bcrypt";
 import passportjs from "passport";
+import { Response, Request, NextFunction } from "express";
 import { Strategy as LocalStrategy } from "passport-local";
 import CustomError from "../../types/errors/customError.types";
+import UserService from "../db/user.service";
 
 export default class Auth {
   private static instance: Auth;
@@ -30,22 +32,47 @@ export default class Auth {
 
   private localVerifyHandler = (
     req: any,
-    email: any,
-    password: any,
+    email: string,
+    password: string,
     done: any
   ) => {
-    return done(null, false, "error 1");
-    return done(null, { id: 20, name: "name", email });
+    return UserService.getUserByEmail(email).then((user) => {
+      if (user) {
+        return bcrypt
+          .compare(password, user.password)
+          .then((result) => {
+            if (result) {
+              return done(false, user, false);
+            }
+            return done(null, null, {
+              message: `Wrong password to auth by user with email: ${email}`,
+              httpStatus: 401,
+            });
+          })
+          .catch((e) => {
+            return done(null, null, {
+              message: `DB Error`,
+              httpStatus: 500,
+            });
+          });
+      }
+      return done(null, null, {
+        message: `User with email: ${email} not exist`,
+        httpStatus: 404,
+      });
+    });
   };
 
   public get localMiddleware() {
     return (req: Request, res: Response, next: NextFunction) => {
       this.passport.authenticate("local", (err: any, user: any, info: any) => {
-        if (user) {
-          return next();
-        }
-        const error = new CustomError(info, 401);
-        return next(error);
+        req.logIn(user, function (err) {
+          if (err || info) {
+            const error = new CustomError(info.message, info.httpStatus);
+            return next(error);
+          }
+          return res.redirect("profile");
+        });
       })(req, res, next);
     };
   }

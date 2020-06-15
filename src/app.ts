@@ -27,7 +27,7 @@ export default class App {
         secret: process.env.SESSION_SECRET || "secret",
         name: "fitnes-app-session",
         resave: false,
-        saveUninitialized: true,
+        saveUninitialized: false,
       })
     );
     this.expressApp.set("port", process.env.PORT || 4000);
