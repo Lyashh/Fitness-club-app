@@ -1,4 +1,6 @@
 import { getRepository } from "typeorm";
+import bcrypt from "bcrypt";
+
 import RoleService from "./role.service";
 import ProgramService from "./program.service";
 import User from "../../db/entity/user.entity";
@@ -32,11 +34,13 @@ export default class UserService {
   public static createUser(userReq: any): Promise<User> {
     return RoleService.getRoleById(userReq.roleId).then(async (role) => {
       if (role) {
+        const hash = await bcrypt.hash(userReq.password, 10);
+
         let user = new User();
         user.name = userReq.name;
         user.age = userReq.age;
         user.email = userReq.email;
-        user.password = userReq.password;
+        user.password = hash;
         user.role = role;
 
         const newUser = getRepository(User).create(user);
