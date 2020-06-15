@@ -3,6 +3,7 @@ import CustomError from "../types/errors/customError.types";
 import UserValidation from "../services/validation/user.validation";
 import ProgramValidation from "../services/validation/program.validation";
 import ExerciseValidation from "../services/validation/exercise.validation";
+import AuthValidation from "../services/validation/auth.validation";
 
 export default class ValidationMiddleware {
   public validateNewUser() {
@@ -124,7 +125,23 @@ export default class ValidationMiddleware {
 
   public validateAddOrRemoveExerciseToProgram() {
     return async (req: Request, res: Response, next: NextFunction) => {
-      const validResult = await ProgramValidation.addOrRemoveExerciseToProgram(req.body);
+      const validResult = await ProgramValidation.addOrRemoveExerciseToProgram(
+        req.body
+      );
+      if (validResult.error) {
+        const error = new CustomError(
+          validResult.error.details[0].message,
+          400
+        );
+        return next(error);
+      }
+      return next();
+    };
+  }
+
+  public validateLogin() {
+    return async (req: Request, res: Response, next: NextFunction) => {
+      const validResult = await AuthValidation.login(req.body);
       if (validResult.error) {
         const error = new CustomError(
           validResult.error.details[0].message,

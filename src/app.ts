@@ -7,17 +7,16 @@ import ErrorHandler from "./services/handlers/error.handler";
 import Router from "./routes/index.router";
 import AuthService from "./services/auth/passport.service";
 
+const Passportjs = AuthService.getInstance;
 doenv.config();
 
 export default class App {
   private static app: App;
   private expressApp: express.Application;
   private router: Router;
-  private authService: AuthService;
 
   private constructor() {
     this.expressApp = express();
-    this.authService = new AuthService();
     this.router = new Router();
     this.config();
   }
@@ -35,8 +34,8 @@ export default class App {
     this.expressApp.use(bodyParser.json());
     this.expressApp.use(bodyParser.urlencoded({ extended: true }));
 
-    this.expressApp.use(this.authService.passport.initialize());
-    this.expressApp.use(this.authService.passport.session());
+    this.expressApp.use(Passportjs.passport.initialize());
+    this.expressApp.use(Passportjs.passport.session());
 
     this.expressApp.use("/api/", this.router.routes);
 
