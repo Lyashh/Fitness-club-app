@@ -51,4 +51,23 @@ export default class AuthorizeMiddleware {
       return next(error);
     };
   }
+
+  public modifyAccessById() {
+    return (
+      req: Request,
+      res: Response,
+      next: NextFunction
+    ): void | Response => {
+      if (req.session!.passport.user.id === req.body.id) {
+        return next();
+      }
+      const error = new CustomError(
+        `You dont have permissions to modify this resource by your id: ${
+          req.session!.passport.user.id
+        }`,
+        403
+      );
+      return next(error);
+    };
+  }
 }

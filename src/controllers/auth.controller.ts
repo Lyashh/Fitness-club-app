@@ -3,19 +3,11 @@ import UserService from "../services/db/user.service";
 import CustomError from "../types/errors/customError.types";
 
 export default class AuthController {
-  public login() {
-    return (req: Request, res: Response) => {
-      res.json({
-        message: req.session!.passport.user,
-      });
-    };
-  }
-
   public logout() {
     return (req: Request, res: Response) => {
       req.logout();
       return res.json({
-        message: "success logout",
+        message: "Successfully logout",
       });
     };
   }
