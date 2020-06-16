@@ -1,6 +1,7 @@
 import { Response, Request, NextFunction } from "express";
 import CustomError from "../types/errors/customError.types";
 import User from "../db/entity/user.entity";
+import ProgramService from "../services/db/program.service";
 
 declare global {
   namespace Express {
@@ -73,6 +74,30 @@ export default class AuthorizeMiddleware {
         403
       );
       return next(error);
+    };
+  }
+
+  public programBelongsToCoach() {
+    return (req: Request, res: Response, next: NextFunction) => {
+      return ProgramService.getProgramById(req.body.id)
+        .then((program) => {
+          if (program.coach.id === req.session!.passport.user.id) {
+            return next();
+          }
+          const error = new CustomError(
+            `You dont have permissions to modify this program with id: ${req.body.id}`,
+            403
+          );
+          return next(error);
+        })
+        .catch((e) => {
+          if (e.httpStatus) {
+            const error = new CustomError(e.message, e.httpStatus);
+            return next(error);
+          }
+          const error = new CustomError(e.message, null, e.code);
+          return next(error);
+        });
     };
   }
 }

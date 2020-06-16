@@ -81,9 +81,7 @@ export default class ValidationMiddleware {
 
   public validateModifiedProgram() {
     return async (req: Request, res: Response, next: NextFunction) => {
-      const validResult = await ProgramValidation.updateProgram(
-        req.body.newFields
-      );
+      const validResult = await ProgramValidation.updateProgram(req.body);
       if (validResult.error) {
         const error = new CustomError(
           validResult.error.details[0].message,
