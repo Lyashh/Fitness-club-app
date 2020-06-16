@@ -1,17 +1,18 @@
 import { Response, Request, NextFunction } from "express";
+import CustomError from "../types/errors/customError.types";
 
 export default class AuthorizeMiddleware {
   public isAuth() {
-    (req: Request, res: Response, next: NextFunction): void | Response => {
+    return (
+      req: Request,
+      res: Response,
+      next: NextFunction
+    ): void | Response => {
       if (req.isAuthenticated()) {
         return next();
-      } else {
-        return res.status(401).json({
-          message: "Unauthorized",
-          detail:
-            "The request has not been applied because it lacks valid authentication credentials for the target resource",
-        });
       }
+      const error = new CustomError("You aren’t authenticated", 401);
+      return next(error);
     };
   }
 
@@ -23,13 +24,31 @@ export default class AuthorizeMiddleware {
     ): void | Response => {
       if (!req.isAuthenticated()) {
         return next();
-      } else {
-        return res.status(401).json({
-          message: "Forbidden",
-          detail:
-            "You cant access to this request because you are authorized now. Please try to logout",
-        });
       }
+      const error = new CustomError(
+        "You cant access to this resource because you are authenticated",
+        403
+      );
+      return next(error);
+    };
+  }
+
+  public isCoach() {
+    return (
+      req: Request,
+      res: Response,
+      next: NextFunction
+    ): void | Response => {
+      if (req.session!.passport.user.role.name === "coach") {
+        return next();
+      }
+      const error = new CustomError(
+        `You dont have permissions to access this resource by ${
+          req.session!.passport.user.role.name
+        }`,
+        403
+      );
+      return next(error);
     };
   }
 }

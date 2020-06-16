@@ -28,7 +28,7 @@ export default class AuthController {
 
   public profile() {
     return (req: Request, res: Response) => {
-      return res.json(req.session!.passport);
+      return res.json(req.session!.passport.user);
     };
   }
 }
