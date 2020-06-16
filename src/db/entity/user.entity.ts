@@ -34,11 +34,11 @@ class User {
   public role: Role;
 
   @OneToMany(() => Program, (program: Program) => program.coach)
-  coachPrograms: Program[];
+  public coachPrograms: Program[];
 
   @ManyToMany(() => Program, (program: Program) => program.users)
   @JoinTable()
-  programs: Program[];
+  public programs: Program[];
 
   @CreateDateColumn({ type: "timestamp", select: false })
   public createdAt: Date;

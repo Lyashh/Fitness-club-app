@@ -6,6 +6,7 @@ import doenv from "dotenv";
 import ErrorHandler from "./services/handlers/error.handler";
 import Router from "./routes/index.router";
 import AuthService from "./services/auth/passport.service";
+import User from "./db/entity/user.entity";
 
 const Passportjs = AuthService.getInstance;
 doenv.config();

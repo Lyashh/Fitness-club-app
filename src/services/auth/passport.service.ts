@@ -4,6 +4,7 @@ import { Response, Request, NextFunction } from "express";
 import { Strategy as LocalStrategy } from "passport-local";
 import CustomError from "../../types/errors/customError.types";
 import UserService from "../db/user.service";
+import User from "../../db/entity/user.entity";
 
 export default class Auth {
   private static instance: Auth;
@@ -22,10 +23,21 @@ export default class Auth {
       this.localVerifyHandler
     );
     this.passport.use(this.localStrategy);
-    this.passport.serializeUser((user: any, done: any) => {
-      done(null, user);
+
+    this.passport.serializeUser((user: User, done: any) => {
+      return UserService.getUserById(user.id)
+        .then((user: User) => {
+          done(null, user);
+        })
+        .catch((e) => {
+          return done(null, null, {
+            message: `User with id: ${user.id} not found`,
+            httpStatus: 401,
+          });
+        });
     });
-    this.passport.deserializeUser((user: any, done: any) => {
+
+    this.passport.deserializeUser((user: User, done: any) => {
       done(null, user);
     });
   }
@@ -57,7 +69,7 @@ export default class Auth {
           });
       }
       return done(null, null, {
-        message: `User with email: ${email} not exist`,
+        message: `User with email: ${email} not found`,
         httpStatus: 404,
       });
     });

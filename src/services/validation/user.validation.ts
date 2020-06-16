@@ -22,4 +22,12 @@ export default class UserValidation extends MainValidation {
     });
     return schema.validate(modifyUSer);
   }
+
+  public static assignAndUnProgramToUser(ids: any) {
+    const schema = joi.object({
+      userId: joi.number().integer().min(1).required(),
+      programId: joi.number().integer().min(1).required(),
+    });
+    return schema.validate(ids);
+  }
 }

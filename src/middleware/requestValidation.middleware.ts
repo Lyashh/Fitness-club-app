@@ -36,7 +36,7 @@ export default class ValidationMiddleware {
 
   public validateModifiedUser() {
     return async (req: Request, res: Response, next: NextFunction) => {
-      const validResult = await UserValidation.updateUser(req.body.newFields);
+      const validResult = await UserValidation.updateUser(req.body);
       if (validResult.error) {
         const error = new CustomError(
           validResult.error.details[0].message,
@@ -142,6 +142,22 @@ export default class ValidationMiddleware {
   public validateLogin() {
     return async (req: Request, res: Response, next: NextFunction) => {
       const validResult = await AuthValidation.login(req.body);
+      if (validResult.error) {
+        const error = new CustomError(
+          validResult.error.details[0].message,
+          400
+        );
+        return next(error);
+      }
+      return next();
+    };
+  }
+
+  public validateAssignAndUnProgramToUser() {
+    return async (req: Request, res: Response, next: NextFunction) => {
+      const validResult = await UserValidation.assignAndUnProgramToUser(
+        req.body
+      );
       if (validResult.error) {
         const error = new CustomError(
           validResult.error.details[0].message,

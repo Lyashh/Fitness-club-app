@@ -1,5 +1,14 @@
 import { Response, Request, NextFunction } from "express";
 import CustomError from "../types/errors/customError.types";
+import User from "../db/entity/user.entity";
+
+declare global {
+  namespace Express {
+    interface Request {
+      user?: User;
+    }
+  }
+}
 
 export default class AuthorizeMiddleware {
   public isAuth() {
@@ -34,11 +43,7 @@ export default class AuthorizeMiddleware {
   }
 
   public isCoach() {
-    return (
-      req: Request,
-      res: Response,
-      next: NextFunction
-    ): void | Response => {
+    return (req: Request, res: Response, next: NextFunction) => {
       if (req.session!.passport.user.role.name === "coach") {
         return next();
       }

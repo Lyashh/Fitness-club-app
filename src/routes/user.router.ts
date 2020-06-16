@@ -34,16 +34,12 @@ export default class UserRouter {
     this.router.delete(
       "/",
       this.authorizeMiddleware.isAuth(),
-      this.requestValidation.validateBodyId(),
-      this.authorizeMiddleware.modifyAccessById(),
       this.userController.deleteUser()
     );
 
     this.router.patch(
       "/",
       this.authorizeMiddleware.isAuth(),
-      this.requestValidation.validateBodyId(),
-      this.authorizeMiddleware.modifyAccessById(),
       this.requestValidation.validateModifiedUser(),
       this.userController.updateUser()
     );
@@ -51,17 +47,17 @@ export default class UserRouter {
     this.router.patch(
       "/assignProgram",
       this.authorizeMiddleware.isAuth(),
-      this.requestValidation.validateBodyId(),
+      this.requestValidation.validateAssignAndUnProgramToUser(),
       this.authorizeMiddleware.isCoach(),
       this.userController.assignProgramToUser()
     );
 
     this.router.patch(
-      "/unassignProgram",
+      "/unAssignProgram",
       this.authorizeMiddleware.isAuth(),
-      this.requestValidation.validateBodyId(),
+      this.requestValidation.validateAssignAndUnProgramToUser(),
       this.authorizeMiddleware.isCoach(),
-      this.userController.unassignProgramToUser()
+      this.userController.unAssignProgramToUser()
     );
 
     return this.router;
