@@ -20,11 +20,10 @@ export default class AuthRouter {
     this.router.post(
       "/login",
       this.requestValidation.validateLogin(),
-      Passportjs.localMiddleware,
+      Passportjs.localMiddleware(),
       this.authController.profile()
     );
 
-    this.router.get("/login/callback", this.authController.localCallback());
     this.router.get("/profile", this.authController.profile());
     this.router.post("/registration", this.authController.registration());
     this.router.post("/logout", this.authController.logout());

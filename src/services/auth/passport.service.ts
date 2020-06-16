@@ -51,7 +51,7 @@ export default class Auth {
           })
           .catch((e) => {
             return done(null, null, {
-              message: `DB Error`,
+              message: e,
               httpStatus: 500,
             });
           });
@@ -63,7 +63,7 @@ export default class Auth {
     });
   };
 
-  public get localMiddleware() {
+  public localMiddleware() {
     return (req: Request, res: Response, next: NextFunction) => {
       this.passport.authenticate("local", (err: any, user: any, info: any) => {
         req.logIn(user, function (err) {

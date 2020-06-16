@@ -1,19 +1,12 @@
 import { Request, Response, NextFunction } from "express";
+import UserService from "../services/db/user.service";
+import CustomError from "../types/errors/customError.types";
 
 export default class AuthController {
   public login() {
     return (req: Request, res: Response) => {
       res.json({
         message: req.session!.passport.user,
-      });
-    };
-  }
-
-  public localCallback() {
-    return (req: Request, res: Response) => {
-      console.log(req.session!.passport);
-      return res.status(401).json({
-        message: req.session!.messages,
       });
     };
   }
@@ -28,8 +21,8 @@ export default class AuthController {
   }
 
   public registration() {
-    return (req: Request, res: Response) => {
-      return res.json("registration");
+    return (req: Request, res: Response, next: NextFunction) => {
+      return res.redirect(307, "/api/users");
     };
   }
 
