@@ -51,6 +51,7 @@ export default class UserController {
     return async (req: Request, res: Response, next: NextFunction) => {
       return UserService.deleteUser(req.body.id)
         .then((deleted) => {
+          req.logout();
           return res.json({
             message: `User with id: ${req.body.id} has been successfully deleted`,
           });
