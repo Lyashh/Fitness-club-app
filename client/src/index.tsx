@@ -1,12 +1,13 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
+
 import './css/style.css';
-import App from './components/App';
+
 import * as serviceWorker from './serviceWorker';
 import { Provider } from 'mobx-react';
 
+import App from './components/App';
 
-import ps from "./mst/stores/programsStore"
 import { createRootStore } from "./mst/stores/rootStore" 
 import { onPatch } from 'mobx-state-tree';
 
