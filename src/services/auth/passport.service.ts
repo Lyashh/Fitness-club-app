@@ -25,7 +25,7 @@ export default class Auth {
     this.passport.use(this.localStrategy);
 
     this.passport.serializeUser((user: User, done: any) => {
-      return UserService.getUserById(user.id)
+      return UserService.getUserById(user.id, false)
         .then((user: User) => {
           done(null, user);
         })

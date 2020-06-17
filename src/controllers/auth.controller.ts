@@ -19,8 +19,28 @@ export default class AuthController {
   }
 
   public profile() {
-    return (req: Request, res: Response) => {
+    return (req: Request, res: Response, next: NextFunction) => {
       return res.json(req.user);
+    };
+  }
+
+  public getProgramsByRole() {
+    return (req: Request, res: Response, next: NextFunction) => {
+      return UserService.getUserById(req.session!.passport.user.id, true)
+        .then((user) => {
+          if (req.session!.passport.user.role.name === "coach") {
+            return res.json(user.coachPrograms);
+          }
+          return res.json(user.programs);
+        })
+        .catch((e) => {
+          if (e.httpStatus) {
+            const error = new CustomError(e.message, e.httpStatus);
+            return next(error);
+          }
+          const error = new CustomError(e.message, null, e.code);
+          return next(error);
+        });
     };
   }
 }

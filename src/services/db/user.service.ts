@@ -8,10 +8,19 @@ import Program from "../../db/entity/program.entity";
 import Role from "../../db/entity/role.entity";
 
 export default class UserService {
-  public static getUserById(id: number) {
+  public static getUserById(id: number, programs: boolean) {
+    let relations = ["role"];
+    if (programs) {
+      relations.push(
+        "programs",
+        "coachPrograms",
+        "programs.exercises",
+        "coachPrograms.exercises"
+      );
+    }
     return getRepository(User)
       .findOne(id, {
-        relations: ["role", "programs", "coachPrograms"],
+        relations,
       })
       .then((user) => {
         if (user) {
@@ -102,7 +111,7 @@ export default class UserService {
     return getRepository(User)
       .update(id, updateData)
       .then(async (updateResponse) => {
-        return this.getUserById(id);
+        return this.getUserById(id, false);
       });
   }
 
@@ -111,7 +120,7 @@ export default class UserService {
     return ProgramService.getProgramById(programId)
       .then((program: Program) => {
         tempProgram = program;
-        return UserService.getUserById(userId);
+        return UserService.getUserById(userId, true);
       })
       .then(async (user) => {
         if (tempProgram) {
@@ -127,7 +136,7 @@ export default class UserService {
     return ProgramService.getProgramById(programId)
       .then((program: Program) => {
         tempProgram = program;
-        return UserService.getUserById(userId);
+        return UserService.getUserById(userId, true);
       })
       .then(async (user) => {
         if (tempProgram) {

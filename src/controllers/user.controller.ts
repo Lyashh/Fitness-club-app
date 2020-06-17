@@ -33,7 +33,7 @@ export default class UserController {
 
   public getUserById() {
     return (req: Request, res: Response, next: NextFunction) => {
-      return UserService.getUserById(parseInt(req.params.id))
+      return UserService.getUserById(parseInt(req.params.id), true)
         .then((user) => {
           return res.json(user);
         })
