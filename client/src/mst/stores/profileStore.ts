@@ -1,11 +1,8 @@
 import { types } from "mobx-state-tree";
+import user from "../models/user";
 
 const profileStore = types.model("ProfileStore", {
-  id: types.integer,
-  name: types.string,
-  email: types.maybeNull(types.string),
-  age: types.maybeNull(types.string),
-  role: types.maybeNull(types.string),
+  user: types.maybeNull(user),
 });
 
 export default profileStore;
