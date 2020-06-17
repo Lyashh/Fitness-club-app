@@ -18,6 +18,7 @@ export default class UserRouter {
 
   public get routes(): ExpressRouter {
     this.router.get("/", this.userController.getAllUsers());
+    this.router.get("/getAthletes", this.userController.getAthletes());
 
     this.router.get(
       "/:id",

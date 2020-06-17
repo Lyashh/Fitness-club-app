@@ -5,6 +5,7 @@ import RoleService from "./role.service";
 import ProgramService from "./program.service";
 import User from "../../db/entity/user.entity";
 import Program from "../../db/entity/program.entity";
+import Role from "../../db/entity/role.entity";
 
 export default class UserService {
   public static getUserById(id: number) {
@@ -29,6 +30,25 @@ export default class UserService {
       relations: ["role", "programs", "coachPrograms"],
     });
     return users;
+  }
+
+  public static getAthletes() {
+    return getRepository(Role)
+      .findOne({
+        relations: ["users"],
+        where: {
+          name: "athlete",
+        },
+      })
+      .then((role) => {
+        if (role) {
+          return role.users;
+        }
+        return Promise.reject({
+          httpStatus: 404,
+          message: `Role with name: athlete not found`,
+        });
+      });
   }
 
   public static getUserByEmail(email: string) {

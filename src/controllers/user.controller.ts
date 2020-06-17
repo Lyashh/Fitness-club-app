@@ -15,6 +15,22 @@ export default class UserController {
     };
   }
 
+  public getAthletes() {
+    return async (req: Request, res: Response, next: NextFunction) => {
+      try {
+        const users = await UserService.getAthletes();
+        return res.json(users);
+      } catch (e) {
+        if (e.httpStatus) {
+          const error = new CustomError(e.message, e.httpStatus);
+          return next(error);
+        }
+        const error = new CustomError(e.message, null, e.code);
+        return next(error);
+      }
+    };
+  }
+
   public getUserById() {
     return (req: Request, res: Response, next: NextFunction) => {
       return UserService.getUserById(parseInt(req.params.id))
