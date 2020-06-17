@@ -4,7 +4,7 @@ import ProgramService from "../services/db/program.service";
 import ExerciseService from "../services/db/exercise.service";
 
 export default class DBValidationMiddleware {
-  public validatePrgramHaveErxercises() {
+  public validateProgramHaveErxercises() {
     return (req: Request, res: Response, next: NextFunction) => {
       return ProgramService.programHaveErxercises(
         req.body.exercisesIds,

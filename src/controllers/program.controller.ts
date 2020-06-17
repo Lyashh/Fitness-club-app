@@ -5,7 +5,7 @@ import CustomError from "../types/errors/customError.types";
 export default class ProgramController {
   public getProgramById() {
     return async (req: Request, res: Response, next: NextFunction) => {
-      return ProgramService.getProgramById(req.body.id)
+      return ProgramService.getProgramById(parseInt(req.params.id))
         .then((program) => {
           return res.json(program);
         })
@@ -65,9 +65,12 @@ export default class ProgramController {
 
   public createProgram() {
     return async (req: Request, res: Response, next: NextFunction) => {
-      return ProgramService.createProgram(req.body.coachId, req.body.name)
+      return ProgramService.createProgram(
+        req.session!.passport.user.id,
+        req.body.name
+      )
         .then((newProgram) => {
-          return res.json({ newProgram });
+          return res.json(newProgram);
         })
         .catch((e) => {
           if (e.httpStatus) {
@@ -84,7 +87,7 @@ export default class ProgramController {
     return async (req: Request, res: Response, next: NextFunction) => {
       return ProgramService.addExercisesToProgram(
         req.body.exercisesIds,
-        req.body.programId
+        req.body.id // programId
       )
         .then((updatedProgram) => {
           return res.json(updatedProgram);
@@ -104,7 +107,7 @@ export default class ProgramController {
     return async (req: Request, res: Response, next: NextFunction) => {
       return ProgramService.removeExerciseFromProgram(
         req.body.exercisesIds,
-        req.body.programId
+        req.body.id //programId
       )
         .then((updatedProgram) => {
           return res.json(updatedProgram);

@@ -1,8 +1,15 @@
 import express, { Response, Request, NextFunction } from "express";
 import bodyParser from "body-parser";
-import ErrorHandler from "./services/handlers/error.handler";
+import session from "express-session";
+import doenv from "dotenv";
 
+import ErrorHandler from "./services/handlers/error.handler";
 import Router from "./routes/index.router";
+import AuthService from "./services/auth/passport.service";
+import User from "./db/entity/user.entity";
+
+const Passportjs = AuthService.getInstance;
+doenv.config();
 
 export default class App {
   private static app: App;
@@ -16,9 +23,21 @@ export default class App {
   }
 
   private config(): void {
+    this.expressApp.use(
+      session({
+        secret: process.env.SESSION_SECRET || "secret",
+        name: "fitnes-app-session",
+        resave: false,
+        saveUninitialized: false,
+      })
+    );
     this.expressApp.set("port", process.env.PORT || 4000);
     this.expressApp.use(bodyParser.json());
     this.expressApp.use(bodyParser.urlencoded({ extended: true }));
+
+    this.expressApp.use(Passportjs.passport.initialize());
+    this.expressApp.use(Passportjs.passport.session());
+
     this.expressApp.use("/api/", this.router.routes);
 
     this.expressApp.use(ErrorHandler.getHandler);
@@ -26,7 +45,9 @@ export default class App {
     // 404
     this.expressApp.use((req: Request, res: Response, next: NextFunction) => {
       res.status(404);
-      return res.json({ error: `Not found${req.originalUrl}` });
+      return res.json({
+        error: `Not found${req.originalUrl}`,
+      });
     });
   }
 

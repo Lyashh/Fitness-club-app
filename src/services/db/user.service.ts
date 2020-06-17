@@ -5,12 +5,22 @@ import RoleService from "./role.service";
 import ProgramService from "./program.service";
 import User from "../../db/entity/user.entity";
 import Program from "../../db/entity/program.entity";
+import Role from "../../db/entity/role.entity";
 
 export default class UserService {
-  public static getUserById(id: number) {
+  public static getUserById(id: number, programs: boolean) {
+    let relations = ["role"];
+    if (programs) {
+      relations.push(
+        "programs",
+        "coachPrograms",
+        "programs.exercises",
+        "coachPrograms.exercises"
+      );
+    }
     return getRepository(User)
       .findOne(id, {
-        relations: ["role", "programs", "coachPrograms"],
+        relations,
       })
       .then((user) => {
         if (user) {
@@ -29,6 +39,33 @@ export default class UserService {
       relations: ["role", "programs", "coachPrograms"],
     });
     return users;
+  }
+
+  public static getAthletes() {
+    return getRepository(Role)
+      .findOne({
+        relations: ["users"],
+        where: {
+          name: "athlete",
+        },
+      })
+      .then((role) => {
+        if (role) {
+          return role.users;
+        }
+        return Promise.reject({
+          httpStatus: 404,
+          message: `Role with name: athlete not found`,
+        });
+      });
+  }
+
+  public static getUserByEmail(email: string) {
+    return getRepository(User).findOne({
+      where: { email },
+      select: ["id", "name", "email", "password"],
+      relations: ["role", "programs", "coachPrograms"],
+    });
   }
 
   public static createUser(userReq: any): Promise<User> {
@@ -74,7 +111,7 @@ export default class UserService {
     return getRepository(User)
       .update(id, updateData)
       .then(async (updateResponse) => {
-        return this.getUserById(id);
+        return this.getUserById(id, false);
       });
   }
 
@@ -83,7 +120,7 @@ export default class UserService {
     return ProgramService.getProgramById(programId)
       .then((program: Program) => {
         tempProgram = program;
-        return UserService.getUserById(userId);
+        return UserService.getUserById(userId, true);
       })
       .then(async (user) => {
         if (tempProgram) {
@@ -99,7 +136,7 @@ export default class UserService {
     return ProgramService.getProgramById(programId)
       .then((program: Program) => {
         tempProgram = program;
-        return UserService.getUserById(userId);
+        return UserService.getUserById(userId, true);
       })
       .then(async (user) => {
         if (tempProgram) {
