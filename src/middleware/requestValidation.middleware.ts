@@ -139,6 +139,8 @@ export default class ValidationMiddleware {
 
   public validateLogin() {
     return async (req: Request, res: Response, next: NextFunction) => {
+      console.log(req.body);
+
       const validResult = await AuthValidation.login(req.body);
       if (validResult.error) {
         const error = new CustomError(

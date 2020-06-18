@@ -29,13 +29,13 @@ export default class App {
         secret: process.env.SESSION_SECRET || "secret",
         name: "fitnes-app-session",
         resave: false,
-        saveUninitialized: false,
+        saveUninitialized: true,
       })
     );
 
     this.expressApp.use(
       cors({
-        credentials: true,
+        //credentials: true,
         origin: process.env.CORS_ORIGIN || "http://localhost:3000",
       })
     );

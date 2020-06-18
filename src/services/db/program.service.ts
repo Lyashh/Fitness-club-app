@@ -38,7 +38,7 @@ export default class ProgramService {
   }
 
   public static createProgram(coachId: number, name: string) {
-    return UserService.getUserById(coachId).then(async (coach) => {
+    return UserService.getUserById(coachId, true).then(async (coach) => {
       let program = new Program();
       program.name = name;
       program.coach = coach;

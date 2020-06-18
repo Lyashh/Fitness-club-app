@@ -63,8 +63,8 @@ export default class UserService {
   public static getUserByEmail(email: string) {
     return getRepository(User).findOne({
       where: { email },
-      select: ["id", "name", "email", "password"],
-      relations: ["role", "programs", "coachPrograms"],
+      select: ["id", "name", "email", "password", "age"],
+      relations: ["role"],
     });
   }
 
