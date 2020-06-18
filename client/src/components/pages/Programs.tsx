@@ -3,7 +3,7 @@ import { withRouter, RouteComponentProps } from "react-router-dom";
 import { observer, inject } from "mobx-react";
 import { Root } from "../../mst/stores/rootStore";
 
-import Program from "./Program";
+import Program from "../elements/ProgramInList";
 
 interface ProgramsProps extends RouteComponentProps {
   store: Root;
@@ -23,7 +23,7 @@ class Programs extends React.Component<ProgramsProps, ProgramsState> {
       await this.props.store.programStore.setPrograms();
     } catch (error) {
       console.log(error);
-      //this.props.history.push("/login");
+      this.props.history.push("/login");
     }
   }
 

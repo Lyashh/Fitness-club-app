@@ -5,6 +5,9 @@ import Login from "./pages/Login";
 import Profile from "./pages/Profile";
 import Navbar from "./elements/Navbar";
 import Programs from "./pages/Programs";
+import CreateProgram from "./pages/CreateProgram";
+import ProgramPage from "./pages/ProgramPage";
+import NotFound from "./pages/404";
 
 class App extends React.Component {
   render() {
@@ -16,6 +19,10 @@ class App extends React.Component {
           <Route path="/login" exact component={Login} />
           <Route path="/profile" exact component={Profile} />
           <Route path="/programs" exact component={Programs} />
+          <Route path="/programs/:id" exact component={ProgramPage} />
+          <Route path="/createProgram" exact component={CreateProgram} />
+          <Route path="/notFound" exact component={NotFound} />
+          <Route path="*" exact component={NotFound} />
         </Switch>
       </Router>
     );
