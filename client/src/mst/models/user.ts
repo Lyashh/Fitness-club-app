@@ -5,7 +5,7 @@ const user = types
   .model("user", {
     id: types.integer,
     name: types.string,
-    email: types.maybeNull(types.string),
+    email: types.string,
     age: types.maybeNull(types.integer),
     role: role,
   })
@@ -15,6 +15,7 @@ const user = types
       self.name = fields.name;
       self.age = fields.age;
       self.id = fields.id;
+      self.role = fields.role;
     };
 
     return { setFields };

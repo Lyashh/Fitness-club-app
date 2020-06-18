@@ -15,7 +15,7 @@ export const createRootStore = rootStore.create({
   programStore: { programs: [] },
   exerciseStore: { exercises: [] },
   profileStore: {
-    user: { id: 0, name: "", role: { id: 0, name: "" } },
+    user: { id: 0, name: "", email: "", role: { id: 0, name: "" } },
     isAuth: false,
   },
   usersStore: { users: [] },

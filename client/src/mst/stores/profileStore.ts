@@ -21,8 +21,8 @@ const profileStore = types
       try {
         const user = yield loginRequest(emailInput, passwordInput);
         console.log(user);
-        const { name, email, age, id } = user.data;
-        self.user?.setFields({ name, email, age, id });
+        const { name, email, age, id, role } = user.data;
+        self.user?.setFields({ name, email, age, id, role });
         self.isAuth = true;
       } catch (error) {
         if (error.response) {
@@ -39,10 +39,8 @@ const profileStore = types
     const setProfile = flow(function* () {
       try {
         const profile = yield profileRequest();
-        console.log(profile.data);
-
-        const { name, email, age, id } = profile.data;
-        self.user?.setFields({ name, email, age, id });
+        const { name, email, age, id, role } = profile.data;
+        self.user?.setFields({ name, email, age, id, role });
         self.isAuth = true;
       } catch (error) {
         self.isAuth = false;
@@ -57,6 +55,15 @@ const profileStore = types
     });
 
     return { setLogin, setProfile, setIsAuth };
+  })
+  .views((self) => {
+    const isAuthAndCoach = (): boolean => {
+      if (self.isAuth && self.user?.role.name === "coach") {
+        return true;
+      }
+      return false;
+    };
+    return { isAuthAndCoach };
   });
 
 export default profileStore;

@@ -1,4 +1,4 @@
-import { programsRequest } from "./../../api/programs";
+import { programsRequest, createProgramRequest } from "./../../api/programs";
 import { types, flow, getParent } from "mobx-state-tree";
 import program from "../models/program";
 import CustomError from "../../types/customError.types";
@@ -27,7 +27,25 @@ const programStore = types
       }
     });
 
-    return { setPrograms };
+    const createProgram = flow(function* (name: string) {
+      try {
+        const newProgram = yield createProgramRequest(name);
+        return newProgram;
+      } catch (error) {
+        if (error.response) {
+          if (error.response.status === 401) {
+            getParent<typeof rootStore>(self).profileStore.setIsAuth(false);
+          }
+          throw new CustomError(
+            error.response.data.message,
+            error.response.status
+          );
+        }
+        throw error;
+      }
+    });
+
+    return { setPrograms, createProgram };
   });
 
 export default programStore;
