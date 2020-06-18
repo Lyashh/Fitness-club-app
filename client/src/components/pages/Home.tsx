@@ -1,22 +1,12 @@
-import React from 'react';
+import React from "react";
 
-interface IProps {
-}
+interface IProps {}
 
-interface IState {
-}
+interface IState {}
 
 class Home extends React.Component<IProps, IState> {
-  constructor(props: IProps ) {
-      super(props)
-  }
-
   render() {
-    return(
-      <div>
-        Home
-      </div>
-    )
+    return <div>Home</div>;
   }
 }
 

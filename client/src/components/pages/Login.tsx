@@ -1,6 +1,5 @@
 import React from "react";
 import { withRouter, RouteComponentProps } from "react-router-dom";
-import { loginRequest, profileRequest } from "../../api/auth";
 import { observer, inject } from "mobx-react";
 import { Root } from "../../mst/stores/rootStore";
 
@@ -15,6 +14,8 @@ interface LoginState {
   errorCode: number;
 }
 
+@inject("store")
+@observer
 class Login extends React.Component<LoginProps, LoginState> {
   constructor(props: LoginProps) {
     super(props);
@@ -82,4 +83,4 @@ class Login extends React.Component<LoginProps, LoginState> {
   }
 }
 
-export default withRouter(inject("store")(observer(Login)));
+export default withRouter(Login);

@@ -6,16 +6,15 @@ const user = types
     id: types.integer,
     name: types.string,
     email: types.maybeNull(types.string),
-    age: types.maybeNull(types.string),
+    age: types.maybeNull(types.integer),
     role: role,
   })
   .actions((self) => {
     const setFields = (fields: any) => {
-      self.id = fields.email;
       self.email = fields.email;
       self.name = fields.name;
       self.age = fields.age;
-      self.role = fields.role;
+      self.id = fields.id;
     };
 
     return { setFields };

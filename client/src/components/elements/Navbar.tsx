@@ -9,11 +9,9 @@ interface NavbarProps extends RouteComponentProps {
 
 interface NavbarState {}
 
+@inject("store")
+@observer
 class Navbar extends React.Component<NavbarProps, NavbarState> {
-  constructor(props: NavbarProps) {
-    super(props);
-  }
-
   componentDidMount() {
     this.getProfile();
   }
@@ -27,15 +25,27 @@ class Navbar extends React.Component<NavbarProps, NavbarState> {
   }
 
   render() {
+    const { store } = this.props;
+
     return (
       <div>
         <ul>
-          <li>
-            <Link to="/login">login</Link>
-          </li>
-          <li>
-            <Link to="/profile">profile</Link>
-          </li>
+          {store?.profileStore.isAuth ? (
+            <span>
+              <li>
+                <Link to="/profile">profile</Link>
+              </li>
+
+              <li>
+                <Link to="/programs">programs</Link>
+              </li>
+            </span>
+          ) : (
+            <li>
+              <Link to="/login">login</Link>
+            </li>
+          )}
+
           <li>
             <Link to="/">Home</Link>
           </li>
@@ -45,4 +55,4 @@ class Navbar extends React.Component<NavbarProps, NavbarState> {
   }
 }
 
-export default withRouter(inject("store")(observer(Navbar)));
+export default withRouter(Navbar);

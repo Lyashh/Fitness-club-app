@@ -15,7 +15,9 @@ export default class UserService {
         "programs",
         "coachPrograms",
         "programs.exercises",
-        "coachPrograms.exercises"
+        "programs.exercises.category",
+        "coachPrograms.exercises",
+        "coachPrograms.exercises.category"
       );
     }
     return getRepository(User)

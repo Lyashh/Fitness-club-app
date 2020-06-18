@@ -10,17 +10,22 @@ const profileStore = types
     isAuth: types.boolean,
   })
   .actions((self) => {
+    const setIsAuth = (authStatus: boolean) => {
+      self.isAuth = authStatus;
+    };
+
     const setLogin = flow(function* (
       emailInput: string,
       passwordInput: string
     ) {
       try {
         const user = yield loginRequest(emailInput, passwordInput);
-        const { name, email, age } = user.data;
-        self.user?.setFields({ name, email, age });
+        console.log(user);
+        const { name, email, age, id } = user.data;
+        self.user?.setFields({ name, email, age, id });
         self.isAuth = true;
       } catch (error) {
-        if (error.response.data.message) {
+        if (error.response) {
           self.isAuth = false;
           throw new CustomError(
             error.response.data.message,
@@ -34,12 +39,14 @@ const profileStore = types
     const setProfile = flow(function* () {
       try {
         const profile = yield profileRequest();
-        const { name, email, age } = profile.data;
-        self.user?.setFields({ name, email, age });
+        console.log(profile.data);
+
+        const { name, email, age, id } = profile.data;
+        self.user?.setFields({ name, email, age, id });
         self.isAuth = true;
       } catch (error) {
         self.isAuth = false;
-        if (error.response.data.message) {
+        if (error.response) {
           throw new CustomError(
             error.response.data.message,
             error.response.status
@@ -49,7 +56,7 @@ const profileStore = types
       }
     });
 
-    return { setLogin, setProfile };
+    return { setLogin, setProfile, setIsAuth };
   });
 
 export default profileStore;

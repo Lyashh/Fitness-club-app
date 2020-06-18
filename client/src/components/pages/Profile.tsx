@@ -9,11 +9,9 @@ interface ProfileProps extends RouteComponentProps {
 
 interface ProfileState {}
 
+@inject("store")
+@observer
 class Profile extends React.Component<ProfileProps, ProfileState> {
-  constructor(props: ProfileProps) {
-    super(props);
-  }
-
   componentDidMount() {
     this.getProfile();
   }
@@ -39,4 +37,4 @@ class Profile extends React.Component<ProfileProps, ProfileState> {
   }
 }
 
-export default withRouter(inject("store")(observer(Profile)));
+export default withRouter(Profile);
