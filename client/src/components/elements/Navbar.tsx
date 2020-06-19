@@ -1,17 +1,11 @@
 import React from "react";
 import { withRouter, RouteComponentProps, Link } from "react-router-dom";
 import { inject, observer } from "mobx-react";
-import { Root } from "../../mst/stores/rootStore";
-
-interface NavbarProps extends RouteComponentProps {
-  store?: Root;
-}
-
-interface NavbarState {}
+import { NavbarProps } from "../../types/props.types";
 
 @inject("store")
 @observer
-class Navbar extends React.Component<NavbarProps, NavbarState> {
+class Navbar extends React.Component<NavbarProps, {}> {
   componentDidMount() {
     this.getProfile();
   }

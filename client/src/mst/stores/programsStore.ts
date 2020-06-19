@@ -1,4 +1,4 @@
-import { programsRequest, createProgramRequest } from "./../../api/programs";
+import { programsRequest, createProgramRequest } from "../../api/programs.api";
 import { types, flow, getParent } from "mobx-state-tree";
 import program from "../models/program";
 import CustomError from "../../types/customError.types";

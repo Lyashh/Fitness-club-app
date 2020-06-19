@@ -1,29 +1,17 @@
 import React from "react";
-import { withRouter, RouteComponentProps } from "react-router-dom";
+import { withRouter } from "react-router-dom";
 import { observer, inject } from "mobx-react";
-import { Root } from "../../mst/stores/rootStore";
-import { getProgramById, editProgramRequest } from "../../api/programs";
-
-interface MatchParams {
-  id: string;
-}
-
-interface MatchProps extends RouteComponentProps<MatchParams> {}
-
-interface EditPageProps extends MatchProps {
-  store: Root;
-}
-
-interface EditPageState {
-  name: string;
-  id: number;
-  newName: string;
-}
+import { getProgramById, editProgramRequest } from "../../api/programs.api";
+import { StoreRouterIdParam } from "../../types/props.types";
+import { EditProgramState } from "../../types/state.types";
 
 @inject("store")
 @observer
-class EditProgram extends React.Component<EditPageProps, EditPageState> {
-  constructor(props: EditPageProps) {
+class EditProgram extends React.Component<
+  StoreRouterIdParam,
+  EditProgramState
+> {
+  constructor(props: StoreRouterIdParam) {
     super(props);
     this.state = {
       id: 0,

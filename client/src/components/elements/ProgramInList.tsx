@@ -1,10 +1,7 @@
 import React from "react";
-import { ProgramModel } from "../../mst/models/program";
 import { Link } from "react-router-dom";
+import { ProgramProps } from "../../types/props.types";
 
-interface ProgramProps {
-  program: ProgramModel;
-}
 const Program = (props: ProgramProps) => {
   return (
     <div>

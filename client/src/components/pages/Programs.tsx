@@ -1,19 +1,12 @@
 import React from "react";
 import { withRouter, RouteComponentProps } from "react-router-dom";
 import { observer, inject } from "mobx-react";
-import { Root } from "../../mst/stores/rootStore";
-
 import Program from "../elements/ProgramInList";
-
-interface ProgramsProps extends RouteComponentProps {
-  store: Root;
-}
-
-interface ProgramsState {}
+import { StoreAndRouterProps } from "../../types/props.types";
 
 @inject("store")
 @observer
-class Programs extends React.Component<ProgramsProps, ProgramsState> {
+class Programs extends React.Component<StoreAndRouterProps, {}> {
   componentDidMount() {
     this.setPrograms();
   }
@@ -31,6 +24,7 @@ class Programs extends React.Component<ProgramsProps, ProgramsState> {
     const { store } = this.props;
     return (
       <div>
+        <h1>Your programs:</h1>
         {store.programStore.programs.length > 0 ? (
           store.programStore.programs.map((program, i) => {
             return <Program key={i} program={program}></Program>;
@@ -38,7 +32,6 @@ class Programs extends React.Component<ProgramsProps, ProgramsState> {
         ) : (
           <p>You dont have programs</p>
         )}
-        {}
       </div>
     );
   }

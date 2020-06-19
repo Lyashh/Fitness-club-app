@@ -1,4 +1,4 @@
-import { types } from "mobx-state-tree";
+import { types, Instance } from "mobx-state-tree";
 import category from "./category";
 
 const exercise = types.model("Exercise", {
@@ -7,5 +7,7 @@ const exercise = types.model("Exercise", {
   quantity: types.integer,
   category: category,
 });
+
+export type ExirciseModel = Instance<typeof exercise>;
 
 export default exercise;

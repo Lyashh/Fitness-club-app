@@ -1,23 +1,13 @@
 import React from "react";
-import { withRouter, RouteComponentProps } from "react-router-dom";
+import { withRouter } from "react-router-dom";
 import { observer, inject } from "mobx-react";
-import { Root } from "../../mst/stores/rootStore";
-
-interface LoginProps extends RouteComponentProps {
-  store: Root;
-}
-
-interface LoginState {
-  email: string;
-  password: string;
-  errorMessage: string;
-  errorCode: number;
-}
+import { StoreAndRouterProps } from "../../types/props.types";
+import { LoginState } from "../../types/state.types";
 
 @inject("store")
 @observer
-class Login extends React.Component<LoginProps, LoginState> {
-  constructor(props: LoginProps) {
+class Login extends React.Component<StoreAndRouterProps, LoginState> {
+  constructor(props: StoreAndRouterProps) {
     super(props);
     this.state = {
       email: "",

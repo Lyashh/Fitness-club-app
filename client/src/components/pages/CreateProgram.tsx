@@ -1,25 +1,16 @@
 import React from "react";
-import { withRouter, RouteComponentProps } from "react-router-dom";
+import { withRouter } from "react-router-dom";
 import { observer, inject } from "mobx-react";
-import { Root } from "../../mst/stores/rootStore";
-
-import Program from "../elements/ProgramInList";
-
-interface CreateProgramProps extends RouteComponentProps {
-  store: Root;
-}
-
-interface CreateProgramState {
-  name: string;
-}
+import { StoreAndRouterProps } from "../../types/props.types";
+import { CreateProgramState } from "../../types/state.types";
 
 @inject("store")
 @observer
 class CreateProgram extends React.Component<
-  CreateProgramProps,
+  StoreAndRouterProps,
   CreateProgramState
 > {
-  constructor(props: CreateProgramProps) {
+  constructor(props: StoreAndRouterProps) {
     super(props);
     this.state = {
       name: "",

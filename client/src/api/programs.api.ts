@@ -1,4 +1,4 @@
-import { editProgram } from "./../types/index.types";
+import { editProgram } from "../types/api.types";
 import axios from "axios";
 
 export const programsRequest = () => {

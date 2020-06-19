@@ -1,17 +1,11 @@
 import React from "react";
 import { withRouter, RouteComponentProps } from "react-router-dom";
 import { inject, observer } from "mobx-react";
-import { Root } from "../../mst/stores/rootStore";
-
-interface ProfileProps extends RouteComponentProps {
-  store: Root;
-}
-
-interface ProfileState {}
+import { StoreAndRouterProps } from "../../types/props.types";
 
 @inject("store")
 @observer
-class Profile extends React.Component<ProfileProps, ProfileState> {
+class Profile extends React.Component<StoreAndRouterProps, {}> {
   componentDidMount() {
     this.getProfile();
   }

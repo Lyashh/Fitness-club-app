@@ -1,7 +1,7 @@
-import { profileRequest } from "./../../api/auth";
+import { profileRequest } from "../../api/auth.api";
 import { types, flow } from "mobx-state-tree";
 import user from "../models/user";
-import { loginRequest } from "../../api/auth";
+import { loginRequest } from "../../api/auth.api";
 import CustomError from "../../types/customError.types";
 
 const profileStore = types
