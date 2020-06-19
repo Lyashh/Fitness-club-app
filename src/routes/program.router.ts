@@ -21,7 +21,12 @@ export default class ProgramRouter {
 
   public get routes(): ExpressRouter {
     this.router.get("/", this.programController.getAllPrograms());
-    this.router.get("/:id", this.programController.getProgramById());
+    this.router.get(
+      "/:id",
+      this.authorizeMiddleware.isAuth(),
+      this.dbValidation.programBelongsToUser(),
+      this.programController.getProgramById()
+    );
 
     this.router.post(
       "/",
