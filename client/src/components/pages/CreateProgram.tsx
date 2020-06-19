@@ -36,6 +36,7 @@ class CreateProgram extends React.Component<
       const newPorgram = await this.props.store.programStore.createProgram(
         this.state.name
       );
+      this.props.history.push(`/programs/${newPorgram.data.id}`);
     } catch (error) {
       if (error.code === 401) {
         this.props.history.push("/login");

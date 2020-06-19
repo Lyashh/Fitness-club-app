@@ -2,7 +2,7 @@ import React from "react";
 import { withRouter, RouteComponentProps } from "react-router-dom";
 import { observer, inject } from "mobx-react";
 import { Root } from "../../mst/stores/rootStore";
-import { getProgramById } from "../../api/programs";
+import { getProgramById, editProgramRequest } from "../../api/programs";
 
 interface MatchParams {
   id: string;
@@ -10,25 +10,28 @@ interface MatchParams {
 
 interface MatchProps extends RouteComponentProps<MatchParams> {}
 
-interface PrPageProps extends MatchProps {
+interface EditPageProps extends MatchProps {
   store: Root;
 }
 
-interface PrPageState {
+interface EditPageState {
   name: string;
   id: number;
+  newName: string;
 }
 
 @inject("store")
 @observer
-class ProgramPage extends React.Component<PrPageProps, PrPageState> {
-  constructor(props: PrPageProps) {
+class EditProgram extends React.Component<EditPageProps, EditPageState> {
+  constructor(props: EditPageProps) {
     super(props);
     this.state = {
       id: 0,
       name: "",
+      newName: "",
     };
   }
+
   async componentDidMount() {
     try {
       const program = await getProgramById(
@@ -47,22 +50,30 @@ class ProgramPage extends React.Component<PrPageProps, PrPageState> {
     }
   }
 
+  editName = async () => {
+    try {
+      const editProgram = await editProgramRequest({
+        id: this.state.id,
+        newFields: { name: this.state.newName },
+      });
+      this.setState({ name: editProgram.data.name });
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
   render() {
-    const { store } = this.props;
     return (
       <div>
         {this.state.id ? (
           <div>
-            <h3>{this.state.name}</h3>
-            {store?.profileStore.user?.role.name === "coach" ? (
-              <button
-                onClick={() =>
-                  this.props.history.push(`/programs/${this.state.id}/edit`)
-                }
-              >
-                Edit
-              </button>
-            ) : null}
+            <p>Edit name</p>
+            <p>{this.state.name}</p>
+            <input
+              onChange={(e) => this.setState({ newName: e.target.value })}
+              defaultValue={this.state.name}
+            />
+            <button onClick={this.editName}>Edit Name</button>
           </div>
         ) : null}
       </div>
@@ -70,4 +81,4 @@ class ProgramPage extends React.Component<PrPageProps, PrPageState> {
   }
 }
 
-export default withRouter(ProgramPage);
+export default withRouter(EditProgram);

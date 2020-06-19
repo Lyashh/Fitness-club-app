@@ -40,9 +40,11 @@ class Navbar extends React.Component<NavbarProps, NavbarState> {
                 <Link to="/programs">programs</Link>
               </li>
 
-              <li>
-                <Link to="/createProgram">Create Program</Link>
-              </li>
+              {store?.profileStore.user?.role.name === "coach" ? (
+                <li>
+                  <Link to="/createProgram">Create Program</Link>
+                </li>
+              ) : null}
             </span>
           ) : (
             <li>

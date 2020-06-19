@@ -1,3 +1,4 @@
+import { editProgram } from "./../types/index.types";
 import axios from "axios";
 
 export const programsRequest = () => {
@@ -10,4 +11,8 @@ export const createProgramRequest = (name: string) => {
 
 export const getProgramById = (id: number) => {
   return axios.get(`/api/programs/${id}`);
+};
+
+export const editProgramRequest = (data: editProgram) => {
+  return axios.patch(`/api/programs`, data);
 };
