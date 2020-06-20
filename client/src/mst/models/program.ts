@@ -1,5 +1,5 @@
-import { types, Instance } from "mobx-state-tree";
-import exercice from "./exercise";
+import { types, Instance, cast } from "mobx-state-tree";
+import exercice, { ExirciseModel } from "./exercise";
 import user from "./user";
 
 const program = types
@@ -15,7 +15,12 @@ const program = types
       self.id = fields.id;
       self.exercises = fields.exercises;
     };
-    return { setFields };
+
+    const setExercises = (exercises: Array<ExirciseModel>) => {
+      self.exercises = cast(exercises);
+    };
+
+    return { setFields, setExercises };
   });
 
 export type ProgramModel = Instance<typeof program>;

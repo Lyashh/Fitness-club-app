@@ -32,7 +32,9 @@ class ProgramPage extends React.Component<StoreRouterIdParam, {}> {
       <div>
         {program.id ? (
           <div>
-            <h3>{program.name}</h3>
+            <h3>
+              {program.name} Id: {program.id}
+            </h3>
             {user?.role.name === "coach" ? (
               <button
                 onClick={() =>

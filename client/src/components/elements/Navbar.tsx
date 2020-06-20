@@ -1,5 +1,5 @@
 import React from "react";
-import { withRouter, RouteComponentProps, Link } from "react-router-dom";
+import { withRouter, Link } from "react-router-dom";
 import { inject, observer } from "mobx-react";
 import { NavbarProps } from "../../types/props.types";
 

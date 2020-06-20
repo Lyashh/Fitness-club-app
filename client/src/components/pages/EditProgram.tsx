@@ -2,8 +2,8 @@ import React from "react";
 import { withRouter } from "react-router-dom";
 import { observer, inject } from "mobx-react";
 import { StoreRouterIdParam } from "../../types/props.types";
-import ExerciseInList from "../elements/ExerciseInList";
 import DeleteExercise from "../elements/DeleteExercise";
+import AvailableExercise from "../elements/AvailableExercisesList";
 
 @inject("store")
 @observer
@@ -18,14 +18,15 @@ class EditProgram extends React.Component<
     };
   }
   componentDidMount() {
-    this.getProgramData();
+    this.getProgramAndEExercises();
   }
 
-  async getProgramData() {
+  async getProgramAndEExercises() {
     try {
       await this.props.store.currentProgramStore.getProgram(
         parseInt(this.props.match.params.id)
       );
+      await this.props.store.exerciseStore.getExercises();
     } catch (error) {
       console.log({ error });
       if (error.code === 401) {
@@ -55,6 +56,7 @@ class EditProgram extends React.Component<
 
   render() {
     const { program } = this.props.store.currentProgramStore;
+    const { exerciseStore } = this.props.store;
     return (
       <div>
         {program.id ? (
@@ -68,22 +70,37 @@ class EditProgram extends React.Component<
               }}
             />
             <button onClick={this.updateProgram}>Update Name</button>
-            <div>
-              <h3>Exercises</h3>
-              {program.exercises.length > 0 ? (
-                program.exercises.map((exrcise, i) => {
+            <div style={{ width: "100%", display: "flex" }}>
+              <div style={{ width: "50%" }}>
+                <h3>Program`s Exercises</h3>
+                {program.exercises.length > 0 ? (
+                  program.exercises.map((exrcise, i) => {
+                    return (
+                      <DeleteExercise
+                        name={exrcise.name}
+                        id={exrcise.id}
+                        category={exrcise.category.name}
+                        key={i}
+                      />
+                    );
+                  })
+                ) : (
+                  <p>Program doesn't have exercises</p>
+                )}
+              </div>
+              <div style={{ width: "50%" }}>
+                <h3>Available Exercises</h3>
+                {exerciseStore.getAvailable().map((exercise, i) => {
                   return (
-                    <DeleteExercise
-                      name={exrcise.name}
-                      id={exrcise.id}
-                      category={exrcise.category.name}
+                    <AvailableExercise
                       key={i}
+                      name={exercise.name}
+                      id={exercise.id}
+                      category={exercise.category.name}
                     />
                   );
-                })
-              ) : (
-                <p>Program doesn't have exercises</p>
-              )}
+                })}
+              </div>
             </div>
           </div>
         ) : null}

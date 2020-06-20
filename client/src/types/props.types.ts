@@ -7,7 +7,7 @@ interface RouterWithIdParam
     id: string;
   }> {}
 
-export interface ExerciseListProps {
+export interface ExerciseFields {
   name: string;
   id: number;
   category: string;
@@ -29,6 +29,6 @@ export interface ProgramProps {
   program: ProgramModel;
 }
 
-export interface DeleteListProps extends ExerciseListProps {
+export interface ExerciseListProps extends ExerciseFields {
   store?: Root;
 }

@@ -4,7 +4,6 @@ import exerciseStore from "./exerciseStore";
 import usersStore from "./usersStore";
 import profileStore from "./profileStore";
 import currentProgramStore from "./currentProgramStore";
-import program from "../models/program";
 
 const rootStore = types.model("RootStore", {
   programStore,

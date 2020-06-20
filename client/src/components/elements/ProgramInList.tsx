@@ -6,7 +6,9 @@ const Program = (props: ProgramProps) => {
   return (
     <div>
       <Link to={`/programs/${props.program.id}`}>
-        <h3>{props.program.name}</h3>
+        <h3>
+          {props.program.name} Id: {props.program.id}
+        </h3>
       </Link>
     </div>
   );

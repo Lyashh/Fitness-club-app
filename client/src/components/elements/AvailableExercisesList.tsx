@@ -4,12 +4,10 @@ import { observer, inject } from "mobx-react";
 
 @inject("store")
 @observer
-class DeleteExercise extends React.Component<ExerciseListProps, {}> {
-  deleteExercise = async () => {
+class AvailableExercise extends React.Component<ExerciseListProps, {}> {
+  addExercise = async () => {
     try {
-      await this.props.store?.currentProgramStore.deleteExercise([
-        this.props.id,
-      ]);
+      await this.props.store?.currentProgramStore.addExercise([this.props.id]);
     } catch (error) {
       console.log({ error });
     }
@@ -21,10 +19,10 @@ class DeleteExercise extends React.Component<ExerciseListProps, {}> {
         <p>
           {this.props.name} exercise. Id: {this.props.id}
         </p>
-        <button onClick={this.deleteExercise}>Delete</button>
+        <button onClick={this.addExercise}>Add to program</button>
       </div>
     );
   }
 }
 
-export default DeleteExercise;
+export default AvailableExercise;

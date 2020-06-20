@@ -22,8 +22,5 @@ export const assingPrExerciseRequest = (exercisesIds: number[], id: number) => {
 };
 
 export const deletePrExerciseRequest = (exercisesIds: number[], id: number) => {
-  console.log({ exercisesIds });
-  console.log({ id });
-
   return axios.patch("/api/programs/removeExercises", { id: id, exercisesIds });
 };

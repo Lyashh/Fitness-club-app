@@ -1,5 +1,5 @@
 import React from "react";
-import { withRouter, RouteComponentProps } from "react-router-dom";
+import { withRouter } from "react-router-dom";
 import { observer, inject } from "mobx-react";
 import Program from "../elements/ProgramInList";
 import { StoreAndRouterProps } from "../../types/props.types";
