@@ -10,6 +10,7 @@ export interface LoginState {
 export interface EditProgramState {
   name: string;
   id: number;
+  exercises: ExirciseModel[];
   newName: string;
 }
 
@@ -21,4 +22,8 @@ export interface PrPageState {
   name: string;
   id: number;
   exercises: ExirciseModel[];
+}
+
+export interface DeleteExerciseState {
+  checked: boolean;
 }

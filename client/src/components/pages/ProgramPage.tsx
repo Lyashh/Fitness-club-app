@@ -1,55 +1,42 @@
 import React from "react";
 import { withRouter } from "react-router-dom";
 import { observer, inject } from "mobx-react";
-import { getProgramById } from "../../api/programs.api";
 import { StoreRouterIdParam } from "../../types/props.types";
-import { PrPageState } from "../../types/state.types";
 import ExerciseInList from "../elements/ExerciseInList";
 
 @inject("store")
 @observer
-class ProgramPage extends React.Component<StoreRouterIdParam, PrPageState> {
-  constructor(props: StoreRouterIdParam) {
-    super(props);
-    this.state = {
-      id: 0,
-      name: "",
-      exercises: [],
-    };
-  }
+class ProgramPage extends React.Component<StoreRouterIdParam, {}> {
   async componentDidMount() {
     try {
-      const program = await getProgramById(
+      await this.props.store.currentProgramStore.getProgram(
         parseInt(this.props.match.params.id)
       );
-      this.setState({
-        name: program.data.name,
-        id: program.data.id,
-        exercises: program.data.exercises,
-      });
     } catch (error) {
       console.log({ error });
-      if (error.response.status === 401) {
+      if (error.code === 401) {
         this.props.history.push("/login");
-      } else if (error.response.status === 404) {
+      } else if (error.code === 404) {
         this.props.history.push("/notFound");
-      } else if (error.response.status === 403) {
+      } else if (error.code === 403) {
         this.props.history.push("/profile");
       }
     }
   }
 
   render() {
-    const { store } = this.props;
+    const { program } = this.props.store.currentProgramStore;
+    const { user } = this.props.store.profileStore;
+
     return (
       <div>
-        {this.state.id ? (
+        {program.id ? (
           <div>
-            <h3>{this.state.name}</h3>
-            {store?.profileStore.user?.role.name === "coach" ? (
+            <h3>{program.name}</h3>
+            {user?.role.name === "coach" ? (
               <button
                 onClick={() =>
-                  this.props.history.push(`/programs/${this.state.id}/edit`)
+                  this.props.history.push(`/programs/${program.id}/edit`)
                 }
               >
                 Edit
@@ -57,13 +44,14 @@ class ProgramPage extends React.Component<StoreRouterIdParam, PrPageState> {
             ) : null}
             <div>
               <h3>Exercises</h3>
-              {this.state.exercises.length > 0 ? (
-                this.state.exercises.map((exrcise) => {
+              {program.exercises.length > 0 ? (
+                program.exercises.map((exrcise, i) => {
                   return (
                     <ExerciseInList
                       name={exrcise.name}
                       id={exrcise.id}
                       category={exrcise.category.name}
+                      key={i}
                     />
                   );
                 })

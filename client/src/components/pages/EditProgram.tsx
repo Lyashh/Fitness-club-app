@@ -1,67 +1,95 @@
 import React from "react";
 import { withRouter } from "react-router-dom";
 import { observer, inject } from "mobx-react";
-import { getProgramById, editProgramRequest } from "../../api/programs.api";
 import { StoreRouterIdParam } from "../../types/props.types";
-import { EditProgramState } from "../../types/state.types";
+import { PrPageState } from "../../types/state.types";
+import ExerciseInList from "../elements/ExerciseInList";
 
 @inject("store")
 @observer
 class EditProgram extends React.Component<
   StoreRouterIdParam,
-  EditProgramState
+  { newName: string }
 > {
   constructor(props: StoreRouterIdParam) {
     super(props);
     this.state = {
-      id: 0,
-      name: "",
       newName: "",
     };
   }
+  componentDidMount() {
+    this.getProgramData();
+  }
 
-  async componentDidMount() {
+  async getProgramData() {
     try {
-      const program = await getProgramById(
+      const permission = this.props.store.profileStore.isAuthAndCoach();
+      if (!permission) {
+        this.props.history.push("/profile");
+      }
+      await this.props.store.currentProgramStore.getProgram(
         parseInt(this.props.match.params.id)
       );
-      this.setState({ name: program.data.name, id: program.data.id });
     } catch (error) {
       console.log({ error });
-      if (error.response.status === 401) {
+      if (error.code === 401) {
         this.props.history.push("/login");
-      } else if (error.response.status === 404) {
+      } else if (error.code === 404) {
         this.props.history.push("/notFound");
-      } else if (error.response.status === 403) {
+      } else if (error.code === 403) {
         this.props.history.push("/profile");
       }
     }
   }
 
-  editName = async () => {
+  updateProgram = async () => {
     try {
-      const editProgram = await editProgramRequest({
-        id: this.state.id,
-        newFields: { name: this.state.newName },
-      });
-      this.setState({ name: editProgram.data.name });
+      await this.props.store.currentProgramStore.editProgram(
+        this.state.newName
+      );
+      this.getProgramData();
     } catch (error) {
-      console.log(error);
+      console.log({ error });
+      if (error.code === 401) {
+        this.props.history.push("/login");
+      } else if (error.code === 403) {
+        this.props.history.push("/profile");
+      }
     }
   };
 
   render() {
+    const { program } = this.props.store.currentProgramStore;
     return (
       <div>
-        {this.state.id ? (
+        {program.id ? (
           <div>
-            <p>Edit name</p>
-            <p>{this.state.name}</p>
+            <h3>{program.name}</h3>
+            <h2>Edit Name</h2>
             <input
-              onChange={(e) => this.setState({ newName: e.target.value })}
-              defaultValue={this.state.name}
+              defaultValue={program.name}
+              onChange={(e) => {
+                this.setState({ newName: e.target.value });
+              }}
             />
-            <button onClick={this.editName}>Edit Name</button>
+            <button onClick={this.updateProgram}>Update Name</button>
+            <div>
+              <h3>Exercises</h3>
+              {program.exercises.length > 0 ? (
+                program.exercises.map((exrcise, i) => {
+                  return (
+                    <ExerciseInList
+                      name={exrcise.name}
+                      id={exrcise.id}
+                      category={exrcise.category.name}
+                      key={i}
+                    />
+                  );
+                })
+              ) : (
+                <p>Program doesn't have exercises</p>
+              )}
+            </div>
           </div>
         ) : null}
       </div>

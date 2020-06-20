@@ -13,6 +13,10 @@ export interface ExerciseListProps {
   category: string;
 }
 
+export interface DeleteExerciseProps extends ExerciseListProps {
+  sendCheckToParent: any;
+}
+
 export interface NavbarProps extends RouteComponentProps {
   store?: Root;
 }
