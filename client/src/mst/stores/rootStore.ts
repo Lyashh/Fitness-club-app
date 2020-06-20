@@ -17,8 +17,6 @@ const rootStore = types.model("RootStore", {
 export const createRootStore = rootStore.create({
   programStore: { programs: [] },
   currentProgramStore: {
-    toAssingExercise: [],
-    toDeleteExercise: [],
     program: {
       id: 0,
       name: "",

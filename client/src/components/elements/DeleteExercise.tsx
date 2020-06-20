@@ -1,38 +1,27 @@
 import React from "react";
-import { DeleteExerciseState } from "../../types/state.types";
-import { DeleteExerciseProps } from "../../types/props.types";
+import { DeleteListProps } from "../../types/props.types";
+import { observer, inject } from "mobx-react";
 
-class DeleteExercise extends React.Component<
-  DeleteExerciseProps,
-  DeleteExerciseState
-> {
-  constructor(props: DeleteExerciseProps) {
-    super(props);
-    this.state = {
-      checked: false,
-    };
-  }
-
-  handleCheck = () => {
-    this.setState({ checked: !this.state.checked }, () => {
-      this.props.sendCheckToParent(1, this.state.checked);
-    });
+@inject("store")
+@observer
+class DeleteExercise extends React.Component<DeleteListProps, {}> {
+  deleteExercise = async () => {
+    try {
+      const deleted = await this.props.store?.currentProgramStore.deleteExercise(
+        [this.props.id]
+      );
+    } catch (error) {
+      console.log({ error });
+    }
   };
 
   render() {
     return (
       <div>
-        <h3>{this.props.name}</h3>
-        <label>
-          {" "}
-          Delete:
-          <input
-            type="checkbox"
-            checked={this.state.checked}
-            value="1"
-            onChange={this.handleCheck}
-          />
-        </label>
+        <p>
+          {this.props.name} exercise. Id: {this.props.id}
+        </p>
+        <button onClick={this.deleteExercise}>Delete</button>
       </div>
     );
   }

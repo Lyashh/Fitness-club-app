@@ -2,8 +2,8 @@ import React from "react";
 import { withRouter } from "react-router-dom";
 import { observer, inject } from "mobx-react";
 import { StoreRouterIdParam } from "../../types/props.types";
-import { PrPageState } from "../../types/state.types";
 import ExerciseInList from "../elements/ExerciseInList";
+import DeleteExercise from "../elements/DeleteExercise";
 
 @inject("store")
 @observer
@@ -23,10 +23,6 @@ class EditProgram extends React.Component<
 
   async getProgramData() {
     try {
-      const permission = this.props.store.profileStore.isAuthAndCoach();
-      if (!permission) {
-        this.props.history.push("/profile");
-      }
       await this.props.store.currentProgramStore.getProgram(
         parseInt(this.props.match.params.id)
       );
@@ -47,7 +43,6 @@ class EditProgram extends React.Component<
       await this.props.store.currentProgramStore.editProgram(
         this.state.newName
       );
-      this.getProgramData();
     } catch (error) {
       console.log({ error });
       if (error.code === 401) {
@@ -78,7 +73,7 @@ class EditProgram extends React.Component<
               {program.exercises.length > 0 ? (
                 program.exercises.map((exrcise, i) => {
                   return (
-                    <ExerciseInList
+                    <DeleteExercise
                       name={exrcise.name}
                       id={exrcise.id}
                       category={exrcise.category.name}

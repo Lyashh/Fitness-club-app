@@ -16,3 +16,14 @@ export const getProgramById = (id: number) => {
 export const editProgramRequest = (data: editProgram) => {
   return axios.patch(`/api/programs`, data);
 };
+
+export const assingPrExerciseRequest = (exercisesIds: number[], id: number) => {
+  return axios.patch("/api/programs/addExercises", { exercisesIds, id });
+};
+
+export const deletePrExerciseRequest = (exercisesIds: number[], id: number) => {
+  console.log({ exercisesIds });
+  console.log({ id });
+
+  return axios.patch("/api/programs/removeExercises", { id: id, exercisesIds });
+};

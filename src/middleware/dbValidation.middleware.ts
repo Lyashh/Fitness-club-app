@@ -9,7 +9,7 @@ export default class DBValidationMiddleware {
     return (req: Request, res: Response, next: NextFunction) => {
       return ProgramService.programHaveErxercises(
         req.body.exercisesIds,
-        req.body.programId
+        req.body.id
       )
         .then(() => {
           return next();
