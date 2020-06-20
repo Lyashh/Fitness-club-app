@@ -1,5 +1,6 @@
+import { logOutRequest } from "./../../api/auth.api";
 import { profileRequest } from "../../api/auth.api";
-import { types, flow } from "mobx-state-tree";
+import { types, flow, cast } from "mobx-state-tree";
 import user from "../models/user";
 import { loginRequest } from "../../api/auth.api";
 import CustomError from "../../types/customError.types";
@@ -54,7 +55,32 @@ const profileStore = types
       }
     });
 
-    return { setLogin, setProfile, setIsAuth };
+    const cleanAuthData = () => {
+      self.user = cast({
+        id: 0,
+        name: "",
+        email: "",
+        role: { id: 0, name: "" },
+      });
+      self.isAuth = true;
+    };
+
+    const logOut = flow(function* () {
+      try {
+        yield logOutRequest();
+        cleanAuthData();
+      } catch (error) {
+        if (error.response) {
+          throw new CustomError(
+            error.response.data.message,
+            error.response.status
+          );
+        }
+        throw error;
+      }
+    });
+
+    return { setLogin, setProfile, setIsAuth, cleanAuthData, logOut };
   })
   .views((self) => {
     const isAuthAndCoach = (): boolean => {

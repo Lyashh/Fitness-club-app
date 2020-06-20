@@ -20,7 +20,11 @@ const program = types
       self.exercises = cast(exercises);
     };
 
-    return { setFields, setExercises };
+    const setName = (name: string) => {
+      self.name = name;
+    };
+
+    return { setFields, setExercises, setName };
   });
 
 export type ProgramModel = Instance<typeof program>;

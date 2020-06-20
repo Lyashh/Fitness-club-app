@@ -42,9 +42,7 @@ const currentProgramStore = types
           id: self.program.id,
           newFields: { name },
         });
-        self.program.setFields({
-          name: updatedProgram.data.name,
-        });
+        self.program.setName(updatedProgram.data.name);
       } catch (error) {
         if (error.response) {
           if (error.response.status === 401) {

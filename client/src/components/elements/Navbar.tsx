@@ -10,6 +10,15 @@ class Navbar extends React.Component<NavbarProps, {}> {
     this.getProfile();
   }
 
+  logOut = async () => {
+    try {
+      await this.props.store?.profileStore.logOut();
+      this.props.history.push("/login");
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
   async getProfile() {
     try {
       await this.props.store?.profileStore.setProfile();
@@ -32,6 +41,12 @@ class Navbar extends React.Component<NavbarProps, {}> {
 
               <li>
                 <Link to="/programs">programs</Link>
+              </li>
+
+              <li>
+                <a onClick={this.logOut} href="#">
+                  Log Out
+                </a>
               </li>
 
               {store?.profileStore.user?.role.name === "coach" ? (

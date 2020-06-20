@@ -7,3 +7,7 @@ export const loginRequest = (email: string, password: string) => {
 export const profileRequest = () => {
   return axios.get("/api/auth/profile");
 };
+
+export const logOutRequest = () => {
+  return axios.post("/api/auth/logout");
+};

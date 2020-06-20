@@ -57,6 +57,42 @@ class EditProgram extends React.Component<
   render() {
     const { program } = this.props.store.currentProgramStore;
     const { exerciseStore } = this.props.store;
+    const programExercises = (
+      <div style={{ width: "50%" }}>
+        <h3>Program`s Exercises</h3>
+        {program.exercises.length > 0 ? (
+          program.exercises.map((exrcise, i) => {
+            return (
+              <DeleteExercise
+                name={exrcise.name}
+                id={exrcise.id}
+                category={exrcise.category.name}
+                key={i}
+              />
+            );
+          })
+        ) : (
+          <p>Program doesn't have exercises</p>
+        )}
+      </div>
+    );
+
+    const availableExercises = (
+      <div style={{ width: "50%" }}>
+        <h3>Available Exercises</h3>
+        {exerciseStore.getAvailable().map((exercise, i) => {
+          return (
+            <AvailableExercise
+              key={i}
+              name={exercise.name}
+              id={exercise.id}
+              category={exercise.category.name}
+            />
+          );
+        })}
+      </div>
+    );
+
     return (
       <div>
         {program.id ? (
@@ -71,36 +107,8 @@ class EditProgram extends React.Component<
             />
             <button onClick={this.updateProgram}>Update Name</button>
             <div style={{ width: "100%", display: "flex" }}>
-              <div style={{ width: "50%" }}>
-                <h3>Program`s Exercises</h3>
-                {program.exercises.length > 0 ? (
-                  program.exercises.map((exrcise, i) => {
-                    return (
-                      <DeleteExercise
-                        name={exrcise.name}
-                        id={exrcise.id}
-                        category={exrcise.category.name}
-                        key={i}
-                      />
-                    );
-                  })
-                ) : (
-                  <p>Program doesn't have exercises</p>
-                )}
-              </div>
-              <div style={{ width: "50%" }}>
-                <h3>Available Exercises</h3>
-                {exerciseStore.getAvailable().map((exercise, i) => {
-                  return (
-                    <AvailableExercise
-                      key={i}
-                      name={exercise.name}
-                      id={exercise.id}
-                      category={exercise.category.name}
-                    />
-                  );
-                })}
-              </div>
+              {programExercises}
+              {availableExercises}
             </div>
           </div>
         ) : null}

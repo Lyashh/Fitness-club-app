@@ -28,39 +28,49 @@ class ProgramPage extends React.Component<StoreRouterIdParam, {}> {
     const { program } = this.props.store.currentProgramStore;
     const { user } = this.props.store.profileStore;
 
+    const exercises = (
+      <div>
+        <h3>Exercises</h3>
+        {program.exercises.length > 0 ? (
+          program.exercises.map((exrcise, i) => {
+            return (
+              <ExerciseInList
+                name={exrcise.name}
+                id={exrcise.id}
+                category={exrcise.category.name}
+                key={i}
+              />
+            );
+          })
+        ) : (
+          <p>Program doesn't have exercises</p>
+        )}
+      </div>
+    );
+
+    const info = (
+      <div>
+        <h3>
+          {program.name} Id: {program.id}
+        </h3>
+        {user?.role.name === "coach" ? (
+          <button
+            onClick={() =>
+              this.props.history.push(`/programs/${program.id}/edit`)
+            }
+          >
+            Edit
+          </button>
+        ) : null}
+      </div>
+    );
+
     return (
       <div>
         {program.id ? (
           <div>
-            <h3>
-              {program.name} Id: {program.id}
-            </h3>
-            {user?.role.name === "coach" ? (
-              <button
-                onClick={() =>
-                  this.props.history.push(`/programs/${program.id}/edit`)
-                }
-              >
-                Edit
-              </button>
-            ) : null}
-            <div>
-              <h3>Exercises</h3>
-              {program.exercises.length > 0 ? (
-                program.exercises.map((exrcise, i) => {
-                  return (
-                    <ExerciseInList
-                      name={exrcise.name}
-                      id={exrcise.id}
-                      category={exrcise.category.name}
-                      key={i}
-                    />
-                  );
-                })
-              ) : (
-                <p>Program doesn't have exercises</p>
-              )}
-            </div>
+            {info}
+            {exercises}
           </div>
         ) : null}
       </div>
