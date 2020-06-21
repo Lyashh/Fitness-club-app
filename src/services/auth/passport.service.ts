@@ -25,16 +25,7 @@ export default class Auth {
     this.passport.use(this.localStrategy);
 
     this.passport.serializeUser((user: User, done: any) => {
-      return UserService.getUserById(user.id, false)
-        .then((user: User) => {
-          done(null, user);
-        })
-        .catch((e) => {
-          return done(null, null, {
-            message: `User with id: ${user.id} not found`,
-            httpStatus: 401,
-          });
-        });
+      done(null, user);
     });
 
     this.passport.deserializeUser((user: User, done: any) => {
@@ -54,6 +45,7 @@ export default class Auth {
           .compare(password, user.password)
           .then((result) => {
             if (result) {
+              delete user.password;
               return done(false, user, false);
             }
             return done(null, null, {
@@ -78,11 +70,11 @@ export default class Auth {
   public localMiddleware() {
     return (req: Request, res: Response, next: NextFunction) => {
       this.passport.authenticate("local", (err: any, user: any, info: any) => {
+        if (err || info) {
+          const error = new CustomError(info.message, info.httpStatus);
+          return next(error);
+        }
         req.logIn(user, function (err) {
-          if (err || info) {
-            const error = new CustomError(info.message, info.httpStatus);
-            return next(error);
-          }
           return res.redirect("profile");
         });
       })(req, res, next);
