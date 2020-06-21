@@ -29,38 +29,46 @@ class Navbar extends React.Component<NavbarProps, {}> {
 
   render() {
     const { store } = this.props;
+    const authNavs = (
+      <span>
+        <li>
+          <Link to="/profile">profile</Link>
+        </li>
+
+        <li>
+          <Link to="/programs">programs</Link>
+        </li>
+
+        <li>
+          <a onClick={this.logOut} href="#">
+            Log Out
+          </a>
+        </li>
+
+        {store?.profileStore.user?.role.name === "coach" ? (
+          <li>
+            <Link to="/createProgram">Create Program</Link>
+          </li>
+        ) : null}
+      </span>
+    );
+
+    const noaAuthNavs = (
+      <span>
+        <li>
+          <Link to="/login">Sign In</Link>
+        </li>
+
+        <li>
+          <Link to="/registration">Sign Out</Link>
+        </li>
+      </span>
+    );
 
     return (
       <div>
         <ul>
-          {store?.profileStore.isAuth ? (
-            <span>
-              <li>
-                <Link to="/profile">profile</Link>
-              </li>
-
-              <li>
-                <Link to="/programs">programs</Link>
-              </li>
-
-              <li>
-                <a onClick={this.logOut} href="#">
-                  Log Out
-                </a>
-              </li>
-
-              {store?.profileStore.user?.role.name === "coach" ? (
-                <li>
-                  <Link to="/createProgram">Create Program</Link>
-                </li>
-              ) : null}
-            </span>
-          ) : (
-            <li>
-              <Link to="/login">login</Link>
-            </li>
-          )}
-
+          {store?.profileStore.isAuth ? authNavs : noaAuthNavs}
           <li>
             <Link to="/">Home</Link>
           </li>

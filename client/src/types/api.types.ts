@@ -4,3 +4,11 @@ export interface editProgram {
     name: string;
   };
 }
+
+export interface registrationBody {
+  name: string;
+  age: number;
+  email: string;
+  password: string;
+  roleId?: number;
+}

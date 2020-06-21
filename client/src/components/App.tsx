@@ -9,6 +9,7 @@ import CreateProgram from "./pages/CreateProgram";
 import ProgramPage from "./pages/ProgramPage";
 import NotFound from "./pages/404";
 import EditProgram from "./pages/EditProgram";
+import Registration from "./pages/Registration";
 
 class App extends React.Component {
   render() {
@@ -18,6 +19,7 @@ class App extends React.Component {
         <Switch>
           <Route path="/" exact component={Home} />
           <Route path="/login" exact component={Login} />
+          <Route path="/registration" exact component={Registration} />
           <Route path="/profile" exact component={Profile} />
           <Route path="/programs" exact component={Programs} />
           <Route path="/programs/:id/edit" exact component={EditProgram} />

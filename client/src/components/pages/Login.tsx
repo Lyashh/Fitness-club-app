@@ -67,6 +67,8 @@ class Login extends React.Component<StoreAndRouterProps, LoginState> {
         </div>
         <p>Error: {this.state.errorMessage}</p>
         <p>Code: {this.state.errorCode}</p>
+        <p>{this.props.location?.state}</p>
+
         <button onClick={this.login}>Submit</button>
       </div>
     );

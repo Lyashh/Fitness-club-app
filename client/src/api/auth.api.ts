@@ -1,3 +1,4 @@
+import { registrationBody } from "./../types/api.types";
 import axios from "axios";
 
 export const loginRequest = (email: string, password: string) => {
@@ -10,4 +11,9 @@ export const profileRequest = () => {
 
 export const logOutRequest = () => {
   return axios.post("/api/auth/logout");
+};
+
+export const registrationRequest = (newUser: registrationBody) => {
+  newUser.roleId = 1;
+  return axios.post("/api/auth/registration", newUser);
 };

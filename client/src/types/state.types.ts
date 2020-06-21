@@ -7,6 +7,16 @@ export interface LoginState {
   errorCode: number;
 }
 
+export interface RegistationState {
+  email: string;
+  password: string;
+  confirmPassword: string;
+  name: string;
+  age: number;
+  errorMessage: string;
+  errorCode: number;
+}
+
 export interface EditProgramState {
   name: string;
   id: number;
