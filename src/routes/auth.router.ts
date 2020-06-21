@@ -42,7 +42,8 @@ export default class AuthRouter {
 
     this.router.get(
       "/profile/users",
-      //this.authorizeMiddleware.isAuth(),
+      this.authorizeMiddleware.isAuth(),
+      this.authorizeMiddleware.isCoach(),
       this.authController.getUsersByPrograms()
     );
 

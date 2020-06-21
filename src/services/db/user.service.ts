@@ -151,17 +151,22 @@ export default class UserService {
       });
   }
 
-  public static getUsersByPrograms(programs: number[]) {
-    return getRepository(User)
-      .createQueryBuilder("user")
-      .innerJoin(
-        "user.programs",
-        "program",
-        "program.id IN (:...programsIds)",
-        {
-          programsIds: [7, 6],
-        }
-      )
-      .getMany();
+  public static getUsersByPrograms(userId: number) {
+    return UserService.getUserById(userId, true).then((user) => {
+      const programsIds = user.coachPrograms.map((program) => {
+        return program.id;
+      });
+      return getRepository(User)
+        .createQueryBuilder("user")
+        .innerJoin(
+          "user.programs",
+          "program",
+          "program.id IN (:...programsIds)",
+          {
+            programsIds: programsIds,
+          }
+        )
+        .getMany();
+    });
   }
 }

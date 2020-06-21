@@ -46,7 +46,7 @@ export default class AuthController {
 
   public getUsersByPrograms() {
     return (req: Request, res: Response, next: NextFunction) => {
-      return UserService.getUsersByPrograms([3, 16])
+      return UserService.getUsersByPrograms(req.session!.passport.user.id)
         .then((users) => {
           return res.json(users);
         })
