@@ -17,7 +17,8 @@ export interface NavbarProps extends RouteComponentProps {
   store?: Root;
 }
 
-export interface StoreAndRouterProps extends RouteComponentProps {
+export interface StoreAndRouterProps
+  extends RouteComponentProps<{ detail: string }> {
   store: Root;
 }
 
