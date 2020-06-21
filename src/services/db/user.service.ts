@@ -15,7 +15,9 @@ export default class UserService {
         "programs",
         "coachPrograms",
         "programs.exercises",
-        "coachPrograms.exercises"
+        "programs.exercises.category",
+        "coachPrograms.exercises",
+        "coachPrograms.exercises.category"
       );
     }
     return getRepository(User)
@@ -63,8 +65,8 @@ export default class UserService {
   public static getUserByEmail(email: string) {
     return getRepository(User).findOne({
       where: { email },
-      select: ["id", "name", "email", "password"],
-      relations: ["role", "programs", "coachPrograms"],
+      select: ["id", "name", "email", "password", "age"],
+      relations: ["role"],
     });
   }
 
@@ -147,5 +149,19 @@ export default class UserService {
           return user;
         }
       });
+  }
+
+  public static getUsersByPrograms(programs: number[]) {
+    return getRepository(User)
+      .createQueryBuilder("user")
+      .innerJoin(
+        "user.programs",
+        "program",
+        "program.id IN (:...programsIds)",
+        {
+          programsIds: [7, 6],
+        }
+      )
+      .getMany();
   }
 }
