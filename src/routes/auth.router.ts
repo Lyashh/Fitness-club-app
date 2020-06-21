@@ -40,6 +40,12 @@ export default class AuthRouter {
       this.authController.getProgramsByRole()
     );
 
+    this.router.get(
+      "/profile/users",
+      //this.authorizeMiddleware.isAuth(),
+      this.authController.getUsersByPrograms()
+    );
+
     this.router.post(
       "/registration",
       this.authorizeMiddleware.notAuth(),

@@ -150,4 +150,18 @@ export default class UserService {
         }
       });
   }
+
+  public static getUsersByPrograms(programs: number[]) {
+    return getRepository(User)
+      .createQueryBuilder("user")
+      .innerJoin(
+        "user.programs",
+        "program",
+        "program.id IN (:...programsIds)",
+        {
+          programsIds: [7, 6],
+        }
+      )
+      .getMany();
+  }
 }
