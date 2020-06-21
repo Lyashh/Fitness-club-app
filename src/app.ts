@@ -2,6 +2,7 @@ import express, { Response, Request, NextFunction } from "express";
 import bodyParser from "body-parser";
 import session from "express-session";
 import doenv from "dotenv";
+import cors from "cors";
 
 import ErrorHandler from "./services/handlers/error.handler";
 import Router from "./routes/index.router";
@@ -28,9 +29,17 @@ export default class App {
         secret: process.env.SESSION_SECRET || "secret",
         name: "fitnes-app-session",
         resave: false,
-        saveUninitialized: false,
+        saveUninitialized: true,
       })
     );
+
+    this.expressApp.use(
+      cors({
+        //credentials: true,
+        origin: process.env.CORS_ORIGIN || "http://localhost:3000",
+      })
+    );
+
     this.expressApp.set("port", process.env.PORT || 4000);
     this.expressApp.use(bodyParser.json());
     this.expressApp.use(bodyParser.urlencoded({ extended: true }));
