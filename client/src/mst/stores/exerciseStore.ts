@@ -1,4 +1,4 @@
-import { ExirciseModel } from './../models/exercise';
+import { ExirciseModel } from "./../models/exercise";
 import { getExercisesRequest } from "./../../api/exercise.api";
 import { types, flow, getParent } from "mobx-state-tree";
 import exercise from "../models/exercise";
@@ -27,6 +27,7 @@ const exerciseStore = types
         throw error;
       }
     });
+
     return { getExercises };
   })
   .views((self) => {

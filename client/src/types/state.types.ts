@@ -1,4 +1,6 @@
+import { ProgramModel } from "./../mst/models/program";
 import { ExirciseModel } from "./../mst/models/exercise";
+import { number } from "@hapi/joi";
 
 export interface LoginState {
   email: string;
@@ -15,6 +17,14 @@ export interface RegistationState {
   age: number;
   errorMessage: string;
   errorCode: number;
+}
+
+export interface UserPageState {
+  id: number;
+  age: number;
+  name: string;
+  email: string;
+  programs: ProgramModel[];
 }
 
 export interface EditProgramState {

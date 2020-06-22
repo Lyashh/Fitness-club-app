@@ -1,5 +1,5 @@
 import React from "react";
-import { withRouter } from "react-router-dom";
+import { withRouter, Link } from "react-router-dom";
 import { observer, inject } from "mobx-react";
 import { StoreAndRouterProps } from "../../types/props.types";
 
@@ -29,13 +29,15 @@ class CoachUsers extends React.Component<StoreAndRouterProps, {}> {
             return (
               <div key={i}>
                 <p>
-                  name: {user.name}, id: {user.id}
+                  <Link to={`/users/${user.id}`}>
+                    name: {user.name}, id: {user.id}
+                  </Link>
                 </p>
               </div>
             );
           })
         ) : (
-          <p>You dont have programs</p>
+          <p>There are no users with your programs</p>
         )}
       </div>
     );

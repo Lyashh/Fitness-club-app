@@ -46,6 +46,19 @@ const programStore = types
     });
 
     return { setPrograms, createProgram };
+  })
+  .views((self) => {
+    const programsThatNotAssign = () => {
+      return self.programs.filter((program) => {
+        const assigned = getParent<typeof rootStore>(
+          self
+        ).currentUserStore.user.programs.some((userProgram) => {
+          return program.id === userProgram.id;
+        });
+        return !assigned;
+      });
+    };
+    return { programsThatNotAssign };
   });
 
 export default programStore;

@@ -4,10 +4,12 @@ import exerciseStore from "./exerciseStore";
 import usersStore from "./usersStore";
 import profileStore from "./profileStore";
 import currentProgramStore from "./currentProgramStore";
+import currentUserStore from "../stores/currentUserStore";
 
 const rootStore = types.model("RootStore", {
   programStore,
   currentProgramStore,
+  currentUserStore,
   exerciseStore,
   profileStore,
   usersStore,
@@ -19,6 +21,16 @@ export const createRootStore = rootStore.create({
     program: {
       id: 0,
       name: "",
+    },
+  },
+  currentUserStore: {
+    user: {
+      id: 0,
+      name: "",
+      email: "",
+      age: 0,
+      programs: [],
+      role: { id: 0, name: "" },
     },
   },
   exerciseStore: { exercises: [] },

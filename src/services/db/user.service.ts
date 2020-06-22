@@ -13,15 +13,16 @@ export default class UserService {
     if (programs) {
       relations.push(
         "programs",
-        "coachPrograms",
-        "programs.exercises",
+        "coachPrograms"
+        /* "programs.exercises",
         "programs.exercises.category",
         "coachPrograms.exercises",
-        "coachPrograms.exercises.category"
+        "coachPrograms.exercises.category" */
       );
     }
     return getRepository(User)
       .findOne(id, {
+        select: ["age", "name", "email", "id"],
         relations,
       })
       .then((user) => {

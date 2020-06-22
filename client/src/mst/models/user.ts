@@ -9,7 +9,7 @@ const user = types
     email: types.string,
     age: types.maybeNull(types.integer),
     role: role,
-    programs: types.maybeNull(types.optional(types.array(program), [])),
+    programs: types.optional(types.array(program), []),
   })
   .actions((self) => {
     const setFields = (fields: any) => {
@@ -20,7 +20,16 @@ const user = types
       self.role = fields.role;
     };
 
-    return { setFields };
+    const setFieldsWithPrograms = (fields: any) => {
+      self.email = fields.email;
+      self.name = fields.name;
+      self.age = fields.age;
+      self.id = fields.id;
+      self.role = fields.role;
+      self.programs = fields.programs;
+    };
+
+    return { setFields, setFieldsWithPrograms };
   });
 
 export default user;

@@ -13,6 +13,12 @@ export interface ExerciseFields {
   category: string;
 }
 
+export interface UserProgramListProps {
+  name: string;
+  id: number;
+  store?: Root;
+}
+
 export interface NavbarProps extends RouteComponentProps {
   store?: Root;
 }
