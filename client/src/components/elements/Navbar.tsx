@@ -46,9 +46,14 @@ class Navbar extends React.Component<NavbarProps, {}> {
         </li>
 
         {store?.profileStore.user?.role.name === "coach" ? (
-          <li>
-            <Link to="/createProgram">Create Program</Link>
-          </li>
+          <span>
+            <li>
+              <Link to="/createProgram">Create Program</Link>
+            </li>
+            <li>
+              <Link to="/programs/users">Users with Programs</Link>
+            </li>
+          </span>
         ) : null}
       </span>
     );

@@ -37,7 +37,6 @@ class CreateProgram extends React.Component<
   };
 
   render() {
-    const { store } = this.props;
     return (
       <div>
         <h2>New Program</h2>

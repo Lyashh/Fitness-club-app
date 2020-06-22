@@ -166,6 +166,9 @@ export default class UserService {
             programsIds: programsIds,
           }
         )
+        .leftJoinAndSelect("user.role", "role", "role.name = :athlete", {
+          athlete: "athlete",
+        })
         .getMany();
     });
   }

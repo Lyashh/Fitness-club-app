@@ -53,7 +53,7 @@ class ProgramPage extends React.Component<StoreRouterIdParam, {}> {
         <h3>
           {program.name} Id: {program.id}
         </h3>
-        {user?.role.name === "coach" ? (
+        {user?.role?.name === "coach" ? (
           <button
             onClick={() =>
               this.props.history.push(`/programs/${program.id}/edit`)

@@ -1,5 +1,6 @@
 import { types } from "mobx-state-tree";
 import role from "./role";
+import program from "./program";
 
 const user = types
   .model("user", {
@@ -8,6 +9,7 @@ const user = types
     email: types.string,
     age: types.maybeNull(types.integer),
     role: role,
+    programs: types.maybeNull(types.optional(types.array(program), [])),
   })
   .actions((self) => {
     const setFields = (fields: any) => {

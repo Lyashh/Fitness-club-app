@@ -9,6 +9,10 @@ export const profileRequest = () => {
   return axios.get("/api/auth/profile");
 };
 
+export const coachUsersRequest = () => {
+  return axios.get("/api/auth/profile/users");
+};
+
 export const logOutRequest = () => {
   return axios.post("/api/auth/logout");
 };
