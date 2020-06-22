@@ -108,7 +108,7 @@ export default class UserController {
       return this.userService
         .assignProgramToUser(req.body.userId, req.body.programId)
         .then((user) => {
-          return res.json({ user });
+          return res.json(user);
         })
         .catch((e) => {
           if (e.httpStatus) {
@@ -128,7 +128,7 @@ export default class UserController {
           //user id from session
           .unassignProgramToUser(req.body.userId, req.body.programId)
           .then((user) => {
-            return res.json({ user });
+            return res.json(user);
           })
           .catch((e) => {
             if (e.httpStatus) {

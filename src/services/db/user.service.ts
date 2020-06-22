@@ -129,7 +129,7 @@ export default class UserService {
         if (tempProgram) {
           user.programs.push(tempProgram);
           await getRepository(User).save(user);
-          return user;
+          return UserService.getUserById(userId, true);
         }
       });
   }
@@ -147,7 +147,10 @@ export default class UserService {
             return program.id !== programId;
           });
           await getRepository(User).save(user);
-          return user;
+          user.programs = user.programs.filter((pr) => {
+            return { id: pr.id, name: pr.name };
+          });
+          return UserService.getUserById(userId, true);
         }
       });
   }
@@ -167,7 +170,7 @@ export default class UserService {
             programsIds: programsIds,
           }
         )
-        .leftJoinAndSelect("user.role", "role", "role.name = :athlete", {
+        .innerJoinAndSelect("user.role", "role", "role.name = :athlete", {
           athlete: "athlete",
         })
         .getMany();

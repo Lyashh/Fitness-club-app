@@ -5,6 +5,7 @@ import { StoreRouterIdParam } from "../../types/props.types";
 import { userByIdRequest } from "../../api/user.api";
 import { UserPageState } from "../../types/state.types";
 import UserProgram from "../elements/UserProgram";
+import AvailableProgram from "../elements/AvailablePrograms";
 
 @inject("store")
 @observer
@@ -49,7 +50,13 @@ class UserPage extends React.Component<StoreRouterIdParam, {}> {
             </div>
             <div style={{ width: "50%" }}>
               {programStore.programsThatNotAssign().map((program, i) => {
-                return <div>{program.name}</div>;
+                return (
+                  <AvailableProgram
+                    id={program.id}
+                    name={program.name}
+                    key={i}
+                  />
+                );
               })}
             </div>
           </div>

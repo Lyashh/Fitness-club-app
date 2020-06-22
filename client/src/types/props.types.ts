@@ -19,6 +19,12 @@ export interface UserProgramListProps {
   store?: Root;
 }
 
+export interface ProgramsListProps {
+  name: string;
+  id: number;
+  store?: Root;
+}
+
 export interface NavbarProps extends RouteComponentProps {
   store?: Root;
 }

@@ -1,4 +1,8 @@
-import { userByIdRequest, unassignProgramRequest } from "./../../api/user.api";
+import {
+  userByIdRequest,
+  unassignProgramRequest,
+  assignProgramRequest,
+} from "./../../api/user.api";
 import {} from "./../../api/programs.api";
 import { types, flow, getParent, cast } from "mobx-state-tree";
 import CustomError from "../../types/customError.types";
@@ -50,8 +54,32 @@ const currentUserStore = types
       }
     });
 
+    const assignProgram = flow(function* (programId: number) {
+      try {
+        const { data } = yield assignProgramRequest(self.user.id, programId);
+        console.log(self.user.id);
+        console.log(programId);
+
+        console.log(data.programs);
+
+        self.user.programs = data.programs;
+      } catch (error) {
+        if (error.response) {
+          if (error.response.status === 401) {
+            getParent<typeof rootStore>(self).profileStore.setIsAuth(false);
+          }
+          throw new CustomError(
+            error.response.data.message,
+            error.response.status
+          );
+        }
+        throw error;
+      }
+    });
+
     return {
       getUser,
+      assignProgram,
       unassignProgram,
     };
   });

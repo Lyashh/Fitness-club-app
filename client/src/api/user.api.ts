@@ -7,3 +7,7 @@ export const userByIdRequest = (id: number) => {
 export const unassignProgramRequest = (userId: number, programId: number) => {
   return axios.patch(`/api/users/unAssignProgram`, { userId, programId });
 };
+
+export const assignProgramRequest = (userId: number, programId: number) => {
+  return axios.patch(`/api/users/assignProgram`, { userId, programId });
+};
