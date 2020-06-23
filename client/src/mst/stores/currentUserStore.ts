@@ -2,6 +2,7 @@ import {
   userByIdRequest,
   unassignProgramRequest,
   assignProgramRequest,
+  usersWithCoachPrograms,
 } from "./../../api/user.api";
 import {} from "./../../api/programs.api";
 import { types, flow, getParent, cast } from "mobx-state-tree";
@@ -16,7 +17,7 @@ const currentUserStore = types
   .actions((self) => {
     const getUser = flow(function* (userId: number) {
       try {
-        const { data } = yield userByIdRequest(userId);
+        const { data } = yield usersWithCoachPrograms(userId);
         self.user.setFieldsWithPrograms(data);
       } catch (error) {
         if (error.response) {

@@ -1,4 +1,4 @@
-import { types } from "mobx-state-tree";
+import { types, Instance } from "mobx-state-tree";
 import role from "./role";
 import program from "./program";
 
@@ -31,5 +31,7 @@ const user = types
 
     return { setFields, setFieldsWithPrograms };
   });
+
+export type UserModel = Instance<typeof user>;
 
 export default user;

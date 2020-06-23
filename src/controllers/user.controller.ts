@@ -105,8 +105,10 @@ export default class UserController {
 
   public assignProgramToUser() {
     return async (req: Request, res: Response, next: NextFunction) => {
-      return this.userService
-        .assignProgramToUser(req.body.userId, req.body.programId)
+      return UserService.assignProgramToUser(
+        req.body.userId,
+        req.body.programId
+      )
         .then((user) => {
           return res.json(user);
         })
@@ -124,7 +126,7 @@ export default class UserController {
   public unAssignProgramToUser() {
     return async (req: Request, res: Response, next: NextFunction) => {
       return (
-        this.userService
+        UserService
           //user id from session
           .unassignProgramToUser(req.body.userId, req.body.programId)
           .then((user) => {
@@ -139,6 +141,26 @@ export default class UserController {
             return next(error);
           })
       );
+    };
+  }
+
+  public oneCoachPrograms() {
+    return async (req: Request, res: Response, next: NextFunction) => {
+      return UserService.userOneCoachPrograms(
+        parseInt(req.params.id),
+        req.session!.passport.user.id
+      )
+        .then((user) => {
+          return res.json(user);
+        })
+        .catch((e) => {
+          if (e.httpStatus) {
+            const error = new CustomError(e.message, e.httpStatus);
+            return next(error);
+          }
+          const error = new CustomError(e.message, null, e.code);
+          return next(error);
+        });
     };
   }
 }

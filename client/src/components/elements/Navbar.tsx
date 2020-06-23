@@ -51,6 +51,9 @@ class Navbar extends React.Component<NavbarProps, {}> {
               <Link to="/createProgram">Create Program</Link>
             </li>
             <li>
+              <Link to="/users/athletes">All Athletes</Link>
+            </li>
+            <li>
               <Link to="/programs/users">Users with Programs</Link>
             </li>
           </span>

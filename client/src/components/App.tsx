@@ -12,6 +12,7 @@ import EditProgram from "./pages/EditProgram";
 import Registration from "./pages/Registration";
 import CoachUsers from "./pages/CoachUsers";
 import UserPage from "./pages/UserPage";
+import Athletes from "./pages/Athletes";
 
 class App extends React.Component {
   render() {
@@ -23,6 +24,7 @@ class App extends React.Component {
           <Route path="/login" exact component={Login} />
           <Route path="/registration" exact component={Registration} />
           <Route path="/profile" exact component={Profile} />
+          <Route path="/users/athletes" exact component={Athletes} />
           <Route path="/users/:id" exact component={UserPage} />
           <Route path="/programs" exact component={Programs} />
           <Route path="/programs/users" exact component={CoachUsers} />

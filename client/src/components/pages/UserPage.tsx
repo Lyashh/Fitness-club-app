@@ -16,10 +16,10 @@ class UserPage extends React.Component<StoreRouterIdParam, {}> {
 
   async componentDidMount() {
     try {
-      this.props.store.currentUserStore.getUser(
+      await this.props.store.currentUserStore.getUser(
         parseInt(this.props.match.params.id)
       );
-      this.props.store.programStore.setPrograms();
+      await this.props.store.programStore.setPrograms();
     } catch (error) {
       console.log({ error });
       if (error.code === 401) {

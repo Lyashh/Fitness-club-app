@@ -1,6 +1,6 @@
+import { UserModel } from "./../mst/models/user";
 import { ProgramModel } from "./../mst/models/program";
 import { ExirciseModel } from "./../mst/models/exercise";
-import { number } from "@hapi/joi";
 
 export interface LoginState {
   email: string;
@@ -46,4 +46,8 @@ export interface PrPageState {
 
 export interface DeleteExerciseState {
   checked: boolean;
+}
+
+export interface AthletesState {
+  users: UserModel[];
 }

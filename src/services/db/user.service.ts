@@ -45,16 +45,18 @@ export default class UserService {
   }
 
   public static getAthletes() {
-    return getRepository(Role)
-      .findOne({
-        relations: ["users"],
-        where: {
-          name: "athlete",
-        },
+    return getRepository(User)
+      .createQueryBuilder("user")
+      .select(["user.age", "user.name", "user.id", "user.email"])
+      .innerJoinAndSelect("user.role", "role", "role.name = :roleName", {
+        roleName: "athlete",
       })
-      .then((role) => {
-        if (role) {
-          return role.users;
+      .orderBy("user.name", "ASC")
+      .getMany()
+
+      .then((users) => {
+        if (users) {
+          return users;
         }
         return Promise.reject({
           httpStatus: 404,
@@ -118,7 +120,7 @@ export default class UserService {
       });
   }
 
-  public assignProgramToUser(userId: number, programId: number) {
+  public static assignProgramToUser(userId: number, programId: number) {
     let tempProgram: null | Program = null;
     return ProgramService.getProgramById(programId)
       .then((program: Program) => {
@@ -134,7 +136,7 @@ export default class UserService {
       });
   }
 
-  public unassignProgramToUser(userId: number, programId: number) {
+  public static unassignProgramToUser(userId: number, programId: number) {
     let tempProgram: null | Program = null;
     return ProgramService.getProgramById(programId)
       .then((program: Program) => {
@@ -173,7 +175,20 @@ export default class UserService {
         .innerJoinAndSelect("user.role", "role", "role.name = :athlete", {
           athlete: "athlete",
         })
+        .orderBy("user.name", "ASC")
         .getMany();
     });
+  }
+
+  public static userOneCoachPrograms(userId: number, coachId: number) {
+    return getRepository(User)
+      .createQueryBuilder("user")
+      .where("user.id = :id", { id: userId })
+      .select(["user.age", "user.id", "user.email", "user.name"])
+      .leftJoinAndSelect("user.programs", "program")
+      .leftJoinAndSelect("user.role", "role")
+      .leftJoin("program.coach", "user.coachPrograms")
+      .where("program.coach.id = :id", { id: coachId })
+      .getOne();
   }
 }
