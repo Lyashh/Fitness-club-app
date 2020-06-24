@@ -107,7 +107,8 @@ export default class UserController {
     return async (req: Request, res: Response, next: NextFunction) => {
       return UserService.assignProgramToUser(
         req.body.userId,
-        req.body.programId
+        req.body.programId,
+        req.session!.passport.user.id
       )
         .then((user) => {
           return res.json(user);
@@ -128,7 +129,11 @@ export default class UserController {
       return (
         UserService
           //user id from session
-          .unassignProgramToUser(req.body.userId, req.body.programId)
+          .unassignProgramToUser(
+            req.body.userId,
+            req.body.programId,
+            req.session!.passport.user.id
+          )
           .then((user) => {
             return res.json(user);
           })

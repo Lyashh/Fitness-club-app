@@ -1,5 +1,5 @@
 import { programsRequest, createProgramRequest } from "../../api/programs.api";
-import { types, flow, getParent } from "mobx-state-tree";
+import { types, flow, getParent, cast } from "mobx-state-tree";
 import program from "../models/program";
 import CustomError from "../../types/customError.types";
 import rootStore from "../stores/rootStore";
@@ -9,6 +9,10 @@ const programStore = types
     programs: types.array(program),
   })
   .actions((self) => {
+    const clear = () => {
+      self.programs = cast([]);
+    };
+
     const setPrograms = flow(function* () {
       try {
         const programs = yield programsRequest();
@@ -45,7 +49,7 @@ const programStore = types
       }
     });
 
-    return { setPrograms, createProgram };
+    return { setPrograms, createProgram, clear };
   })
   .views((self) => {
     const programsThatNotAssign = () => {

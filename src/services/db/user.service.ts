@@ -120,7 +120,11 @@ export default class UserService {
       });
   }
 
-  public static assignProgramToUser(userId: number, programId: number) {
+  public static assignProgramToUser(
+    userId: number,
+    programId: number,
+    coachId: number
+  ) {
     let tempProgram: null | Program = null;
     return ProgramService.getProgramById(programId)
       .then((program: Program) => {
@@ -131,12 +135,16 @@ export default class UserService {
         if (tempProgram) {
           user.programs.push(tempProgram);
           await getRepository(User).save(user);
-          return UserService.getUserById(userId, true);
+          return UserService.userOneCoachPrograms(userId, coachId);
         }
       });
   }
 
-  public static unassignProgramToUser(userId: number, programId: number) {
+  public static unassignProgramToUser(
+    userId: number,
+    programId: number,
+    coachId: number
+  ) {
     let tempProgram: null | Program = null;
     return ProgramService.getProgramById(programId)
       .then((program: Program) => {
@@ -152,7 +160,7 @@ export default class UserService {
           user.programs = user.programs.filter((pr) => {
             return { id: pr.id, name: pr.name };
           });
-          return UserService.getUserById(userId, true);
+          return UserService.userOneCoachPrograms(userId, coachId);
         }
       });
   }
@@ -162,33 +170,46 @@ export default class UserService {
       const programsIds = user.coachPrograms.map((program) => {
         return program.id;
       });
-      return getRepository(User)
-        .createQueryBuilder("user")
-        .innerJoin(
-          "user.programs",
-          "program",
-          "program.id IN (:...programsIds)",
-          {
-            programsIds: programsIds,
-          }
-        )
-        .innerJoinAndSelect("user.role", "role", "role.name = :athlete", {
-          athlete: "athlete",
-        })
-        .orderBy("user.name", "ASC")
-        .getMany();
+      if (programsIds.length > 0) {
+        return getRepository(User)
+          .createQueryBuilder("user")
+          .leftJoinAndSelect("user.programs", "program")
+          .where("program.id IN (:...programsIds)", {
+            programsIds,
+          })
+          .innerJoinAndSelect("user.role", "role", "role.name = :athlete", {
+            athlete: "athlete",
+          })
+          .orderBy("user.name", "ASC")
+          .getMany();
+      }
+      return Promise.resolve([]);
     });
   }
 
-  public static userOneCoachPrograms(userId: number, coachId: number) {
+  public static async userOneCoachPrograms(userId: number, coachId: number) {
     return getRepository(User)
       .createQueryBuilder("user")
-      .where("user.id = :id", { id: userId })
-      .select(["user.age", "user.id", "user.email", "user.name"])
+      .select(["user.age", "user.email", "user.name", "user.id"])
       .leftJoinAndSelect("user.programs", "program")
+      .innerJoinAndSelect(
+        "program.coach",
+        "user.coachPrograms",
+        "program.coach.id = :cid",
+        { cid: coachId }
+      )
       .leftJoinAndSelect("user.role", "role")
-      .leftJoin("program.coach", "user.coachPrograms")
-      .where("program.coach.id = :id", { id: coachId })
-      .getOne();
+      .where("user.id = :id", { id: userId })
+      .getOne()
+      .then(async (user) => {
+        if (user) {
+          return user;
+        }
+        const emptyProgramsUser = await UserService.getUserById(userId, false);
+        if (emptyProgramsUser) {
+          emptyProgramsUser.programs = [];
+          return emptyProgramsUser;
+        }
+      });
   }
 }

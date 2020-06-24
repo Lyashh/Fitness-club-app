@@ -16,6 +16,9 @@ class UserPage extends React.Component<StoreRouterIdParam, {}> {
 
   async componentDidMount() {
     try {
+      await this.props.store.currentUserStore.clear();
+      await this.props.store.programStore.clear();
+
       await this.props.store.currentUserStore.getUser(
         parseInt(this.props.match.params.id)
       );
@@ -35,34 +38,42 @@ class UserPage extends React.Component<StoreRouterIdParam, {}> {
   render() {
     const { user } = this.props.store.currentUserStore;
     const { programStore } = this.props.store;
-    return (
+
+    const userInfo = (
       <div>
-        <div>
-          <h2>{user.name}</h2>
-          <p>email: {user.email}</p>
-          <div style={{ width: "100%", display: "flex" }}>
-            <div style={{ width: "50%" }}>
-              {user.programs?.map((program, i) => {
-                return (
-                  <UserProgram key={i} name={program.name} id={program.id} />
-                );
-              })}
-            </div>
-            <div style={{ width: "50%" }}>
-              {programStore.programsThatNotAssign().map((program, i) => {
-                return (
-                  <AvailableProgram
-                    id={program.id}
-                    name={program.name}
-                    key={i}
-                  />
-                );
-              })}
-            </div>
-          </div>
+        <h2>{user.name}</h2>
+        <p>email: {user.email}</p>
+      </div>
+    );
+
+    const userPrograms = (
+      <div style={{ width: "50%" }}>
+        {user.programs?.map((program, i) => {
+          return <UserProgram key={i} name={program.name} id={program.id} />;
+        })}
+      </div>
+    );
+
+    const availablePrograms = (
+      <div style={{ width: "50%" }}>
+        {programStore.programsThatNotAssign().map((program, i) => {
+          return (
+            <AvailableProgram id={program.id} name={program.name} key={i} />
+          );
+        })}
+      </div>
+    );
+
+    const main = (
+      <div>
+        {userInfo}
+        <div style={{ width: "100%", display: "flex" }}>
+          {userPrograms} {availablePrograms}
         </div>
       </div>
     );
+
+    return <div>{user.id > 0 ? main : <p>Loading...</p>}</div>;
   }
 }
 
