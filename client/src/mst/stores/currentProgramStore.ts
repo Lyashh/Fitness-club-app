@@ -4,16 +4,25 @@ import {
   getProgramById,
   assingPrExerciseRequest,
 } from "./../../api/programs.api";
-import { types, flow, getParent } from "mobx-state-tree";
+import { types, flow, getParent, cast } from "mobx-state-tree";
 import program from "../models/program";
 import CustomError from "../../types/customError.types";
 import rootStore from "../stores/rootStore";
+
+export const defaultProgram = {
+  id: 0,
+  name: "",
+};
 
 const currentProgramStore = types
   .model("CurrentProgramStore", {
     program,
   })
   .actions((self) => {
+    const clear = () => {
+      self.program = cast(defaultProgram);
+    };
+
     const getProgram = flow(function* (programId: number) {
       try {
         const program = yield getProgramById(programId);
@@ -100,6 +109,7 @@ const currentProgramStore = types
     });
 
     return {
+      clear,
       getProgram,
       editProgram,
       deleteExercise,

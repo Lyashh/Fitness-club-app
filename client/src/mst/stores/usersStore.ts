@@ -1,5 +1,5 @@
 import { coachUsersRequest } from "./../../api/auth.api";
-import { types, flow, getParent } from "mobx-state-tree";
+import { types, flow, getParent, cast } from "mobx-state-tree";
 import user from "../models/user";
 import CustomError from "../../types/customError.types";
 import rootStore from "./rootStore";
@@ -9,6 +9,9 @@ const usersStore = types
     users: types.optional(types.array(user), []),
   })
   .actions((self) => {
+    const clear = () => {
+      self.users = cast([]);
+    };
     const getCoachUsers = flow(function* () {
       try {
         const users = yield coachUsersRequest();
@@ -26,7 +29,7 @@ const usersStore = types
         throw error;
       }
     });
-    return { getCoachUsers };
+    return { getCoachUsers, clear };
   });
 
 export default usersStore;

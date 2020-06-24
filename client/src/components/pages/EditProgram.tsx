@@ -23,6 +23,8 @@ class EditProgram extends React.Component<
 
   async getProgramAndEExercises() {
     try {
+      await this.props.store.currentProgramStore.clear();
+
       await this.props.store.currentProgramStore.getProgram(
         parseInt(this.props.match.params.id)
       );

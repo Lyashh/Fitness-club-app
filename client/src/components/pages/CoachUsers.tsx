@@ -12,6 +12,7 @@ class CoachUsers extends React.Component<StoreAndRouterProps, {}> {
 
   async setUsers() {
     try {
+      await this.props.store.usersStore.clear();
       await this.props.store.usersStore.getCoachUsers();
     } catch (error) {
       console.log(error);

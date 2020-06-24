@@ -13,6 +13,7 @@ class Programs extends React.Component<StoreAndRouterProps, {}> {
 
   async setPrograms() {
     try {
+      await this.props.store.programStore.clear();
       await this.props.store.programStore.setPrograms();
     } catch (error) {
       console.log(error);

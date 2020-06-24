@@ -9,6 +9,7 @@ import ExerciseInList from "../elements/ExerciseInList";
 class ProgramPage extends React.Component<StoreRouterIdParam, {}> {
   async componentDidMount() {
     try {
+      await this.props.store.currentProgramStore.clear();
       await this.props.store.currentProgramStore.getProgram(
         parseInt(this.props.match.params.id)
       );
@@ -72,7 +73,9 @@ class ProgramPage extends React.Component<StoreRouterIdParam, {}> {
             {info}
             {exercises}
           </div>
-        ) : null}
+        ) : (
+          <p>Loading...</p>
+        )}
       </div>
     );
   }
