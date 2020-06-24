@@ -65,10 +65,15 @@ p {
     color: #fff;
     font-size: 21px;
     font-weight: 400;
-    text-decoration: none;
+    text-decoration: none!important;
 }
 
 .list-link:visited {
+    color: #fff;
+    text-decoration: none;
+}
+
+.list-link:hover {
     color: #fff;
     text-decoration: none;
 }
@@ -85,7 +90,7 @@ p {
     padding: 10px;
 }
 
-.program-box {
+.list-box {
     position: relative;
     height: 100%;
     background-color: #17A2B8;
@@ -93,7 +98,7 @@ p {
     height: 100px;
 }
 
-.program-box:hover {
+.list-box:hover, .user-list-col:hover {
     background-color: #177280;
 }
 
@@ -104,6 +109,28 @@ p {
     margin-left: 15px;
     -ms-transform: translateY(-50%);
     transform: translateY(-50%);
+}
+
+/* USERS */
+
+.user-list-col {
+    background-color: #17A2B8;
+    margin-top: 30px;
+    height: 90px;
+    border-radius: 7px;
+}
+
+.user-list-item {
+    width: 100%;
+    position: static;
+    height: 100%;
+}
+
+.athelete-list-icon {
+    content: url("../img/athlete.png");
+    height: 55px;
+    width: auto;
+    margin-right: 20px;
 }
 
 

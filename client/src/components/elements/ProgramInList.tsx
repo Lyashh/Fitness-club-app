@@ -7,7 +7,7 @@ const Program = (props: ProgramProps) => {
   return (
     <Col md={4} className="program-list">
       <Link to={`/programs/${props.program.id}`} className="list-link">
-        <div className="program-box">
+        <div className="list-box">
           <div className="align-verical">
             <img className="program-icon" />
             <span>
