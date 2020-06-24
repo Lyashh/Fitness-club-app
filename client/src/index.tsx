@@ -1,21 +1,22 @@
-import React from 'react';
-import ReactDOM from 'react-dom';
+import React from "react";
+import ReactDOM from "react-dom";
+import * as serviceWorker from "./serviceWorker";
 
-import './css/style.css';
+import App from "./components/App";
 
-import * as serviceWorker from './serviceWorker';
-import { Provider } from 'mobx-react';
+import "bootstrap/dist/css/bootstrap.min.css";
+import "./css/style.css";
 
-import App from './components/App';
+import { Provider } from "mobx-react";
 
-import { createRootStore } from "./mst/stores/rootStore" 
-import { onPatch } from 'mobx-state-tree';
+import { createRootStore } from "./mst/stores/rootStore";
+import { onPatch } from "mobx-state-tree";
 
-const store = createRootStore
+const store = createRootStore;
 
-onPatch(store, patch => {
-  console.log(patch)
-})
+onPatch(store, (patch) => {
+  console.log(patch);
+});
 
 ReactDOM.render(
   <React.StrictMode>
@@ -23,7 +24,7 @@ ReactDOM.render(
       <App />
     </Provider>
   </React.StrictMode>,
-  document.getElementById('root')
+  document.getElementById("root")
 );
 
 serviceWorker.unregister();

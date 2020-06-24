@@ -1,0 +1,18 @@
+body {
+    margin: 0;
+    padding: 0;
+}
+
+.wrap {
+    margin: 0;
+    padding: 0;
+}
+
+.navbar-wrap {
+    padding-left: 80px;
+    padding-right: 80px;
+}
+
+.navbar-brand {
+    margin-right: 90px;
+}

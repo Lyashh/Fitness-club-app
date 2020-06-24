@@ -51,3 +51,11 @@ export interface DeleteExerciseState {
 export interface AthletesState {
   users: UserModel[];
 }
+
+export interface NavbarState {
+  authGeneralNavs: Array<{
+    name: string;
+    link: string;
+    coach: boolean;
+  }>;
+}
