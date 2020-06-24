@@ -3,6 +3,18 @@ body {
     padding: 0;
 }
 
+p {
+    font-size: 19px;
+}
+
+.m-t-70 {
+    margin-top: 70px;
+}
+
+.m-t-120 {
+    margin-top: 120px;
+}
+
 .wrap {
     margin: 0;
     padding: 0;
@@ -15,4 +27,22 @@ body {
 
 .navbar-brand {
     margin-right: 90px;
+}
+
+/* PROFILE */
+.profile-main-coach-pic, .profile-main-athlete-pic {
+    height: 250px;
+    width: auto;
+}
+
+.profile-main-coach-pic {
+    content: url("../img/coach.png");
+}
+
+.profile-main-athlete-pic {
+    content: url("../img/athlete.png");
+}
+
+.profile-info h3 {
+    margin-bottom: 50px;
 }

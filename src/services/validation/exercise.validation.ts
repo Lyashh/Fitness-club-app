@@ -4,7 +4,7 @@ import MainValidation from "./main.validation";
 export default class ExerciseValidation extends MainValidation {
   public static newExercise(newExercise: any) {
     const schema = joi.object({
-      name: joi.string().alphanum().min(3).max(50).required(),
+      name: joi.string().min(3).max(50).required(),
       categoryId: joi.number().integer().required(),
       quantity: joi.number().integer().required(),
     });
@@ -16,7 +16,7 @@ export default class ExerciseValidation extends MainValidation {
       id: joi.number().integer().required(),
       newFields: joi
         .object({
-          name: joi.string().alphanum().min(3).max(50),
+          name: joi.string().min(3).max(50),
           quantity: joi.number().integer(),
         })
         .required(),

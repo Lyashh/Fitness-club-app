@@ -4,7 +4,7 @@ import MainValidation from "./main.validation";
 export default class ProgramValidation extends MainValidation {
   public static newProgram(newProgram: any) {
     const schema = joi.object({
-      name: joi.string().alphanum().min(3).max(50).required(),
+      name: joi.string().min(3).max(50).required(),
     });
     return schema.validate(newProgram);
   }
@@ -14,7 +14,7 @@ export default class ProgramValidation extends MainValidation {
       id: joi.number().integer().required(),
       newFields: joi
         .object({
-          name: joi.string().alphanum().min(3).max(50).required(),
+          name: joi.string().min(3).max(50).required(),
         })
         .required(),
     });

@@ -5,12 +5,23 @@ import user from "../models/user";
 import { loginRequest } from "../../api/auth.api";
 import CustomError from "../../types/customError.types";
 
+export const defaultUser = {
+  id: 0,
+  name: "",
+  email: "",
+  role: { id: 0, name: "" },
+};
+
 const profileStore = types
   .model("ProfileStore", {
     user: types.maybeNull(user),
     isAuth: types.boolean,
   })
   .actions((self) => {
+    const cleanAuthData = () => {
+      self.isAuth = false;
+      self.user = cast(defaultUser);
+    };
     const setIsAuth = (authStatus: boolean) => {
       self.isAuth = authStatus;
     };
@@ -54,16 +65,6 @@ const profileStore = types
         throw error;
       }
     });
-
-    const cleanAuthData = () => {
-      self.user = cast({
-        id: 0,
-        name: "",
-        email: "",
-        role: { id: 0, name: "" },
-      });
-      self.isAuth = true;
-    };
 
     const logOut = flow(function* () {
       try {
