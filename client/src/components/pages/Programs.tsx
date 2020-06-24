@@ -3,6 +3,7 @@ import { withRouter } from "react-router-dom";
 import { observer, inject } from "mobx-react";
 import Program from "../elements/ProgramInList";
 import { StoreAndRouterProps } from "../../types/props.types";
+import { Container, Row, Col } from "react-bootstrap";
 
 @inject("store")
 @observer
@@ -24,16 +25,28 @@ class Programs extends React.Component<StoreAndRouterProps, {}> {
   render() {
     const { store } = this.props;
     return (
-      <div>
-        <h1>Your programs:</h1>
-        {store.programStore.programs.length > 0 ? (
-          store.programStore.programs.map((program, i) => {
-            return <Program key={i} program={program}></Program>;
-          })
-        ) : (
-          <p>You dont have programs</p>
-        )}
-      </div>
+      <Container className="m-t-70">
+        <Row>
+          <Col md={12}>
+            <h3 className="m-b-30">Your programs:</h3>
+            <Row>
+              {store.programStore.programs.length > 0 ? (
+                store.programStore.programs.map((program, i) => {
+                  return (
+                    <Program
+                      key={i}
+                      program={program}
+                      countList={++i}
+                    ></Program>
+                  );
+                })
+              ) : (
+                <p>You dont have programs</p>
+              )}
+            </Row>
+          </Col>
+        </Row>
+      </Container>
     );
   }
 }

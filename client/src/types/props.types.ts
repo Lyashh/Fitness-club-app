@@ -39,6 +39,7 @@ export interface StoreRouterIdParam extends RouterWithIdParam {
 }
 
 export interface ProgramProps {
+  countList: number;
   program: ProgramModel;
 }
 
