@@ -35,6 +35,10 @@ class UserPage extends React.Component<StoreRouterIdParam, {}> {
     }
   }
 
+  backToUsersList = () => {
+    this.props.history.push("/users/athletes");
+  };
+
   render() {
     const { user } = this.props.store.currentUserStore;
     const { programStore } = this.props.store;
@@ -66,6 +70,7 @@ class UserPage extends React.Component<StoreRouterIdParam, {}> {
 
     const main = (
       <div>
+        <button onClick={this.backToUsersList}> {"<- Back"}</button>
         {userInfo}
         <div style={{ width: "100%", display: "flex" }}>
           {userPrograms} {availablePrograms}

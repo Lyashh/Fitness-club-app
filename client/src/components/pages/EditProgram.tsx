@@ -47,13 +47,18 @@ class EditProgram extends React.Component<
         this.state.newName
       );
     } catch (error) {
-      console.log({ error });
       if (error.code === 401) {
         this.props.history.push("/login");
       } else if (error.code === 403) {
         this.props.history.push("/profile");
       }
     }
+  };
+
+  backToProrgramPage = () => {
+    this.props.history.push(
+      `/programs/${this.props.store.currentProgramStore.program.id}`
+    );
   };
 
   render() {
@@ -99,6 +104,7 @@ class EditProgram extends React.Component<
       <div>
         {program.id ? (
           <div>
+            <button onClick={this.backToProrgramPage}> {"<- Back"}</button>
             <h3>{program.name}</h3>
             <h2>Edit Name</h2>
             <input

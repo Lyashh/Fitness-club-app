@@ -25,6 +25,10 @@ class ProgramPage extends React.Component<StoreRouterIdParam, {}> {
     }
   }
 
+  backToProgramsList = () => {
+    this.props.history.push("/programs");
+  };
+
   render() {
     const { program } = this.props.store.currentProgramStore;
     const { user } = this.props.store.profileStore;
@@ -70,6 +74,7 @@ class ProgramPage extends React.Component<StoreRouterIdParam, {}> {
       <div>
         {program.id ? (
           <div>
+            <button onClick={this.backToProgramsList}> {"<- Back"}</button>
             {info}
             {exercises}
           </div>

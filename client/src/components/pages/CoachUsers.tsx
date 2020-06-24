@@ -16,7 +16,11 @@ class CoachUsers extends React.Component<StoreAndRouterProps, {}> {
       await this.props.store.usersStore.getCoachUsers();
     } catch (error) {
       console.log(error);
-      this.props.history.push("/login");
+      if (error.code === 401) {
+        this.props.history.push("/login");
+      } else if (error.code === 403) {
+        this.props.history.push("/profile");
+      }
     }
   }
 

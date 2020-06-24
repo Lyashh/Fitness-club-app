@@ -20,6 +20,11 @@ class Athletes extends React.Component<RouteComponentProps, AthletesState> {
       this.setState({ users: data });
     } catch (error) {
       console.log(error);
+      if (error.response.status === 401) {
+        this.props.history.push("/login");
+      } else if (error.response.status === 403) {
+        this.props.history.push("/profile");
+      }
     }
   }
 
@@ -28,7 +33,7 @@ class Athletes extends React.Component<RouteComponentProps, AthletesState> {
       <div>
         {this.state.users.map((user, i) => {
           return (
-            <Link to={`/users/${user.id}`}>
+            <Link to={`/users/${user.id}`} key={i}>
               <h2>{`${++i}. ${user.name}`}</h2>
             </Link>
           );
