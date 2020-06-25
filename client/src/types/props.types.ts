@@ -11,6 +11,7 @@ export interface ExerciseFields {
   name: string;
   id: number;
   category: string;
+  quantity: number;
 }
 
 export interface UserProgramListProps {

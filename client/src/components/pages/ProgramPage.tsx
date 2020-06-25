@@ -1,8 +1,10 @@
 import React from "react";
 import { withRouter } from "react-router-dom";
 import { observer, inject } from "mobx-react";
+import { Container, Row, Col, Button } from "react-bootstrap";
 import { StoreRouterIdParam } from "../../types/props.types";
 import ExerciseInList from "../elements/ExerciseInList";
+import exercise from "../../models/exercise";
 
 @inject("store")
 @observer
@@ -34,54 +36,73 @@ class ProgramPage extends React.Component<StoreRouterIdParam, {}> {
     const { user } = this.props.store.profileStore;
 
     const exercises = (
-      <div>
-        <h3>Exercises</h3>
-        {program.exercises.length > 0 ? (
-          program.exercises.map((exrcise, i) => {
-            return (
-              <ExerciseInList
-                name={exrcise.name}
-                id={exrcise.id}
-                category={exrcise.category.name}
-                key={i}
-              />
-            );
-          })
-        ) : (
-          <p>Program doesn't have exercises</p>
-        )}
-      </div>
+      <Col md={12} className="m-t-50">
+        <h4 className="m-b-30">Exercises:</h4>
+        <Row>
+          {program.exercises.length > 0 ? (
+            program.exercises.map((exrcise, i) => {
+              return (
+                <ExerciseInList
+                  quantity={exrcise.quantity}
+                  name={exrcise.name}
+                  id={exrcise.id}
+                  category={exrcise.category.name}
+                  key={i}
+                />
+              );
+            })
+          ) : (
+            <p>Program doesn't have exercises</p>
+          )}
+        </Row>
+      </Col>
     );
+
+    const editButton =
+      user?.role?.name === "coach" ? (
+        <Button
+          className="float-r m-t-30"
+          variant="primary"
+          onClick={() =>
+            this.props.history.push(`/programs/${program.id}/edit`)
+          }
+        >
+          Edit
+        </Button>
+      ) : null;
 
     const info = (
       <div>
-        <h3>
-          {program.name} Id: {program.id}
-        </h3>
-        {user?.role?.name === "coach" ? (
-          <button
-            onClick={() =>
-              this.props.history.push(`/programs/${program.id}/edit`)
-            }
-          >
-            Edit
-          </button>
-        ) : null}
+        <h3>{program.name}</h3>
+        <p className="t-a-just m-t-30">
+          Lorem ipsum dolor sit amet consectetur adipisicing elit. Explicabo,
+          enim odit pariatur vitae beatae sint esse quam. Enim eligendi facere
+          pariatur aliquam quas maxime vitae assumenda magnam eum, porro
+          tenetur.
+        </p>
+        {editButton}
       </div>
     );
 
     return (
-      <div>
+      <Container className="m-t-30">
         {program.id ? (
-          <div>
-            <button onClick={this.backToProgramsList}> {"<- Back"}</button>
-            {info}
+          <Row>
+            <Col md={12} className="m-b-50">
+              <Button variant="primary" onClick={this.backToProgramsList}>
+                {"Back"}
+              </Button>
+            </Col>
+            <Col md={7}>{info}</Col>
+            <Col md={5} className="t-a-cen">
+              <img className="program-main-img" />
+            </Col>
             {exercises}
-          </div>
+          </Row>
         ) : (
           <p>Loading...</p>
         )}
-      </div>
+      </Container>
     );
   }
 }

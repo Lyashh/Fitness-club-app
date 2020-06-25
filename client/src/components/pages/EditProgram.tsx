@@ -71,6 +71,7 @@ class EditProgram extends React.Component<
           program.exercises.map((exrcise, i) => {
             return (
               <DeleteExercise
+                quantity={exrcise.quantity}
                 name={exrcise.name}
                 id={exrcise.id}
                 category={exrcise.category.name}
@@ -90,6 +91,7 @@ class EditProgram extends React.Component<
         {exerciseStore.getAvailable().map((exercise, i) => {
           return (
             <AvailableExercise
+              quantity={exercise.quantity}
               key={i}
               name={exercise.name}
               id={exercise.id}
