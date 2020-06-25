@@ -1,6 +1,6 @@
-import { UserModel } from "./../mst/models/user";
-import { ProgramModel } from "./../mst/models/program";
-import { ExirciseModel } from "./../mst/models/exercise";
+import { UserModel } from "../models/user";
+import { ProgramModel } from "../models/program";
+import { ExirciseModel } from "../models/exercise";
 
 export interface LoginState {
   email: string;

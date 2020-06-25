@@ -1,6 +1,6 @@
-import { ProgramModel } from "./../mst/models/program";
+import { ProgramModel } from "../models/program";
 import { RouteComponentProps } from "react-router-dom";
-import { Root } from "../mst/stores/rootStore";
+import { Root } from "../stores/rootStore";
 
 interface RouterWithIdParam
   extends RouteComponentProps<{

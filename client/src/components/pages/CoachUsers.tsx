@@ -2,6 +2,7 @@ import React from "react";
 import { withRouter, Link } from "react-router-dom";
 import { observer, inject } from "mobx-react";
 import { StoreAndRouterProps } from "../../types/props.types";
+import { Container, Row, Col } from "react-bootstrap";
 
 @inject("store")
 @observer
@@ -27,24 +28,35 @@ class CoachUsers extends React.Component<StoreAndRouterProps, {}> {
   render() {
     const { usersStore } = this.props.store;
     return (
-      <div>
-        <h1>Users with your programs:</h1>
-        {usersStore.users.length > 0 ? (
-          usersStore.users.map((user, i) => {
-            return (
-              <div key={i}>
-                <p>
-                  <Link to={`/users/${user.id}`}>
-                    name: {user.name}, id: {user.id}
-                  </Link>
-                </p>
-              </div>
-            );
-          })
-        ) : (
-          <p>There are no users with your programs</p>
-        )}
-      </div>
+      <Container className="m-t-30">
+        <Row>
+          <Col md={7}>
+            <h3>List of users with your programs:</h3>
+            {usersStore.users.length > 0 ? (
+              usersStore.users.map((user, i) => {
+                return (
+                  <Col md={12} className="user-list-col">
+                    <Link
+                      to={`/users/${user.id}`}
+                      key={i}
+                      className="list-link"
+                    >
+                      <div className="user-list-item">
+                        <div className="align-verical">
+                          <img className="athelete-list-icon" />
+                          <span>{`${++i}. ${user.name}`}</span>
+                        </div>
+                      </div>
+                    </Link>
+                  </Col>
+                );
+              })
+            ) : (
+              <p>There are no users with your programs</p>
+            )}
+          </Col>
+        </Row>
+      </Container>
     );
   }
 }

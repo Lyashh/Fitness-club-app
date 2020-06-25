@@ -9,7 +9,7 @@ import "./css/style.css";
 
 import { Provider } from "mobx-react";
 
-import { createRootStore } from "./mst/stores/rootStore";
+import { createRootStore } from "./stores/rootStore";
 import { onPatch } from "mobx-state-tree";
 
 const store = createRootStore;
