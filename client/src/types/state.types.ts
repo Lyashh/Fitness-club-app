@@ -5,8 +5,10 @@ import { ExirciseModel } from "../models/exercise";
 export interface LoginState {
   email: string;
   password: string;
-  errorMessage: string;
-  errorCode: number;
+  emailError: string;
+  passwordError: string;
+  errorView: boolean;
+  generalError: string;
 }
 
 export interface EditProgramState {
