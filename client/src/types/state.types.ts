@@ -36,6 +36,8 @@ export interface EditProgramState {
 
 export interface CreateProgramState {
   name: string;
+  errorBody: string;
+  errorView: boolean;
 }
 
 export interface PrPageState {

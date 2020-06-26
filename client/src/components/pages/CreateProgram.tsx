@@ -3,6 +3,14 @@ import { withRouter } from "react-router-dom";
 import { observer, inject } from "mobx-react";
 import { StoreAndRouterProps } from "../../types/props.types";
 import { CreateProgramState } from "../../types/state.types";
+import {
+  Container,
+  Row,
+  Col,
+  Button,
+  InputGroup,
+  FormControl,
+} from "react-bootstrap";
 
 @inject("store")
 @observer
@@ -14,6 +22,8 @@ class CreateProgram extends React.Component<
     super(props);
     this.state = {
       name: "",
+      errorBody: "",
+      errorView: false,
     };
   }
   componentDidMount() {
@@ -32,23 +42,41 @@ class CreateProgram extends React.Component<
       if (error.code === 401) {
         this.props.history.push("/login");
       }
+      if (error.code) {
+        this.setState({ errorBody: error.body, errorView: true });
+      }
+
       console.log(error);
     }
   };
 
   render() {
     return (
-      <div>
-        <h2>New Program</h2>
-        <div>
-          <label>Name</label>
-          <input
-            type="text"
-            onChange={(e) => this.setState({ name: e.target.value })}
-          />
-        </div>
-        <button onClick={this.createProgram}>Create</button>
-      </div>
+      <Container>
+        <Row className="justify-content-center m-t-120">
+          <Col md={6}>
+            <h3>New Program</h3>
+            <div className="m-b-30 m-t-50">
+              <p>Name:</p>
+              <InputGroup className="edit-program-input">
+                <FormControl
+                  className="mb-3 edit-program-input"
+                  placeholder="Enter name of program"
+                  onChange={(e) => {
+                    this.setState({ name: e.target.value });
+                  }}
+                />
+              </InputGroup>
+              {this.state.errorView ? (
+                <p className="text-danger">{this.state.errorBody}</p>
+              ) : null}
+            </div>
+            <Button variant="primary" onClick={this.createProgram}>
+              Create
+            </Button>
+          </Col>
+        </Row>
+      </Container>
     );
   }
 }

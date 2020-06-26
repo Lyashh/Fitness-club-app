@@ -36,9 +36,9 @@ class ProgramPage extends React.Component<StoreRouterIdParam, {}> {
     const { user } = this.props.store.profileStore;
 
     const exercises = (
-      <Col md={12} className="m-t-50">
-        <h4 className="m-b-30">Exercises:</h4>
-        <Row>
+      <Row>
+        <Col md={12}>
+          <h4 className="m-b-30">Exercises:</h4>
           {program.exercises.length > 0 ? (
             program.exercises.map((exrcise, i) => {
               return (
@@ -54,8 +54,8 @@ class ProgramPage extends React.Component<StoreRouterIdParam, {}> {
           ) : (
             <p>Program doesn't have exercises</p>
           )}
-        </Row>
-      </Col>
+        </Col>
+      </Row>
     );
 
     const editButton =
@@ -97,7 +97,7 @@ class ProgramPage extends React.Component<StoreRouterIdParam, {}> {
             <Col md={5} className="t-a-cen">
               <img className="program-main-img" />
             </Col>
-            {exercises}
+            <Col md={12}>{exercises}</Col>
           </Row>
         ) : (
           <p>Loading...</p>
