@@ -4,6 +4,8 @@ import { observer, inject } from "mobx-react";
 import { StoreRouterIdParam } from "../../types/props.types";
 import DeleteExercise from "../elements/DeleteExercise";
 import AvailableExercise from "../elements/AvailableExercisesList";
+import { EditProgramState } from "../../types/state.types";
+import CustomError from "../../types/customError.types";
 import {
   Container,
   Row,
@@ -17,16 +19,26 @@ import {
 @observer
 class EditProgram extends React.Component<
   StoreRouterIdParam,
-  { newName: string }
+  EditProgramState
 > {
   constructor(props: StoreRouterIdParam) {
     super(props);
     this.state = {
       newName: "",
+      errorBody: "",
+      errorView: false,
+      successBody: "",
+      successView: false,
     };
   }
   componentDidMount() {
     this.getProgramAndEExercises();
+  }
+
+  validation() {
+    if (this.state.newName.length < 3) {
+      throw new CustomError(`"name" is not allowed to be empty`);
+    }
   }
 
   async getProgramAndEExercises() {
@@ -51,14 +63,28 @@ class EditProgram extends React.Component<
 
   updateProgram = async () => {
     try {
+      this.validation();
+      console.log(1);
       await this.props.store.currentProgramStore.editProgram(
         this.state.newName
       );
+      this.setState({
+        errorView: false,
+        successBody: "The text has been updated.",
+        successView: true,
+      });
     } catch (error) {
       if (error.code === 401) {
         this.props.history.push("/login");
       } else if (error.code === 403) {
         this.props.history.push("/profile");
+      }
+      if (error.body) {
+        this.setState({
+          errorBody: error.body,
+          errorView: true,
+          successView: false,
+        });
       }
     }
   };
@@ -110,13 +136,31 @@ class EditProgram extends React.Component<
       </Col>
     );
 
+    const error = this.state.errorView ? (
+      <p className="text-danger">
+        {this.state.errorBody.replace("newFields.name", "name")}
+      </p>
+    ) : null;
+
+    const success = this.state.successView ? (
+      <p className="text-success">{this.state.successBody}</p>
+    ) : null;
+
+    const exercisesTable = (
+      <Col md={12} className="m-t-70 m-b-50">
+        <Row className="justify-content-between">
+          {programExercises}
+          {availableExercises}
+        </Row>
+      </Col>
+    );
+
     return (
       <Container className="m-t-30">
         {program.id ? (
           <Row>
             <Col md={12} className="m-b-50">
               <Button variant="primary" onClick={this.backToProrgramPage}>
-                {" "}
                 {"Back"}
               </Button>
             </Col>
@@ -132,6 +176,10 @@ class EditProgram extends React.Component<
                   }}
                 />
               </InputGroup>
+              <div>
+                {error}
+                {success}
+              </div>
               <Button variant="primary" onClick={this.updateProgram}>
                 Update
               </Button>
@@ -139,12 +187,7 @@ class EditProgram extends React.Component<
             <Col md={6} className="t-a-cen">
               <img className="program-main-img" />
             </Col>
-            <Col md={12} className="m-t-70 m-b-50">
-              <Row className="justify-content-between">
-                {programExercises}
-                {availableExercises}
-              </Row>
-            </Col>
+            {exercisesTable}
           </Row>
         ) : null}
       </Container>

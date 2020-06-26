@@ -45,7 +45,6 @@ class CreateProgram extends React.Component<
       if (error.code) {
         this.setState({ errorBody: error.body, errorView: true });
       }
-
       console.log(error);
     }
   };

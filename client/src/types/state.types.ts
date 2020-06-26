@@ -9,6 +9,14 @@ export interface LoginState {
   errorCode: number;
 }
 
+export interface EditProgramState {
+  newName: string;
+  errorBody: string;
+  errorView: boolean;
+  successBody: string;
+  successView: boolean;
+}
+
 export interface RegistationState {
   email: string;
   password: string;
@@ -27,7 +35,7 @@ export interface UserPageState {
   programs: ProgramModel[];
 }
 
-export interface EditProgramState {
+export interface EditProgram {
   name: string;
   id: number;
   exercises: ExirciseModel[];
