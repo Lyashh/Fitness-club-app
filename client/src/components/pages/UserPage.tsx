@@ -2,10 +2,16 @@ import React from "react";
 import { withRouter } from "react-router-dom";
 import { observer, inject } from "mobx-react";
 import { StoreRouterIdParam } from "../../types/props.types";
-import { userByIdRequest } from "../../api/user.api";
-import { UserPageState } from "../../types/state.types";
 import UserProgram from "../elements/UserProgram";
 import AvailableProgram from "../elements/AvailablePrograms";
+import {
+  Container,
+  Row,
+  Col,
+  Button,
+  InputGroup,
+  FormControl,
+} from "react-bootstrap";
 
 @inject("store")
 @observer
@@ -45,37 +51,52 @@ class UserPage extends React.Component<StoreRouterIdParam, {}> {
 
     const userInfo = (
       <div>
-        <h2>{user.name}</h2>
-        <p>email: {user.email}</p>
+        <h3 className="m-b-30">{user.name}</h3>
+        <p>Age {user.age}</p>
+        <p>Email: {user.email}</p>
       </div>
     );
 
     const userPrograms = (
-      <div style={{ width: "50%" }}>
+      <Col md={5}>
+        <h4>User's Programs:</h4>
         {user.programs?.map((program, i) => {
           return <UserProgram key={i} name={program.name} id={program.id} />;
         })}
-      </div>
+      </Col>
     );
 
     const availablePrograms = (
-      <div style={{ width: "50%" }}>
+      <Col md={5}>
+        <h4>Available Programs:</h4>
         {programStore.programsThatNotAssign().map((program, i) => {
           return (
             <AvailableProgram id={program.id} name={program.name} key={i} />
           );
         })}
-      </div>
+      </Col>
     );
 
     const main = (
-      <div>
-        <button onClick={this.backToUsersList}> {"<- Back"}</button>
-        {userInfo}
-        <div style={{ width: "100%", display: "flex" }}>
-          {userPrograms} {availablePrograms}
-        </div>
-      </div>
+      <Container className="m-t-30">
+        <Row>
+          <Col md={12} className="m-b-50">
+            <Button variant="primary" onClick={this.backToUsersList}>
+              {" "}
+              {"Back"}
+            </Button>
+          </Col>
+          <Col md={6}>{userInfo}</Col>
+          <Col md={6}>
+            <img className="profile-main-athlete-pic float-r" />
+          </Col>
+          <Col md={12} className="m-t-70 m-b-50">
+            <Row className="justify-content-between">
+              {userPrograms} {availablePrograms}
+            </Row>
+          </Col>
+        </Row>
+      </Container>
     );
 
     return <div>{user.id > 0 ? main : <p>Loading...</p>}</div>;

@@ -74,7 +74,7 @@ class EditProgram extends React.Component<
     const { exerciseStore } = this.props.store;
     const programExercises = (
       <Col md={5}>
-        <h4 className="m-b-30">Program Exercises:</h4>
+        <h4 className="m-b-30">Program's Exercises:</h4>
         {program.exercises.length > 0 ? (
           program.exercises.map((exrcise, i) => {
             return (

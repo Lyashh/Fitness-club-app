@@ -15,6 +15,10 @@ p {
     margin-top: 50px;
 }
 
+.m-t-15 {
+    margin-top: 15px;
+}
+
 .m-t-120 {
     margin-top: 120px;
 }
@@ -134,7 +138,19 @@ p {
     width: 400px;
 }
 .program-list {
-    padding: 10px;
+    padding: 10px 10px 10px 0;
+}
+
+.list-program-title {
+    font-size: 21px;
+    font-weight: 600;
+}
+
+.list-program-box {
+    padding: 20px 15px 20px 25px;
+    background-color: #17A2B8;
+    border-radius: 15px;
+    color: blanchedalmond;
 }
 
 .program-main-img {
@@ -148,7 +164,7 @@ p {
     height: 100%;
     background-color: #17A2B8;
     border-radius: 10px;
-    height: 100px;
+    min-height: 100px;
 }
 
 .list-box:hover, .user-list-col:hover {

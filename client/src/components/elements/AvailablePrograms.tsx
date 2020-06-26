@@ -1,6 +1,7 @@
 import React from "react";
 import { ProgramsListProps } from "../../types/props.types";
 import { observer, inject } from "mobx-react";
+import { Col, Button } from "react-bootstrap";
 
 @inject("store")
 @observer
@@ -14,12 +15,21 @@ class AvailableProgram extends React.Component<ProgramsListProps, {}> {
   };
   render() {
     return (
-      <div>
-        <h3>
-          {this.props.name} exercise. Id: {this.props.id}
-        </h3>
-        <button onClick={this.assignProgram}>Assign Program</button>
-      </div>
+      <Col md={12} className="program-list">
+        <div className="list-program-box">
+          <span className="list-program-title">{this.props.name}</span>
+          <img className="program-icon float-r" />
+          <div>
+            <Button
+              variant="success"
+              className="m-t-15"
+              onClick={this.assignProgram}
+            >
+              Assign
+            </Button>
+          </div>
+        </div>
+      </Col>
     );
   }
 }
