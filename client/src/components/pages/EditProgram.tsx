@@ -4,6 +4,14 @@ import { observer, inject } from "mobx-react";
 import { StoreRouterIdParam } from "../../types/props.types";
 import DeleteExercise from "../elements/DeleteExercise";
 import AvailableExercise from "../elements/AvailableExercisesList";
+import {
+  Container,
+  Row,
+  Col,
+  Button,
+  InputGroup,
+  FormControl,
+} from "react-bootstrap";
 
 @inject("store")
 @observer
@@ -65,8 +73,8 @@ class EditProgram extends React.Component<
     const { program } = this.props.store.currentProgramStore;
     const { exerciseStore } = this.props.store;
     const programExercises = (
-      <div style={{ width: "50%" }}>
-        <h3>Program`s Exercises</h3>
+      <Col md={5}>
+        <h4 className="m-b-30">Program Exercises:</h4>
         {program.exercises.length > 0 ? (
           program.exercises.map((exrcise, i) => {
             return (
@@ -82,12 +90,12 @@ class EditProgram extends React.Component<
         ) : (
           <p>Program doesn't have exercises</p>
         )}
-      </div>
+      </Col>
     );
 
     const availableExercises = (
-      <div style={{ width: "50%" }}>
-        <h3>Available Exercises</h3>
+      <Col md={5}>
+        <h4 className="m-b-30">Available Exercises</h4>
         {exerciseStore.getAvailable().map((exercise, i) => {
           return (
             <AvailableExercise
@@ -99,30 +107,47 @@ class EditProgram extends React.Component<
             />
           );
         })}
-      </div>
+      </Col>
     );
 
     return (
-      <div>
+      <Container className="m-t-30">
         {program.id ? (
-          <div>
-            <button onClick={this.backToProrgramPage}> {"<- Back"}</button>
-            <h3>{program.name}</h3>
-            <h2>Edit Name</h2>
-            <input
-              defaultValue={program.name}
-              onChange={(e) => {
-                this.setState({ newName: e.target.value });
-              }}
-            />
-            <button onClick={this.updateProgram}>Update Name</button>
-            <div style={{ width: "100%", display: "flex" }}>
-              {programExercises}
-              {availableExercises}
-            </div>
-          </div>
+          <Row>
+            <Col md={12} className="m-b-50">
+              <Button variant="primary" onClick={this.backToProrgramPage}>
+                {" "}
+                {"Back"}
+              </Button>
+            </Col>
+            <Col md={6}>
+              <h3>{program.name}</h3>
+              <p className="m-t-50">Edit Name</p>
+              <InputGroup className="edit-program-input">
+                <FormControl
+                  className="mb-3 edit-program-input"
+                  placeholder="Enter new name"
+                  onChange={(e) => {
+                    this.setState({ newName: e.target.value });
+                  }}
+                />
+              </InputGroup>
+              <Button variant="primary" onClick={this.updateProgram}>
+                Update
+              </Button>
+            </Col>
+            <Col md={6} className="t-a-cen">
+              <img className="program-main-img" />
+            </Col>
+            <Col md={12} className="m-t-70 m-b-50">
+              <Row className="justify-content-between">
+                {programExercises}
+                {availableExercises}
+              </Row>
+            </Col>
+          </Row>
         ) : null}
-      </div>
+      </Container>
     );
   }
 }
