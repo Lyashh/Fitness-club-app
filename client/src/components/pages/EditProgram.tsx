@@ -70,7 +70,7 @@ class EditProgram extends React.Component<
       );
       this.setState({
         errorView: false,
-        successBody: "The text has been updated.",
+        successBody: "The name of program has been updated",
         successView: true,
       });
     } catch (error) {

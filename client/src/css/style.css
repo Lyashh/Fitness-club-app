@@ -127,6 +127,11 @@ p {
 }
 
 /* PROGRAMS */
+.new-program-title {
+    display: inline-block;
+    margin-right: 20px;
+}
+
 .program-icon {
     height: 38px;
     width: auto;

@@ -11,6 +11,7 @@ import {
   InputGroup,
   FormControl,
 } from "react-bootstrap";
+import CustomError from "../../types/customError.types";
 
 @inject("store")
 @observer
@@ -32,8 +33,15 @@ class CreateProgram extends React.Component<
     }
   }
 
+  validation() {
+    if (this.state.name.length < 3) {
+      throw new CustomError(`"name" is not allowed to be empty`);
+    }
+  }
+
   createProgram = async () => {
     try {
+      this.validation();
       const newPorgram = await this.props.store.programStore.createProgram(
         this.state.name
       );
@@ -54,7 +62,8 @@ class CreateProgram extends React.Component<
       <Container>
         <Row className="justify-content-center m-t-120">
           <Col md={6}>
-            <h3>New Program</h3>
+            <h3 className="new-program-title">New Program</h3>
+            <img className="program-icon" />
             <div className="m-b-30 m-t-50">
               <p>Name:</p>
               <InputGroup className="edit-program-input">
