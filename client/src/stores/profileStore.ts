@@ -3,7 +3,7 @@ import { profileRequest } from "../api/auth.api";
 import { types, flow, cast } from "mobx-state-tree";
 import user from "../models/user";
 import { loginRequest } from "../api/auth.api";
-import CustomError from "../types/customError.types";
+import { CustomError } from "../types/customError.types";
 
 export const defaultUser = {
   id: 0,

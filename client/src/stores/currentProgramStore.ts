@@ -6,7 +6,7 @@ import {
 } from "../api/programs.api";
 import { types, flow, getParent, cast } from "mobx-state-tree";
 import program from "../models/program";
-import CustomError from "../types/customError.types";
+import { CustomError } from "../types/customError.types";
 import rootStore from "../stores/rootStore";
 
 export const defaultProgram = {

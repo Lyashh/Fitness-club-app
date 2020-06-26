@@ -5,7 +5,7 @@ import { StoreRouterIdParam } from "../../types/props.types";
 import DeleteExercise from "../elements/DeleteExercise";
 import AvailableExercise from "../elements/AvailableExercisesList";
 import { EditProgramState } from "../../types/state.types";
-import CustomError from "../../types/customError.types";
+import { ValidationError } from "../../types/customError.types";
 import {
   Container,
   Row,
@@ -37,7 +37,7 @@ class EditProgram extends React.Component<
 
   validation() {
     if (this.state.newName.length < 3) {
-      throw new CustomError(`"name" is not allowed to be empty`);
+      throw new ValidationError(`"name" is not allowed to be empty`, "newName");
     }
   }
 
@@ -79,7 +79,7 @@ class EditProgram extends React.Component<
       } else if (error.code === 403) {
         this.props.history.push("/profile");
       }
-      if (error.body) {
+      if (error.field || error.body) {
         this.setState({
           errorBody: error.body,
           errorView: true,

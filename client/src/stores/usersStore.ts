@@ -1,7 +1,7 @@
 import { coachUsersRequest } from "../api/auth.api";
 import { types, flow, getParent, cast } from "mobx-state-tree";
 import user from "../models/user";
-import CustomError from "../types/customError.types";
+import { CustomError } from "../types/customError.types";
 import rootStore from "./rootStore";
 
 const usersStore = types

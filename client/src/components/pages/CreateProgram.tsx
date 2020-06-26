@@ -11,7 +11,7 @@ import {
   InputGroup,
   FormControl,
 } from "react-bootstrap";
-import CustomError from "../../types/customError.types";
+import { ValidationError } from "../../types/customError.types";
 
 @inject("store")
 @observer
@@ -35,7 +35,7 @@ class CreateProgram extends React.Component<
 
   validation() {
     if (this.state.name.length < 3) {
-      throw new CustomError(`"name" is not allowed to be empty`);
+      throw new ValidationError(`"name" is not allowed to be empty`, "name");
     }
   }
 
@@ -50,7 +50,7 @@ class CreateProgram extends React.Component<
       if (error.code === 401) {
         this.props.history.push("/login");
       }
-      if (error.code) {
+      if (error.code || error.field) {
         this.setState({ errorBody: error.body, errorView: true });
       }
       console.log(error);

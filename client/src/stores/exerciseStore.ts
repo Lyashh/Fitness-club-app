@@ -2,7 +2,7 @@ import { ExirciseModel } from "../models/exercise";
 import { getExercisesRequest } from "../api/exercise.api";
 import { types, flow, getParent } from "mobx-state-tree";
 import exercise from "../models/exercise";
-import CustomError from "../types/customError.types";
+import { CustomError } from "../types/customError.types";
 import rootStore from "./rootStore";
 
 const exerciseStore = types

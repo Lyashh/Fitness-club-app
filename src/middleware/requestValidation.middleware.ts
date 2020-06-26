@@ -168,6 +168,4 @@ export default class ValidationMiddleware {
       return next();
     };
   }
-
-
 }

@@ -6,7 +6,7 @@ import {
 } from "../api/user.api";
 import {} from "../api/programs.api";
 import { types, flow, getParent, cast } from "mobx-state-tree";
-import CustomError from "../types/customError.types";
+import { CustomError } from "../types/customError.types";
 import rootStore from "../stores/rootStore";
 import user from "../models/user";
 
