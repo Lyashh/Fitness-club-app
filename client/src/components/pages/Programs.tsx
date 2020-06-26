@@ -29,21 +29,16 @@ class Programs extends React.Component<StoreAndRouterProps, {}> {
         <Row>
           <Col md={12}>
             <h3 className="m-b-30">Your programs:</h3>
-            <Row>
-              {store.programStore.programs.length > 0 ? (
-                store.programStore.programs.map((program, i) => {
-                  return (
-                    <Program
-                      key={i}
-                      program={program}
-                      countList={++i}
-                    ></Program>
-                  );
-                })
-              ) : (
-                <p>You dont have programs</p>
-              )}
-            </Row>
+
+            {store.programStore.programs.length > 0 ? (
+              store.programStore.programs.map((program, i) => {
+                return (
+                  <Program key={i} program={program} countList={++i}></Program>
+                );
+              })
+            ) : (
+              <p>You dont have programs</p>
+            )}
           </Col>
         </Row>
       </Container>

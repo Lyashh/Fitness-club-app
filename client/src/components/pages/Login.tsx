@@ -105,10 +105,10 @@ class Login extends React.Component<StoreAndRouterProps, LoginState> {
             <h4 className="m-b-50">Sign In:</h4>
             <div>
               <p>Email:</p>
-              <InputGroup className="edit-program-input">
+              <InputGroup className="input-wrap">
                 <FormControl
                   type="email"
-                  className="mb-3 edit-program-input"
+                  className="mb-3"
                   placeholder="Enter email"
                   onChange={(e) => {
                     this.setState({ email: e.target.value });
@@ -122,10 +122,10 @@ class Login extends React.Component<StoreAndRouterProps, LoginState> {
 
             <div>
               <p>Password:</p>
-              <InputGroup className="edit-program-input">
+              <InputGroup className="input-wrap">
                 <FormControl
                   type="password"
-                  className="mb-3 edit-program-input"
+                  className="mb-3"
                   placeholder="Enter password"
                   onChange={(e) => {
                     this.setState({ password: e.target.value });

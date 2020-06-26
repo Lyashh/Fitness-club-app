@@ -89,6 +89,18 @@ p {
     }   
 }
 
+.input-wrap {
+    width: 400px;
+    margin-bottom: 15px;
+}
+
+/* HOME */
+
+.home-main-img {
+    height: 330px;
+    width: auto;
+    content: url("../img/sneakers.png");
+}
 
 /* PROFILE */
 .profile-main-coach-pic, .profile-main-athlete-pic {
@@ -107,6 +119,7 @@ p {
 .profile-info h3 {
     margin-bottom: 50px;
 }
+
 
 /* LISTS */
 .list-link {

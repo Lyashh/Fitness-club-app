@@ -25,8 +25,12 @@ export interface RegistationState {
   confirmPassword: string;
   name: string;
   age: number;
-  errorMessage: string;
-  errorCode: number;
+  ageError: string;
+  nameError: string;
+  emailError: string;
+  passwordError: string;
+  generalError: string;
+  errorView: boolean;
 }
 
 export interface UserPageState {
