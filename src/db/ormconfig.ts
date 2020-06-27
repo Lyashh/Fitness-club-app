@@ -5,7 +5,8 @@ doenv.config();
 
 const config: ConnectionOptions = {
   type: "postgres",
-  host: process.env.POSTGRES_HOST,
+  //url: "postgresql://admin:admin@db:5432/tutorial",
+  host: process.env.DOCKER_POSTGRES_HOST,
   port: Number(process.env.POSTGRES_PORT),
   username: process.env.POSTGRES_USER,
   password: process.env.POSTGRES_PASSWORD,

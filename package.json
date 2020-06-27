@@ -5,12 +5,14 @@
   "main": "dist/server.js",
   "scripts": {
     "ts:watch": "./node_modules/typescript/bin/tsc -w",
+    "ts:build": "./node_modules/typescript/bin/tsc",
     "server:start": "node dist/server.js",
     "server:watch": "./node_modules/.bin/nodemon './dist/server.js' --watch ./dist",
     "typeorm": "./node_modules/ts-node/dist/bin.js ./node_modules/typeorm/cli.js --config ./src/db/ormconfig.ts",
     "migration:create": "npm run typeorm -- migration:create -n index",
     "migration:generate": "npm run typeorm -- migration:generate -n index",
-    "migration:run": "npm run typeorm -- migration:run"
+    "migration:run": "npm run typeorm -- migration:run",
+    "server:install": "npm i"
   },
   "keywords": [],
   "author": "",

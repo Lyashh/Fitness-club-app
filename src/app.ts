@@ -3,11 +3,11 @@ import bodyParser from "body-parser";
 import session from "express-session";
 import doenv from "dotenv";
 import cors from "cors";
+import path from "path";
 
 import ErrorHandler from "./services/handlers/error.handler";
 import Router from "./routes/index.router";
 import AuthService from "./services/auth/passport.service";
-import User from "./db/entity/user.entity";
 
 const Passportjs = AuthService.getInstance;
 doenv.config();
@@ -31,6 +31,11 @@ export default class App {
         resave: false,
         saveUninitialized: true,
       })
+    );
+
+    this.expressApp.use(
+      "/",
+      express.static(path.join(__dirname, "../", "client", "build"))
     );
 
     this.expressApp.use(
