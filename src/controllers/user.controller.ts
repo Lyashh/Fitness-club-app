@@ -3,10 +3,6 @@ import UserService from "../services/db/user.service";
 import CustomError from "../types/errors/customError.types";
 
 export default class UserController {
-  private userService: UserService;
-  constructor() {
-    this.userService = new UserService();
-  }
 
   public getAllUsers() {
     return async (req: Request, res: Response) => {

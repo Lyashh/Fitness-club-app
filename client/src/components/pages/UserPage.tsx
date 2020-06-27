@@ -4,22 +4,11 @@ import { observer, inject } from "mobx-react";
 import { StoreRouterIdParam } from "../../types/props.types";
 import UserProgram from "../elements/UserProgram";
 import AvailableProgram from "../elements/AvailablePrograms";
-import {
-  Container,
-  Row,
-  Col,
-  Button,
-  InputGroup,
-  FormControl,
-} from "react-bootstrap";
+import { Container, Row, Col, Button } from "react-bootstrap";
 
 @inject("store")
 @observer
 class UserPage extends React.Component<StoreRouterIdParam, {}> {
-  constructor(props: StoreRouterIdParam) {
-    super(props);
-  }
-
   async componentDidMount() {
     try {
       await this.props.store.currentUserStore.clear();

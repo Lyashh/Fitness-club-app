@@ -1,5 +1,4 @@
 import {
-  userByIdRequest,
   unassignProgramRequest,
   assignProgramRequest,
   usersWithCoachPrograms,
@@ -31,8 +30,6 @@ const currentUserStore = types
     const getUser = flow(function* (userId: number) {
       try {
         const { data } = yield usersWithCoachPrograms(userId);
-        console.log({ data });
-
         self.user.setFieldsWithPrograms(data);
       } catch (error) {
         if (error.response) {

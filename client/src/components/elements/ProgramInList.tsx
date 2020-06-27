@@ -5,7 +5,7 @@ import { Col } from "react-bootstrap";
 
 const Program = (props: ProgramProps) => {
   return (
-    <Col md={4} className="program-list">
+    <Col md={5} className="program-list">
       <Link to={`/programs/${props.program.id}`} className="list-link">
         <div className="list-box">
           <div className="align-verical">

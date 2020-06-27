@@ -5,7 +5,6 @@ import RoleService from "./role.service";
 import ProgramService from "./program.service";
 import User from "../../db/entity/user.entity";
 import Program from "../../db/entity/program.entity";
-import Role from "../../db/entity/role.entity";
 
 export default class UserService {
   public static getUserById(id: number, programs: boolean) {

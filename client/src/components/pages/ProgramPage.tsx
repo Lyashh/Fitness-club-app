@@ -4,7 +4,6 @@ import { observer, inject } from "mobx-react";
 import { Container, Row, Col, Button } from "react-bootstrap";
 import { StoreRouterIdParam } from "../../types/props.types";
 import ExerciseInList from "../elements/ExerciseInList";
-import exercise from "../../models/exercise";
 
 @inject("store")
 @observer
