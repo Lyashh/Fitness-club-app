@@ -18,10 +18,25 @@ export default class UserRouter {
 
   public get routes(): ExpressRouter {
     this.router.get("/", this.userController.getAllUsers());
-    this.router.get("/getAthletes", this.userController.getAthletes());
+    this.router.get(
+      "/athletes",
+      this.authorizeMiddleware.isAuth(),
+      this.authorizeMiddleware.isCoach(),
+      this.userController.getAthletes()
+    );
+
+    this.router.get(
+      "/:id/oneCoachPrograms",
+      this.authorizeMiddleware.isAuth(),
+      this.authorizeMiddleware.isCoach(),
+      this.requestValidation.paramsIsNumber(["id"]),
+      this.userController.oneCoachPrograms()
+    );
 
     this.router.get(
       "/:id",
+      this.authorizeMiddleware.isAuth(),
+      this.authorizeMiddleware.isCoach(),
       this.requestValidation.paramsIsNumber(["id"]),
       this.userController.getUserById()
     );

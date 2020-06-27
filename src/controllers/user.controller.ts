@@ -3,10 +3,6 @@ import UserService from "../services/db/user.service";
 import CustomError from "../types/errors/customError.types";
 
 export default class UserController {
-  private userService: UserService;
-  constructor() {
-    this.userService = new UserService();
-  }
 
   public getAllUsers() {
     return async (req: Request, res: Response) => {
@@ -105,10 +101,13 @@ export default class UserController {
 
   public assignProgramToUser() {
     return async (req: Request, res: Response, next: NextFunction) => {
-      return this.userService
-        .assignProgramToUser(req.body.userId, req.body.programId)
+      return UserService.assignProgramToUser(
+        req.body.userId,
+        req.body.programId,
+        req.session!.passport.user.id
+      )
         .then((user) => {
-          return res.json({ user });
+          return res.json(user);
         })
         .catch((e) => {
           if (e.httpStatus) {
@@ -124,11 +123,15 @@ export default class UserController {
   public unAssignProgramToUser() {
     return async (req: Request, res: Response, next: NextFunction) => {
       return (
-        this.userService
+        UserService
           //user id from session
-          .unassignProgramToUser(req.body.userId, req.body.programId)
+          .unassignProgramToUser(
+            req.body.userId,
+            req.body.programId,
+            req.session!.passport.user.id
+          )
           .then((user) => {
-            return res.json({ user });
+            return res.json(user);
           })
           .catch((e) => {
             if (e.httpStatus) {
@@ -139,6 +142,26 @@ export default class UserController {
             return next(error);
           })
       );
+    };
+  }
+
+  public oneCoachPrograms() {
+    return async (req: Request, res: Response, next: NextFunction) => {
+      return UserService.userOneCoachPrograms(
+        parseInt(req.params.id),
+        req.session!.passport.user.id
+      )
+        .then((user) => {
+          return res.json(user);
+        })
+        .catch((e) => {
+          if (e.httpStatus) {
+            const error = new CustomError(e.message, e.httpStatus);
+            return next(error);
+          }
+          const error = new CustomError(e.message, null, e.code);
+          return next(error);
+        });
     };
   }
 }

@@ -3,14 +3,6 @@ import CustomError from "../types/errors/customError.types";
 import User from "../db/entity/user.entity";
 import ProgramService from "../services/db/program.service";
 
-declare global {
-  namespace Express {
-    interface Request {
-      user?: User;
-    }
-  }
-}
-
 export default class AuthorizeMiddleware {
   public isAuth() {
     return (

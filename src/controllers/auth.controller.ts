@@ -43,4 +43,21 @@ export default class AuthController {
         });
     };
   }
+
+  public getUsersByPrograms() {
+    return (req: Request, res: Response, next: NextFunction) => {
+      return UserService.getUsersByPrograms(req.session!.passport.user.id)
+        .then((users) => {
+          return res.json(users);
+        })
+        .catch((e) => {
+          if (e.httpStatus) {
+            const error = new CustomError(e.message, e.httpStatus);
+            return next(error);
+          }
+          const error = new CustomError(e.message, null, e.code);
+          return next(error);
+        });
+    };
+  }
 }

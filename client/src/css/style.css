@@ -1,0 +1,262 @@
+body {
+    margin: 0;
+    padding: 0;
+}
+
+p {
+    font-size: 19px;
+}
+
+.m-t-70 {
+    margin-top: 70px;
+}
+
+.m-t-50 {
+    margin-top: 50px;
+}
+
+.m-t-15 {
+    margin-top: 15px;
+}
+
+.m-t-120 {
+    margin-top: 120px;
+}
+
+.m-t-30 {
+    margin-top: 30px;
+}
+
+.m-r-20 {
+    margin-right: 20px;
+}
+
+.m-b-30 {
+    margin-bottom: 30px;
+}
+
+.m-b-50 {
+    margin-bottom: 50px;
+}
+
+.t-a-just {
+    text-align: justify;
+}
+
+.t-a-cen {
+    text-align: center;
+}
+
+.float-r {
+    float: right;
+}
+
+.btn {
+    width: 120px;
+}
+
+.inline {
+    display: inline-block;
+}
+
+.block {
+    display: block;
+}
+
+.bold-text {
+    font-weight: 700;
+}
+
+.wrap {
+    margin: 0;
+    padding: 0;
+}
+
+.navbar-wrap {
+    padding-left: 80px;
+    padding-right: 80px;
+}
+
+
+
+@media (min-width: 576px) {
+    .navbar-nav .nav-link {
+        padding-left: 20px!important;
+    }
+
+    .navbar-brand {
+        margin-right: 90px;
+    }   
+}
+
+.input-wrap {
+    width: 400px;
+    margin-bottom: 15px;
+}
+
+/* HOME */
+
+.home-main-img {
+    height: 300px;
+    width: auto;
+    content: url("../img/sneakers.png");
+}
+
+/* PROFILE */
+.profile-main-coach-pic, .profile-main-athlete-pic {
+    height: 250px;
+    width: auto;
+}
+
+.profile-main-coach-pic {
+    content: url("../img/coach.png");
+}
+
+.profile-main-athlete-pic {
+    content: url("../img/athlete.png");
+}
+
+.profile-info h3 {
+    margin-bottom: 50px;
+}
+
+
+/* LISTS */
+.list-link {
+    color: #fff;
+    font-size: 21px;
+    font-weight: 400;
+    text-decoration: none!important;
+}
+
+.list-link:visited {
+    color: #fff;
+    text-decoration: none;
+}
+
+.list-link:hover {
+    color: #fff;
+    text-decoration: none;
+}
+
+/* PROGRAMS */
+.new-program-title {
+    display: inline-block;
+    margin-right: 20px;
+}
+
+.program-icon {
+    height: 38px;
+    width: auto;
+    content: url("../img/paper.png");
+    margin-right: 15px;
+}
+
+.edit-program-input {
+    width: 400px;
+}
+.program-list {
+    padding: 10px 10px 10px 0;
+}
+
+.list-program-title {
+    font-size: 21px;
+    font-weight: 600;
+}
+
+.list-program-box {
+    padding: 20px 15px 20px 25px;
+    background-color: #17A2B8;
+    border-radius: 15px;
+    color: blanchedalmond;
+}
+
+.program-main-img {
+    height: 200px;
+    width: auto;
+    content: url("../img/draft.png");
+}
+
+.list-box {
+    position: relative;
+    height: 100%;
+    background-color: #17A2B8;
+    border-radius: 10px;
+    min-height: 100px;
+}
+
+.list-box:hover, .user-list-col:hover {
+    background-color: #177280;
+}
+
+.align-verical {
+    margin: 0;
+    position: absolute;
+    top: 50%;
+    margin-left: 15px;
+    -ms-transform: translateY(-50%);
+    transform: translateY(-50%);
+}
+
+/* USERS */
+
+.user-list-col {
+    background-color: #17A2B8;
+    margin-top: 30px;
+    height: 90px;
+    border-radius: 7px;
+}
+
+.user-list-item {
+    width: 100%;
+    position: static;
+    height: 100%;
+}
+
+.athelete-list-icon {
+    content: url("../img/athlete.png");
+    height: 55px;
+    width: auto;
+    margin-right: 20px;
+}
+
+/* EXERCISES */
+
+.exercise-list-container {
+    padding: 10px 10px 10px 0; 
+}
+
+.exercise-box {
+    padding-top: 20px!important;
+    padding-left: 30px!important;
+    color: blanchedalmond;
+    background-color: #17A2B8;
+    min-height: 110px;
+    padding: 10px;
+    border-radius: 10px;
+}
+
+.exercise-icon {
+    margin-right: 15px;
+    height: 50px;
+    content: url("../img/gym.png");
+}
+
+.exercise-info {
+    margin-top: 10px;
+    margin-bottom: 10px;
+    font-size: 20px;
+}
+
+.exercise-info small {
+    display: block;
+    margin-bottom: 6px;
+}
+
+.exercise-box button {
+    display: inline-block;
+    float: right;
+    margin-right: 20px;
+    width: 90px;
+}
+

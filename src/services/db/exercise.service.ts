@@ -1,4 +1,4 @@
-import { getRepository, createQueryBuilder } from "typeorm";
+import { getRepository } from "typeorm";
 import Exercise from "../../db/entity/exsercise.entity";
 import CategoryService from "./category.service";
 export default class ExerciseService {

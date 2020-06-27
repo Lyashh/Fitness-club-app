@@ -21,11 +21,18 @@ export default class ProgramRouter {
 
   public get routes(): ExpressRouter {
     this.router.get("/", this.programController.getAllPrograms());
-    this.router.get("/:id", this.programController.getProgramById());
+
+    this.router.get(
+      "/:id",
+      this.authorizeMiddleware.isAuth(),
+      this.dbValidation.programBelongsToUser(),
+      this.programController.getProgramById()
+    );
 
     this.router.post(
       "/",
       this.authorizeMiddleware.isAuth(),
+      this.authorizeMiddleware.isCoach(),
       this.requestValidation.validateNewProgram(),
       this.programController.createProgram()
     );
@@ -33,6 +40,7 @@ export default class ProgramRouter {
     this.router.delete(
       "/",
       this.authorizeMiddleware.isAuth(),
+      this.authorizeMiddleware.isCoach(),
       this.requestValidation.validateBodyId(),
       this.authorizeMiddleware.programBelongsToCoach(),
       this.programController.deleteProgram()
@@ -41,6 +49,7 @@ export default class ProgramRouter {
     this.router.patch(
       "/",
       this.authorizeMiddleware.isAuth(),
+      this.authorizeMiddleware.isCoach(),
       this.authorizeMiddleware.programBelongsToCoach(),
       this.requestValidation.validateModifiedProgram(),
       this.programController.updateProgram()
