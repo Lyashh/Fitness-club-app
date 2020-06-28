@@ -2,6 +2,7 @@
 
 ## 1. Start app 
 ```sh
+mv example.env .env
 docker-compose up
 ```
 
