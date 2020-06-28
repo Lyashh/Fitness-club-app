@@ -72,8 +72,11 @@ export default class UserService {
     });
   }
 
-  public static createUser(userReq: any): Promise<User> {
-    return RoleService.getRoleById(userReq.roleId).then(async (role) => {
+  public static createUser(
+    userReq: any,
+    reqRole: "athlete" | "coach" = "athlete"
+  ): Promise<User> {
+    return RoleService.getByRolesName(reqRole).then(async (role) => {
       if (role) {
         const hash = await bcrypt.hash(userReq.password, 10);
 

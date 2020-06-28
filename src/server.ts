@@ -2,10 +2,14 @@ import { createConnection } from "typeorm";
 
 import config from "./db/ormconfig";
 import App from "./app";
+import seed from "./db/seed";
 
 const connectAndStart = () => {
-  return createConnection(config).then(() => {
+  return createConnection(config).then(async (connection) => {
     console.log("Successful postgres connection");
+    await connection.dropDatabase();
+    await connection.synchronize();
+    await seed();
     const server = App.getInstance;
     server.init();
   });
